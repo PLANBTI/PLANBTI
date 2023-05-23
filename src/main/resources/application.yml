@@ -8,7 +8,7 @@ spring:
       ddl-auto: create
 
   datasource:
-    url: jdbc:mysql://${yourDb:localhost:3306}/project
+    url: jdbc:mariadb://${yourDb:localhost:3306}/project
     username: ${yourName:yohan}
     password: ${yourPassword:1111}
 
