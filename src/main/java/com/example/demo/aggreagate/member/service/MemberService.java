@@ -1,6 +1,7 @@
-package com.example.demo.aggreagate.member;
+package com.example.demo.aggreagate.member.service;
 
-
+import com.example.demo.aggreagate.member.entity.Member;
+import com.example.demo.aggreagate.member.repository.MemberRepository;
 import com.example.demo.base.Role;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,5 @@ public class MemberService {
 
         return findByName.get();
     }
-
 
 }

@@ -1,7 +1,7 @@
 package com.example.demo.base;
 
-import com.example.demo.aggreagate.member.Member;
-import com.example.demo.aggreagate.member.MemberRepository;
+import com.example.demo.aggreagate.member.entity.Member;
+import com.example.demo.aggreagate.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
