@@ -24,6 +24,9 @@ public class Faq extends BaseEntity {
     private String content;
     private String email;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Comment comment;
+
     @Column(nullable = false)
     private String name;
 

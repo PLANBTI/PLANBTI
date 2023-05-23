@@ -28,15 +28,16 @@ public class Member {
     private String password;
     private String phoneNumber;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
-    private List<Order> order;
+    private List<Order> order = new ArrayList<>();
 
     @Embedded
     private Address address;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "member")
-    private List<Test> test = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member")
+    private Test test;
 
     @Convert(converter = CustomConverter.class)
     @Builder.Default
