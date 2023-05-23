@@ -18,7 +18,7 @@ public class Test extends BaseEntity {
     private char result;
     private String content;
 
-    @ManyToOne
+    @OneToOne
     private Member member;
 
 }
