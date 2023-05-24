@@ -1,6 +1,6 @@
-package com.example.demo.aggreagate.product.entity;
+package com.example.demo.boundedContext.product.entity;
 
-import com.example.demo.aggreagate.member.entity.Member;
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;

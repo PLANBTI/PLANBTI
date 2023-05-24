@@ -1,7 +1,7 @@
-package com.example.demo.aggreagate.member.service;
+package com.example.demo.boundedContext.member.service;
 
-import com.example.demo.aggreagate.member.entity.Member;
-import com.example.demo.aggreagate.member.repository.MemberRepository;
+import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.base.Role;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import lombok.RequiredArgsConstructor;

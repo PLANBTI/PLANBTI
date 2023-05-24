@@ -9,6 +9,7 @@ public class KakaoUser extends DivideOAuth2User {
     public KakaoUser(OAuth2User oAuth2User) {
         super(oAuth2User, oAuth2User.getAttribute("kakao_account"));
     }
+
     @Override
     public String getUsername() {
         return getProviderCode() + "__" + getOAuth2Name();
@@ -23,6 +24,7 @@ public class KakaoUser extends DivideOAuth2User {
     public String getOAuth2Name() {
         return this.oAuth2User.getName();
     }
+
     @Override
     public String getProviderCode() {
         return OAuth2Provider.KAKAO.name();

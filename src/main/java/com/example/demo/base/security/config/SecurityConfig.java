@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 @EnableMethodSecurity
 @EnableWebSecurity
@@ -24,13 +23,12 @@ public class SecurityConfig {
                         .invalidateHttpSession(true));
 
 
-
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
-                .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers("/every","/favicon.ico", "/resources/**", "/error",
-                        "/image/**","/js/**").permitAll()
+                .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/every", "/favicon.ico", "/resources/**", "/error",
+                        "/image/**", "/js/**").permitAll()
                 .anyRequest().authenticated());
 
         return http.build();

@@ -1,6 +1,6 @@
-package com.example.demo.aggreagate.member.entity;
+package com.example.demo.boundedContext.member.entity;
 
-import com.example.demo.aggreagate.order.entity.Order;
+import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
 import jakarta.persistence.*;
@@ -33,8 +33,8 @@ public class Member {
     private List<Order> order = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Address> address=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> address = new ArrayList<>();
 
 
     @Builder.Default

@@ -1,6 +1,6 @@
-package com.example.demo.aggreagate.member.repository;
+package com.example.demo.boundedContext.member.repository;
 
-import com.example.demo.aggreagate.member.entity.Member;
+import com.example.demo.boundedContext.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

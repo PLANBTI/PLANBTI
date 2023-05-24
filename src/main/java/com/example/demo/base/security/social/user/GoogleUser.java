@@ -9,6 +9,7 @@ public class GoogleUser extends DivideOAuth2User {
     public GoogleUser(OAuth2User oAuth2User) {
         super(oAuth2User, oAuth2User.getAttributes());
     }
+
     @Override
     public String getUsername() {
         return getProviderCode() + "__" + getOAuth2Name();
@@ -23,6 +24,7 @@ public class GoogleUser extends DivideOAuth2User {
     public String getOAuth2Name() {
         return oAuth2User.getName();
     }
+
     @Override
     public String getProviderCode() {
         return OAuth2Provider.GOOGLE.name();

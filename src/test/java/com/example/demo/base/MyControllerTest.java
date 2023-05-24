@@ -1,7 +1,7 @@
 package com.example.demo.base;
 
-import com.example.demo.aggreagate.member.entity.Member;
-import com.example.demo.aggreagate.member.repository.MemberRepository;
+import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.base.home.HomeController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ class MyControllerTest {
         Member save = memberRepository.save(member);
     }
 
-    @WithUserDetails(value = "user1",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = "user1", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("USER권한 접속 테스트")
     @Test
     void t1() throws Exception {

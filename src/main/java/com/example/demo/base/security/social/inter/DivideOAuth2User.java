@@ -8,9 +8,9 @@ import java.util.*;
 
 public abstract class DivideOAuth2User implements SocialUserInterface {
 
+    protected OAuth2User oAuth2User;
     Map<String, Object> attributes;
     Collection<? extends GrantedAuthority> authorities;
-    protected OAuth2User oAuth2User;
 
 
     public DivideOAuth2User(OAuth2User oAuth2User, Map<String, Object> attributes) {
@@ -25,10 +25,12 @@ public abstract class DivideOAuth2User implements SocialUserInterface {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
+
     @Override
     public String getPassword() {
-        return UUID.randomUUID().toString().substring(0,7);
+        return UUID.randomUUID().toString().substring(0, 7);
     }
+
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;

@@ -1,6 +1,5 @@
-package com.example.demo.aggreagate.product.entity;
+package com.example.demo.boundedContext.member.entity;
 
-import com.example.demo.aggreagate.member.entity.Member;
 import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,16 +9,16 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-public class WishList extends BaseTimeEntity {
+public class Test extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Member member;
+    private char result;
+    private String content;
 
     @ManyToOne
-    private Product product;
+    private Member member;
 
 }
