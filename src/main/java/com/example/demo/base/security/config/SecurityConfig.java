@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 @EnableMethodSecurity
 @EnableWebSecurity
@@ -17,16 +18,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.oauth2Login(oauth -> oauth.loginPage("/member/login"))
-                .formLogin(form -> form.loginPage("/member/login"))
+        http.oauth2Login(oauth -> oauth.loginPage("/member/login").defaultSuccessUrl("/"))
+                .formLogin(form -> form.loginPage("/member/login").defaultSuccessUrl("/"))
                 .logout(logout -> logout
                         .invalidateHttpSession(true));
+
+
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers("/every","/favicon.ico", "/resources/**", "/error").permitAll()
+                .requestMatchers("/every","/favicon.ico", "/resources/**", "/error",
+                        "/image/**","/js/**").permitAll()
                 .anyRequest().authenticated());
 
         return http.build();
