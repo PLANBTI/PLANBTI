@@ -25,7 +25,7 @@ public class Order extends BaseEntity {
     private String req;
     private int itemCount;
 
-    @Embedded
+    @OneToOne
     private Address address;
 
 }

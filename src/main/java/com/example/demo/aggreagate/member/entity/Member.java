@@ -32,8 +32,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> order = new ArrayList<>();
 
-    @Embedded
-    private Address address;
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Address> address=new ArrayList<>();
 
 
     @Builder.Default
