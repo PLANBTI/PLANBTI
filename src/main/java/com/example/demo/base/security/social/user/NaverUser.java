@@ -10,10 +10,12 @@ public class NaverUser extends DivideOAuth2User {
         super(oAuth2User, oAuth2User.getAttribute("response"));
 
     }
+
     @Override
     public String getUsername() {
         return getProviderCode() + "__" + getOAuth2Name();
     }
+
     @Override
     public String getOAuth2Name() {
         return (String) getAttributes().get("id");

@@ -1,5 +1,6 @@
-package com.example.demo.aggreagate.faq.entity;
+package com.example.demo.boundedContext.product.entity;
 
+import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,13 +10,20 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-public class Comment extends BaseTimeEntity {
+public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "comment")
-    private Faq faq;
+    @ManyToOne
+    private Category category;
+    private String name;
+
+    @Column(length = 1000)
     private String content;
+    private int price;
+    private int salePrice;
+    private int count;
+
 }

@@ -1,4 +1,4 @@
-package com.example.demo.aggreagate.category.entity;
+package com.example.demo.boundedContext.faq.entity;
 
 import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -9,13 +9,13 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-public class Category extends BaseTimeEntity {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
+    @OneToOne(mappedBy = "comment")
+    private Faq faq;
+    private String content;
 }

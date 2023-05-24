@@ -1,10 +1,10 @@
 package com.example.demo.base.security.social;
 
 import com.example.demo.base.exception.NotSupportUserLoginException;
+import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import com.example.demo.base.security.social.user.GoogleUser;
 import com.example.demo.base.security.social.user.KakaoUser;
 import com.example.demo.base.security.social.user.NaverUser;
-import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import static com.example.demo.base.security.social.OAuth2Provider.*;
