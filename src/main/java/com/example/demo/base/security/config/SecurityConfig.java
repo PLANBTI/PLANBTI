@@ -1,4 +1,4 @@
-package com.example.demo.base.security;
+package com.example.demo.base.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,6 @@ public class SecurityConfig {
         http.oauth2Login(oauth -> oauth.loginPage("/member/login"))
                 .formLogin(form -> form.loginPage("/member/login"))
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/every")
                         .invalidateHttpSession(true));
 
         http.authorizeHttpRequests(auth -> auth

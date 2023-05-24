@@ -1,6 +1,5 @@
-package com.example.demo.base;
+package com.example.demo.base.home;
 
-import com.example.demo.base.security.CustomOAuth2Login;
 import com.example.demo.base.security.CustomOAuth2User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,12 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static com.example.demo.base.security.CustomOAuth2Login.*;
-
 @Controller
-public class MyController {
-
-
+public class HomeController {
     @GetMapping("/")
     public String every1() {
         return "member/everyOne";
@@ -31,6 +26,16 @@ public class MyController {
     @GetMapping("/every")
     public String every() {
         return "member/everyOne";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+
+        new SecurityContextLogoutHandler()
+                .logout(request,response, SecurityContextHolder.getContext().getAuthentication());
+
+        return "redirect:/";
     }
 
 
