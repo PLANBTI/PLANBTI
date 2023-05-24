@@ -1,18 +1,25 @@
 package com.example.demo.aggreagate.member.entity;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
-@EqualsAndHashCode
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
-@Embeddable
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@Entity
 public class Address {
 
-    private String zipCode;
-    private String addrDetail;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
     private String addr;
+    private String addrDetail;
+    private String zipCode;
+    private String phoneNumber;
     private String basic;
+    private String isDefault;
+
 
 }
