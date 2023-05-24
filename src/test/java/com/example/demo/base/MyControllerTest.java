@@ -2,6 +2,7 @@ package com.example.demo.base;
 
 import com.example.demo.aggreagate.member.entity.Member;
 import com.example.demo.aggreagate.member.repository.MemberRepository;
+import com.example.demo.base.home.HomeController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,21 +36,21 @@ class MyControllerTest {
     @BeforeEach
     void setUp() {
         Member member = Member.builder()
-                .username("yohan")
-                .email("sjohn@naver.com")
+                .username("user1")
+                .email("user1@naver.com")
                 .password(passwordEncoder.encode("1111"))
                 .build();
         member.addRole(Role.USER);
         Member save = memberRepository.save(member);
     }
 
-    @WithUserDetails(value = "yohan",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = "user1",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("USER권한 접속 테스트")
     @Test
     void t1() throws Exception {
         mvc.perform(get("/member"))
                 .andExpect(MockMvcResultMatchers.handler().methodName("member"))
-                .andExpect(MockMvcResultMatchers.handler().handlerType(MyController.class))
+                .andExpect(MockMvcResultMatchers.handler().handlerType(HomeController.class))
                 .andExpect(status().is2xxSuccessful());
     }
 
