@@ -1,7 +1,7 @@
 package com.example.demo.aggreagate.product.entity;
 
 import com.example.demo.aggreagate.member.entity.Member;
-import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-public class WishList extends BaseEntity {
+public class WishList extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
