@@ -36,8 +36,9 @@ public class Member {
     private Address address;
 
 
-    @OneToOne(mappedBy = "member")
-    private Test test;
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<Test> test = new ArrayList<>();
 
     @Convert(converter = CustomConverter.class)
     @Builder.Default
