@@ -2,7 +2,7 @@ package com.example.demo.aggreagate.order.entity;
 
 import com.example.demo.aggreagate.member.entity.Address;
 import com.example.demo.aggreagate.member.entity.Member;
-import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "Orders")
-public class Order extends BaseEntity {
+public class Order extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
