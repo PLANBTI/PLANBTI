@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Profile("dev")
+@Profile({"dev","test"})
 @Configuration
 public class CustomInitData {
     @Bean
@@ -24,7 +24,7 @@ public class CustomInitData {
             public void run(String... args) throws Exception {
                 String encode = passwordEncoder.encode("1111");
                 Member user = Member.builder()
-                        .username("user")
+                        .username("user1")
                         .password(encode)
                         .phoneNumber("010-1111-1111")
                         .email("user1@naver.com")
@@ -37,8 +37,8 @@ public class CustomInitData {
                         .phoneNumber("010-1111-1111")
                         .email("user1@naver.com")
                         .build();
-                user.addRole(Role.USER);
-                user.addRole(Role.ADMIN);
+                admin.addRole(Role.USER);
+                admin.addRole(Role.ADMIN);
 
                 memberRepository.save(user);
                 memberRepository.save(admin);
