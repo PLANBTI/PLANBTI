@@ -34,14 +34,16 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/")
-    public String showMyPage(Model model) {
+    public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsername(user.getName());
+        model.addAttribute("member", member);
         return "member/myPage";
     }
 
     @GetMapping("/modify/{id}")
     public String modify(Model model, @PathVariable("id") Long id) {
         Member member = memberService.findById(id);
-        model.addAttribute(member);
+        model.addAttribute("member", member);
         return "member/modify";
     }
 
@@ -60,7 +62,7 @@ public class MemberController {
     public String showTestResult(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = findByIdAndVerify(id, user);
 
-        model.addAttribute(member);
+        model.addAttribute("member", member);
         return "/member/testResult";
     }
 
@@ -69,7 +71,7 @@ public class MemberController {
         Member member = findByIdAndVerify(id, user);
 
         List<Order> orderList = member.getOrders();
-        model.addAttribute(orderList);
+        model.addAttribute("orderList", orderList);
         return "/member/orderlist";
     }
 

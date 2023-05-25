@@ -6,9 +6,20 @@
 
 <body>
 
-    <main layout:fragment="main">
-
-    </main>
+<main layout:fragment="main" class="container mx-auto py-8 grow max-w-2xl">
+    <h1 class="text-2xl mt-8 font-black">회원 정보 수정</h1>
+    <form class="flex flex-col">
+        <div>
+            <input type="text" placeholder="E-mail" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="text" placeholder="Phone Number" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="submit" value="회원 정보 수정" class="btn btn-outline w-full mt-12">
+        </div>
+    </form>
+</main>
 
 </body>
 
