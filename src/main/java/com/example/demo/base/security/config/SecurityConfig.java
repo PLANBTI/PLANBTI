@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/every", "/favicon.ico", "/resources/**", "/error",
+                .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
                         "/image/**", "/js/**").permitAll()
                 .anyRequest().authenticated());
 
