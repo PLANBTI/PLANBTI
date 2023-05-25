@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.member.service;
 
+import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.base.Role;
@@ -41,13 +42,17 @@ public class MemberService {
 
     public Member findById(Long id) {
         Optional<Member>member = memberRepository.findById(id);
-        if(member.isEmpty()) return null;
+        if(member.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 유저입니다.");
+        }
         return member.get();
     }
 
     public Member findByUsername(String username) {
         Optional<Member> member = memberRepository.findByUsername(username);
-        if(member.isEmpty()) return null;
+        if(member.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 유저입니다.");
+        }
         return member.get();
     }
 
