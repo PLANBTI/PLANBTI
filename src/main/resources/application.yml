@@ -7,11 +7,6 @@ spring:
     hibernate:
       ddl-auto: create
 
-  datasource:
-    url: jdbc:mariadb://${yourDb:localhost:3306}/project
-    username: ${yourName:yohan}
-    password: ${yourPassword:1111}
-
   security:
     oauth2:
       client:
