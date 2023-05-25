@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.order.entity.Order;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,19 +63,41 @@ public class MemberController {
     @PostMapping("/modify/{id}")
     public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
                          @PathVariable("id") Long id, Principal principal) {
-        if(bindingResult.hasErrors()) return "member/modify";
+        if(bindingResult.hasErrors()) return "/modify/%d".formatted(id);
+
         Member member = memberService.findById(id);
-        if(!member.getUsername().equals(principal.getName())) return "/login";
+
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+        }
+
         memberService.modify(member, form.getPassword(), form.getEmail(), form.getPhoneNumber());
-        return "redirect:/member";
+        return "redirect:/member/";
     }
 
     @GetMapping("/testresult/{id}")
     public String showTestResult(Model model, @PathVariable("id") Long id, Principal principal) {
         Member member = memberService.findById(id);
-        if(!member.getUsername().equals(principal.getName())) return "/login";
+
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "조회 권한이 없습니다.");
+        }
+
         model.addAttribute(member);
         return "/member/testResult";
+    }
+
+    @GetMapping("/orderlist/{id}")
+    public String showOrderlist(Model model, @PathVariable("id") Long id, Principal principal) {
+        Member member = memberService.findById(id);
+
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "조회 권한이 없습니다.");
+        }
+
+        List<Order> orderList = member.getOrders();
+        model.addAttribute(orderList);
+        return "/member/orderlist";
     }
 
 }
