@@ -30,16 +30,16 @@ public class Member {
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
-    private List<Order> order = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> address = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
-    private List<Test> test = new ArrayList<>();
+    private List<Test> tests = new ArrayList<>();
 
     @Convert(converter = CustomConverter.class)
     @Builder.Default

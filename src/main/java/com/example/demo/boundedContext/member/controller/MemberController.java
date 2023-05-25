@@ -63,9 +63,17 @@ public class MemberController {
                          @PathVariable("id") Long id, Principal principal) {
         if(bindingResult.hasErrors()) return "member/modify";
         Member member = memberService.findById(id);
-        if(!member.getUsername().equals(principal.getName())) return "member/modify";
+        if(!member.getUsername().equals(principal.getName())) return "/login";
         memberService.modify(member, form.getPassword(), form.getEmail(), form.getPhoneNumber());
         return "redirect:/member";
+    }
+
+    @GetMapping("/testresult/{id}")
+    public String showTestResult(Model model, @PathVariable("id") Long id, Principal principal) {
+        Member member = memberService.findById(id);
+        if(!member.getUsername().equals(principal.getName())) return "/login";
+        model.addAttribute(member);
+        return "/member/testResult";
     }
 
 }
