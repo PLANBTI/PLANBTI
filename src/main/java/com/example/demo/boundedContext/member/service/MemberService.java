@@ -56,9 +56,8 @@ public class MemberService {
         return member.get();
     }
 
-    public void modify(Member member, String password, String email, String phoneNumber) {
+    public void modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
-                .password(password)
                 .email(email)
                 .phoneNumber(phoneNumber).build();
         memberRepository.save(modifiedMember);

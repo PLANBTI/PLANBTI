@@ -54,7 +54,7 @@ public class MemberController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
 
-        memberService.modify(member, form.getPassword(), form.getEmail(), form.getPhoneNumber());
+        memberService.modify(member, form.getEmail(), form.getPhoneNumber());
         return "redirect:/member/";
     }
 
