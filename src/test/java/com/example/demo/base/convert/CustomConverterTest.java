@@ -17,15 +17,18 @@ class CustomConverterTest {
         CustomConverter converter = new CustomConverter();
 
         Set<Role> attribute = new HashSet<>();
+
+        String result1 = converter.convertToDatabaseColumn(attribute);
+        Assertions.assertThat(result1).isEmpty();
+
         attribute.add(Role.ADMIN);
         attribute.add(Role.USER);
 
         //when
-        String result = converter.convertToDatabaseColumn(attribute);
+        String result2 = converter.convertToDatabaseColumn(attribute);
 
         //then
-        Assertions.assertThat(result.contains("ROLE_USER")).isTrue();
-        Assertions.assertThat(result.contains("ROLE_ADMIN")).isTrue();
+        Assertions.assertThat(result2).contains("USER","ADMIN");
     }
 
     @DisplayName("converter test string to set")
@@ -33,13 +36,13 @@ class CustomConverterTest {
     void t2() {
         //given
         CustomConverter converter = new CustomConverter();
-        String data = "ROLE_USER,ROLE_ADMIN";
+        String data = "USER,ADMIN";
 
         //when
         Set<Role> result = converter.convertToEntityAttribute(data);
 
         //then
-        Assertions.assertThat(result).containsExactly(Role.ADMIN, Role.USER);
+        Assertions.assertThat(result).containsExactly(Role.USER, Role.ADMIN);
     }
 
 }
