@@ -48,11 +48,7 @@ public class MemberController {
                          @PathVariable("id") Long id, Principal principal) {
         if(bindingResult.hasErrors()) return "/modify/%d".formatted(id);
 
-        Member member = memberService.findById(id);
-
-        if(!member.getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
-        }
+        Member member = findByIdAndVerify(id, principal);
 
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
         return "redirect:/member/";
@@ -60,11 +56,7 @@ public class MemberController {
 
     @GetMapping("/testresult/{id}")
     public String showTestResult(Model model, @PathVariable("id") Long id, Principal principal) {
-        Member member = memberService.findById(id);
-
-        if(!member.getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "조회 권한이 없습니다.");
-        }
+        Member member = findByIdAndVerify(id, principal);
 
         model.addAttribute(member);
         return "/member/testResult";
@@ -72,15 +64,21 @@ public class MemberController {
 
     @GetMapping("/orderlist/{id}")
     public String showOrderlist(Model model, @PathVariable("id") Long id, Principal principal) {
-        Member member = memberService.findById(id);
-
-        if(!member.getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "조회 권한이 없습니다.");
-        }
+        Member member = findByIdAndVerify(id, principal);
 
         List<Order> orderList = member.getOrders();
         model.addAttribute(orderList);
         return "/member/orderlist";
+    }
+
+    private Member findByIdAndVerify(Long id, Principal principal) {
+        Member member = memberService.findById(id);
+
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
+        return member;
     }
 
 }
