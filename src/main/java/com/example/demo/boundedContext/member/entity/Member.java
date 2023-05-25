@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.member.entity;
 
+import com.example.demo.base.entity.BaseTimeEntity;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
@@ -18,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(toBuilder = true)
 @Entity
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,6 @@ public class Member {
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
-
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
