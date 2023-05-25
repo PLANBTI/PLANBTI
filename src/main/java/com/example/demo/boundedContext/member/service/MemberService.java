@@ -39,4 +39,28 @@ public class MemberService {
         return findByName.get();
     }
 
+    public Member findById(Long id) {
+        Optional<Member>member = memberRepository.findById(id);
+        if(member.isEmpty()) return null;
+        return member.get();
+    }
+
+    public Member findByUsername(String username) {
+        Optional<Member> member = memberRepository.findByUsername(username);
+        if(member.isEmpty()) return null;
+        return member.get();
+    }
+
+    public void modify(Member member, String password, String email, String phoneNumber) {
+        Member modifiedMember = member.toBuilder()
+                .password(password)
+                .email(email)
+                .phoneNumber(phoneNumber).build();
+        memberRepository.save(modifiedMember);
+    }
+
+    public void delete(Member member) {
+
+    }
+
 }
