@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.Order;
 import jakarta.validation.Valid;
@@ -33,24 +34,6 @@ public class MemberController {
     @GetMapping("/")
     public String showMyPage(Model model) {
         return "member/myPage";
-    }
-
-    @Data
-    @AllArgsConstructor
-    public class MemberModifyForm {
-
-        @NotBlank(message = "비밀번호를 입력해주세요.")
-        private String password;
-
-        @NotBlank(message = "비밀번호를 한 번 더 입력해주세요.")
-        private String password2;
-
-        @Email
-        private String email;
-
-        @NotBlank(message = "휴대폰 번호를 입력해주세요.")
-        private String phoneNumber;
-
     }
 
     @GetMapping("/modify/{id}")
