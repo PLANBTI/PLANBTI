@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.member.controller;
 
+import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,36 +47,36 @@ public class MemberController {
 
     @PostMapping("/modify/{id}")
     public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
-                         @PathVariable("id") Long id, Principal principal) {
+                         @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
         if(bindingResult.hasErrors()) return "/modify/%d".formatted(id);
 
-        Member member = findByIdAndVerify(id, principal);
+        Member member = findByIdAndVerify(id, user);
 
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
         return "redirect:/member/";
     }
 
     @GetMapping("/testresult/{id}")
-    public String showTestResult(Model model, @PathVariable("id") Long id, Principal principal) {
-        Member member = findByIdAndVerify(id, principal);
+    public String showTestResult(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = findByIdAndVerify(id, user);
 
         model.addAttribute(member);
         return "/member/testResult";
     }
 
     @GetMapping("/orderlist/{id}")
-    public String showOrderlist(Model model, @PathVariable("id") Long id, Principal principal) {
-        Member member = findByIdAndVerify(id, principal);
+    public String showOrderlist(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = findByIdAndVerify(id, user);
 
         List<Order> orderList = member.getOrders();
         model.addAttribute(orderList);
         return "/member/orderlist";
     }
 
-    private Member findByIdAndVerify(Long id, Principal principal) {
+    private Member findByIdAndVerify(Long id, CustomOAuth2User user) {
         Member member = memberService.findById(id);
 
-        if(!member.getUsername().equals(principal.getName())) {
+        if(!member.getUsername().equals(user.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
