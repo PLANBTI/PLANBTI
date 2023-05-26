@@ -9,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @RequiredArgsConstructor
+@RequestMapping("/toss")
 @Controller
 public class TossController {
 
@@ -49,7 +51,7 @@ public class TossController {
         model.addAttribute("code", code);
         model.addAttribute("message", message);
 
-        return "fail";
+        return "redirect:/order/orderPage";
     }
 
     private ResponseEntity<String> requestPermitToss(OrderRequest orderRequest) {
