@@ -1,20 +1,17 @@
 package com.example.demo.boundedContext.product.entity;
 
+import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@SuperBuilder(toBuilder = true)
 @Entity
-public class WishList extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class WishList extends BaseEntity {
 
     @ManyToOne
     private Member member;

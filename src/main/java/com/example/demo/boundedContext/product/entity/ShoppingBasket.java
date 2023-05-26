@@ -1,9 +1,10 @@
 package com.example.demo.boundedContext.product.entity;
 
+import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@SuperBuilder(toBuilder = true)
 @Entity
-public class ShoppingBasket extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ShoppingBasket extends BaseEntity {
 
     @ManyToOne
     private Member member;

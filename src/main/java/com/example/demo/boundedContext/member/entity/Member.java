@@ -1,11 +1,12 @@
 package com.example.demo.boundedContext.member.entity;
 
-import com.example.demo.base.entity.BaseTimeEntity;
+import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -17,13 +18,10 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @Entity
-public class Member extends BaseTimeEntity {
+public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String username;
     private String email;
     private String password;
