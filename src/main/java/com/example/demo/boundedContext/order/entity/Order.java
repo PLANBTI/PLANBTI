@@ -33,6 +33,7 @@ public class Order extends BaseEntity {
 
 
     @JsonManagedReference
+    @Builder.Default
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
@@ -40,6 +41,8 @@ public class Order extends BaseEntity {
     private Address address;
 
     public Long getTotalAmount() {
+        if (orderDetailList.isEmpty())
+            return 0L;
         return orderDetailList.stream().map(OrderDetail::getAmount).mapToLong(i -> i).sum();
     }
 

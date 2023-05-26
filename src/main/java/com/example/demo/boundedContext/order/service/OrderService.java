@@ -41,7 +41,8 @@ public class OrderService {
 
     public Order findLastOrderById(Long id) {
 
-        return orderRepository.findLastOrder(id).get();
+        Optional<Order> lastOrder = orderRepository.findLastOrder(id);
+        return lastOrder.orElseGet(() -> Order.builder().build());
     }
 
 

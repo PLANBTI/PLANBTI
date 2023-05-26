@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout.html}" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <title>Order</title>
+</head>
+<body>
+
+<main layout:fragment="main">
+
+    <section th:each="orderItem , i : ${order.getOrderDetailList()}">
+        <span th:text="${i.index}">번호</span>
+        <span th:text="${orderItem.getProduct().getName()}">product name</span>
+        <span th:text="${orderItem.getCount()}">product name</span>
+        <span th:text="${orderItem.getAmount()}">product name</span>
+
+    </section>
+    <button class="btn btn-outline" onclick="order()" th:text="${order.getTotalAmount()}">총 금액 계산</button>
+
+    <script type="text/javascript" src="/js/order.js"></script>
+</main>
+</body>
+</html>
