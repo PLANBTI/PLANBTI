@@ -28,10 +28,6 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
-
-    @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 

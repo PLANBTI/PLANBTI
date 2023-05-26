@@ -5,11 +5,8 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.Order;
+import com.example.demo.boundedContext.order.service.OrderService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -32,6 +28,7 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 public class MemberController {
     private final MemberService memberService;
+    private final OrderService orderService;
 
     @GetMapping("/")
     public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
@@ -70,7 +67,7 @@ public class MemberController {
     public String showOrderlist(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = findByIdAndVerify(id, user);
 
-        List<Order> orderList = member.getOrders();
+        List<Order> orderList =orderService.findAllByMember(member);
         model.addAttribute("orderList", orderList);
         return "/member/orderlist";
     }
