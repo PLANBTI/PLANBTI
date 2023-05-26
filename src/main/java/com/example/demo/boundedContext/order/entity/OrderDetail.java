@@ -22,6 +22,9 @@ public class OrderDetail extends BaseEntity {
     @ManyToOne
     private Order order;
 
-    private int price;
     private int count;
+
+    public int getAmount() {
+        return product.getPrice() * count;
+    }
 }
