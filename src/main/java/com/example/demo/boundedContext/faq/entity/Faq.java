@@ -1,20 +1,17 @@
 package com.example.demo.boundedContext.faq.entity;
 
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.base.entity.BaseTimeEntity;
+import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@SuperBuilder(toBuilder = true)
 @Entity
-public class Faq extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Faq extends BaseEntity {
 
     @ManyToOne
     private Member member;

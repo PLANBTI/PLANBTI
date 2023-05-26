@@ -1,20 +1,17 @@
 package com.example.demo.boundedContext.order.entity;
 
+import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.base.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@SuperBuilder(toBuilder = true)
 @Entity
-public class OrderDetail extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class OrderDetail extends BaseEntity {
 
     @ManyToOne
     private Product product;
