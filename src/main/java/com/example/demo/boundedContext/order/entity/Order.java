@@ -39,4 +39,8 @@ public class Order extends BaseEntity {
     @OneToOne
     private Address address;
 
+    public Long getTotalAmount() {
+        return orderDetailList.stream().map(OrderDetail::getAmount).mapToLong(i -> i).sum();
+    }
+
 }
