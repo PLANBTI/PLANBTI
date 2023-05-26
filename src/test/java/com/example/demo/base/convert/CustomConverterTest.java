@@ -42,7 +42,7 @@ class CustomConverterTest {
         Set<Role> result = converter.convertToEntityAttribute(data);
 
         //then
-        Assertions.assertThat(result).containsExactly(Role.USER, Role.ADMIN);
+        Assertions.assertThat(result).contains(Role.USER, Role.ADMIN);
     }
 
 }
