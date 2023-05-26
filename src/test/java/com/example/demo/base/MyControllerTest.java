@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -36,15 +38,16 @@ class MyControllerTest {
     @BeforeEach
     void setUp() {
         Member member = Member.builder()
-                .username("user1")
-                .email("user1@naver.com")
+                .username("user2")
+                .email("user2@naver.com")
                 .password(passwordEncoder.encode("1111"))
                 .build();
         member.addRole(Role.USER);
         Member save = memberRepository.save(member);
+
     }
 
-    @WithUserDetails(value = "user1", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = "user2", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("USER권한 접속 테스트")
     @Test
     void t1() throws Exception {
