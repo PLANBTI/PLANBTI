@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Profile({"dev","test"})
+@Profile({"dev", "test"})
 @Configuration
 public class CustomInitData {
     @Bean
@@ -30,6 +30,7 @@ public class CustomInitData {
                         .email("user1@naver.com")
                         .build();
                 user.addRole(Role.USER);
+                memberRepository.save(user);
 
                 Member admin = Member.builder()
                         .username("admin")
@@ -39,9 +40,8 @@ public class CustomInitData {
                         .build();
                 admin.addRole(Role.USER);
                 admin.addRole(Role.ADMIN);
-
-                memberRepository.save(user);
                 memberRepository.save(admin);
+
             }
         };
     }
