@@ -13,7 +13,7 @@ function pay(method, requestOrder) {
         orderId: 'Kt8oaFk2Sca6aFikV-Rjl-abc',
         orderName: '토스 티셔츠 외 2건',
         customerName: '박토스',
-        successUrl: 'http://localhost:8080/order/success',
-        failUrl: 'http://localhost:8080/order/fail',
+        successUrl: 'http://localhost:8080/toss/success',
+        failUrl: 'http://localhost:8080/toss/fail',
     });
 }
