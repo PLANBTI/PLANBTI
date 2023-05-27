@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.order.controller;
 
+import com.example.demo.util.rq.Rq;
 import com.example.demo.base.AppEnv;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.service.OrderService;
@@ -26,6 +27,7 @@ public class TossController {
 
     private final RestTemplate restTemplate;
     private final OrderService orderService;
+    private final Rq rq;
 
     @Value("${toss.secretKey}")
     public String secretKey;
@@ -34,7 +36,7 @@ public class TossController {
     @GetMapping("/success")
     public ResponseEntity<String> orderByToss(OrderRequest orderRequest) throws Exception {
 
-        if (!orderService.verifyRequest(orderRequest)) {
+        if (!orderService.verifyRequest(orderRequest,rq.getMemberId())) {
             return new ResponseEntity<>("잘못된 주문 요청입니다.",HttpStatus.BAD_REQUEST);
         }
 

@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.order.service;
 
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
@@ -36,7 +37,9 @@ class OrderServiceTest {
     @DisplayName("주문 검증 성공 테스트")
     @Test
     void verifyOrderSuccess() {
+        Member member = Member.builder().id(1L).build();
         Order order = Order.builder()
+                .member(member)
                 .build();
 
         order.addOrderDetail(OrderDetail.builder().product(Product.builder()
@@ -52,13 +55,15 @@ class OrderServiceTest {
         OrderRequest orderRequest = new OrderRequest("1__2__3","1",8000L);
 
         assertThat(order.getTotalAmount()).isEqualTo(8000L);
-        assertThat(orderService.verifyRequest(orderRequest)).isTrue();
+        assertThat(orderService.verifyRequest(orderRequest,member.getId())).isTrue();
     }
 
     @DisplayName("주문 검증 실패 테스트")
     @Test
     void verifyOrderFail() {
+        Member member = Member.builder().id(1L).build();
         Order order = Order.builder()
+                .member(member)
                 .build();
 
         order.addOrderDetail(OrderDetail.builder().product(Product.builder()
@@ -73,7 +78,7 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3","1",1000L);
 
-        assertThat(orderService.verifyRequest(orderRequest)).isFalse();
+        assertThat(orderService.verifyRequest(orderRequest, member.getId())).isFalse();
     }
 
 }

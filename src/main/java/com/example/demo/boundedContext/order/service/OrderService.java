@@ -21,11 +21,18 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public boolean verifyRequest(OrderRequest orderRequest) {
+    public boolean verifyRequest(OrderRequest orderRequest, Long memberId) {
 
         Order order = findByOrderRequest(orderRequest);
 
+        if (isOrderOwner(memberId, order))
+            throw new OrderException("해당 주문에 권한 없음");
+
         return order.canOrder(orderRequest);
+    }
+
+    private static boolean isOrderOwner(Long memberId, Order order) {
+        return !order.getMember().getId().equals(memberId);
     }
 
     @Transactional
