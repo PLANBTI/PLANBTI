@@ -34,7 +34,7 @@ class OrderRepositoryTest {
     @BeforeEach
     void setUp() {
         String encode = passwordEncoder.encode("1111");
-         member = Member.builder()
+        member = Member.builder()
                 .username("user2")
                 .password(encode)
                 .phoneNumber("010-1111-1111")
@@ -49,7 +49,7 @@ class OrderRepositoryTest {
     void t1() {
         for (int i = 0; i < 5; i++) {
             orderRepository.save(Order.builder()
-                    .member(member).price(i*1000).itemCount(i).build());
+                    .member(member).price(i * 1000).itemCount(i).build());
         }
 
         Order order = orderService.findLastOrderById(member.getId());

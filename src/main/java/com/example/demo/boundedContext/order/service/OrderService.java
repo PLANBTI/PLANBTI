@@ -8,35 +8,31 @@ import com.example.demo.boundedContext.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
 
-
     public boolean verifyRequest(OrderRequest orderRequest) {
 
-        String[] split = orderRequest.getPaymentKey().split("__");
+        Order order = findByOrderRequest(orderRequest);
 
-        Long orderId = Long.parseLong(split[0]);
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
-
-        if (optionalOrder.isEmpty())
-            throw new OrderException("잘못된 order 요청입니다.");
-
-        Order order = optionalOrder.get();
-
-        return isEqualAmount(orderRequest, order);
+        return order.canOrder(orderRequest);
     }
 
-    private boolean isEqualAmount(OrderRequest orderRequest, Order order) {
-        return orderRequest.getAmount().equals(order.getTotalAmount());
+    @Transactional
+    public void orderPayComplete(OrderRequest orderRequest) {
+        Order order = findByOrderRequest(orderRequest);
+
+        order.payComplete();
     }
 
     public Order findLastOrderById(Long id) {
@@ -48,5 +44,18 @@ public class OrderService {
 
     public List<Order> findAllByMember(Member member) {
         return orderRepository.findByMember(member);
+    }
+
+    private Order findByOrderRequest(OrderRequest orderRequest) {
+
+        String[] split = orderRequest.getPaymentKey().split("__");
+        Long orderId = Long.parseLong(split[0]);
+
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+        if (optionalOrder.isEmpty())
+            throw new OrderException("status update 에러 발생");
+
+        return optionalOrder.get();
     }
 }

@@ -35,7 +35,7 @@ public class TossController {
     public ResponseEntity<String> orderByToss(OrderRequest orderRequest) throws Exception {
 
         if (!orderService.verifyRequest(orderRequest)) {
-            return null;
+            return new ResponseEntity<>("잘못된 주문 요청입니다.",HttpStatus.BAD_REQUEST);
         }
 
         return requestPermitToss(orderRequest);
@@ -67,6 +67,11 @@ public class TossController {
 
         RequestEntity<OrderRequest> request = new RequestEntity<>(orderRequest, headers, HttpMethod.POST, uri);
 
-        return restTemplate.exchange(request, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(request, String.class);
+        if (exchange.getStatusCode().is2xxSuccessful()) {
+            orderService.orderPayComplete(orderRequest);
+
+        }
+        return exchange;
     }
 }
