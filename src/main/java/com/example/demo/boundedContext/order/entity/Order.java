@@ -43,6 +43,11 @@ public class Order extends BaseEntity {
     private Address address;
 
 
+
+    public void addOrderDetail(OrderDetail orderDetail) {
+        orderDetailList.add(orderDetail);
+    }
+
     public boolean canOrder(OrderRequest orderRequest) {
         return !isPaid() && orderRequest.getAmount().equals(getTotalAmount());
     }

@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.order.repository;
 import com.example.demo.base.Role;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
+import com.example.demo.boundedContext.order.dto.OrderResponseDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
 import org.assertj.core.api.Assertions;
@@ -52,8 +53,8 @@ class OrderRepositoryTest {
                     .member(member).totalPrice(i * 1000).itemCount(i).build());
         }
 
-        Order order = orderService.findLastOrderById(member.getId()).getContent();
-        Assertions.assertThat(order.getTotalPrice()).isEqualTo(4000);
+        OrderResponseDto order = orderService.findLastOrderById(member.getId()).getContent();
+        Assertions.assertThat(order.getTotalAmount()).isEqualTo(4000);
     }
 
 }
