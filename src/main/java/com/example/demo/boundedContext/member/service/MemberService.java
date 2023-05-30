@@ -57,6 +57,22 @@ public class MemberService {
         return member.get();
     }
 
+    public Member findByIdAndDeleteDateIsNull(Long id) {
+        Optional<Member> member = memberRepository.findByIdAndDeleteDateIsNull(id);
+        if(member.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 유저입니다.");
+        }
+        return member.get();
+    }
+
+    public Member findByUsernameAndDeleteDateIsNull(String username) {
+        Optional<Member> member = memberRepository.findByUsernameAAndDeleteDateIsNull(username);
+        if(member.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 유저입니다.");
+        }
+        return member.get();
+    }
+
     public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)

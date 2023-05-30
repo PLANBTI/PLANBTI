@@ -35,7 +35,7 @@ public class MemberController {
 
     @GetMapping("/mypage")
     public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
 
         model.addAttribute("member", member);
         return "member/myPage";
@@ -43,7 +43,7 @@ public class MemberController {
 
     @GetMapping("/modify")
     public String modify(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
 
         model.addAttribute("member", member);
         return "member/modify";
@@ -54,14 +54,14 @@ public class MemberController {
                          @AuthenticationPrincipal CustomOAuth2User user) {
         if(bindingResult.hasErrors()) return "/member/modify";
 
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
         return "redirect:/member/mypage";
     }
 
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
 
         model.addAttribute("shoppingbasket", shoppingBasket);
@@ -70,7 +70,7 @@ public class MemberController {
 
     @GetMapping("/testresult")
     public String showTestResult(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
 
         model.addAttribute("testresults", member.getTests());
         return "member/testResult";
@@ -78,7 +78,7 @@ public class MemberController {
 
     @GetMapping("/orderlist")
     public String showOrderlist(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsername(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         List<Order> orderList = orderService.findAllByMember(member);
 
         model.addAttribute("orderList", orderList);

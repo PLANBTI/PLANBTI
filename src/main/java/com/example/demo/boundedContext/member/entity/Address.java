@@ -20,8 +20,6 @@ public class Address extends BaseEntity {
     private String addrDetail;
     private String zipCode;
     private String phoneNumber;
-    private String basic;
-    private String isDefault;
-
+    private boolean isDefault;
 
 }
