@@ -3,8 +3,8 @@ package com.example.demo.boundedContext.order.controller;
 import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
-import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
+import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,11 +28,14 @@ public class OrderController {
     public String orderPage(Model model, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         String username = customOAuth2User.getUsername();
         Member member = memberService.findByUsername(username);
-        Order order = orderService.findLastOrderById(member.getId());
+        ResponseData<?> responseData = orderService.findLastOrderById(member.getId());
 
-        model.addAttribute("order",order);
+        if (responseData.isSuccess()) {
+            model.addAttribute("order",responseData.getContent());
+            return "order/orderPage";
+        }
 
-        return "order/orderPage";
+        return "redirect:/";
     }
 
 }

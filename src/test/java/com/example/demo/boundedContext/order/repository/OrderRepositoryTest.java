@@ -49,11 +49,11 @@ class OrderRepositoryTest {
     void t1() {
         for (int i = 0; i < 5; i++) {
             orderRepository.save(Order.builder()
-                    .member(member).price(i * 1000).itemCount(i).build());
+                    .member(member).totalPrice(i * 1000).itemCount(i).build());
         }
 
-        Order order = orderService.findLastOrderById(member.getId());
-        Assertions.assertThat(order.getPrice()).isEqualTo(4000);
+        Order order = orderService.findLastOrderById(member.getId()).getContent();
+        Assertions.assertThat(order.getTotalPrice()).isEqualTo(4000);
     }
 
 }
