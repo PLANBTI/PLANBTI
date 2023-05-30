@@ -7,33 +7,38 @@
 <body>
 
     <main layout:fragment="main" class="container mx-auto py-8 grow max-w-2xl">
-        <div class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
-            <figure>
-                <div style="width:100vh; height:20vh; background-color:green;"></div>
-            </figure>
-            <div class="card-body">
-                <h1>2023.05.25.18:20</h1>
-                <h2 class="card-title">97,000 원</h2>
-                <p>산세베리아 외 3종</p>
-                <div class="card-actions justify-end">
-                    <a href="" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
+        <section th:if="${orderList.isEmpty()}">
+            <span>주문 내역이 존재하지 않습니다.</span>
+        </section>
+        <section th:if="!${orderList.isEmpty()}">
+            <div class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
+                <figure>
+                    <div style="width:100vh; height:20vh; background-color:green;"></div>
+                </figure>
+                <div class="card-body">
+                    <h1>2023.05.25.18:20</h1>
+                    <h2 class="card-title">97,000 원</h2>
+                    <p>산세베리아 외 3종</p>
+                    <div class="card-actions justify-end">
+                        <a href="" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="divider"></div>
-        <div class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
-            <figure>
-                <div style="width:100vh; height:20vh; background-color:green;"></div>
-            </figure>
-            <div class="card-body">
-                <h1>2023.05.25.18:20</h1>
-                <h2 class="card-title">97,000 원</h2>
-                <p>산세베리아 외 3종</p>
-                <div class="card-actions justify-end">
-                    <a href="" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
+            <div class="divider"></div>
+            <div class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
+                <figure>
+                    <div style="width:100vh; height:20vh; background-color:green;"></div>
+                </figure>
+                <div class="card-body">
+                    <h1>2023.05.25.18:20</h1>
+                    <h2 class="card-title">97,000 원</h2>
+                    <p>산세베리아 외 3종</p>
+                    <div class="card-actions justify-end">
+                        <a href="" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
 </body>

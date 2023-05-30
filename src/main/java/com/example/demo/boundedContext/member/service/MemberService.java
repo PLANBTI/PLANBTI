@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -56,15 +57,22 @@ public class MemberService {
         return member.get();
     }
 
-    public void modify(Member member, String email, String phoneNumber) {
+    public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)
                 .phoneNumber(phoneNumber).build();
+
         memberRepository.save(modifiedMember);
+        return modifiedMember;
     }
 
+    // soft-delete
     public void delete(Member member) {
-
+        Member deletedMember = member
+                .toBuilder()
+                .deleteDate(LocalDateTime.now())
+                .build();
+        memberRepository.save(deletedMember);
     }
 
 }
