@@ -21,7 +21,7 @@ public class Config {
         executor.setMaxPoolSize(4);
         executor.setKeepAliveSeconds(30);
         executor.setCorePoolSize(4);
-        executor.setThreadNamePrefix("custom-");
+        executor.setThreadNamePrefix("mail-");
         executor.setQueueCapacity(30);
         return executor;
     }
