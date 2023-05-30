@@ -12,8 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 @ActiveProfiles("test")
@@ -31,6 +31,8 @@ class OrderControllerTest {
         mvc.perform(get("/order/orderPage"))
                 .andExpect(handler().handlerType(OrderController.class))
                 .andExpect(handler().methodName("orderPage"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("order/orderPage"))
+                .andDo(print());
     }
 }
