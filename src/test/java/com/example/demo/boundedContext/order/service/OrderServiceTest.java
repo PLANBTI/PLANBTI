@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.order.service;
 
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @Transactional
@@ -79,6 +81,44 @@ class OrderServiceTest {
         OrderRequest orderRequest = new OrderRequest("1__2__3","1",1000L);
 
         assertThat(orderService.verifyRequest(orderRequest, member.getId())).isFalse();
+    }
+    @DisplayName("이미 계산한 경우 실패")
+    @Test
+    void verifyOrderStatusFail() {
+        Member member = Member.builder().id(1L).build();
+        Order order = Order.builder()
+                .member(member)
+                .build();
+
+
+        order.payComplete();
+
+        order.addOrderDetail(OrderDetail.builder().product(Product.builder()
+                .price(1000)
+                .build()).count(2).build());
+
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderRequest orderRequest = new OrderRequest("1__2__3","1",2000L);
+
+        assertThatThrownBy(() ->orderService.verifyRequest(orderRequest, 2L))
+                .isInstanceOf(OrderException.class);
+    }
+
+    @DisplayName("주문시 자기 소유의 order가 아닌 경우 실패")
+    @Test
+    void noAuthorityForOrder() {
+        Member member = Member.builder().id(1L).build();
+        Order order = Order.builder()
+                .member(member)
+                .build();
+
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+        OrderRequest orderRequest = new OrderRequest("1__2__3","1",1000L);
+
+        assertThatThrownBy(() ->orderService.verifyRequest(orderRequest, 2L))
+                .isInstanceOf(OrderException.class);
     }
 
 }
