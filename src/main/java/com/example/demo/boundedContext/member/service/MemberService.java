@@ -66,7 +66,7 @@ public class MemberService {
     }
 
     public Member findByUsernameAndDeleteDateIsNull(String username) {
-        Optional<Member> member = memberRepository.findByUsernameAAndDeleteDateIsNull(username);
+        Optional<Member> member = memberRepository.findByUsernameAndDeleteDateIsNull(username);
         if(member.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 유저입니다.");
         }
