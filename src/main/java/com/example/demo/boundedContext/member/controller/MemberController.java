@@ -6,6 +6,8 @@ import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
+import com.example.demo.boundedContext.product.entity.ShoppingBasket;
+import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,10 +31,12 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final OrderService orderService;
+    private final ShoppingBasketService shoppingBasketService;
 
     @GetMapping("/mypage")
     public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
+
         model.addAttribute("member", member);
         return "member/myPage";
     }
@@ -40,6 +44,7 @@ public class MemberController {
     @GetMapping("/modify")
     public String modify(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
+
         model.addAttribute("member", member);
         return "member/modify";
     }
@@ -57,13 +62,16 @@ public class MemberController {
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
-        // shoppingbasket 가져오기
+        ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
+
+        model.addAttribute("shoppingbasket", shoppingBasket);
         return "member/shoppingbasket";
     }
 
     @GetMapping("/testresult")
     public String showTestResult(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
+
         model.addAttribute("testresults", member.getTests());
         return "member/testResult";
     }
@@ -71,8 +79,8 @@ public class MemberController {
     @GetMapping("/orderlist")
     public String showOrderlist(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
-
         List<Order> orderList = orderService.findAllByMember(member);
+
         model.addAttribute("orderList", orderList);
         return "member/orderlist";
     }
