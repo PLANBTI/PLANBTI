@@ -1,13 +1,12 @@
+
 spring:
   profiles:
     include: secret
-    active: dev
 
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create
-
 
   security:
     oauth2:
