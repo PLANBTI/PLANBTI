@@ -59,7 +59,6 @@ public class Order extends BaseEntity {
         return orderDetailList.stream().map(OrderDetail::getAmount).mapToLong(i -> i).sum();
     }
 
-
     public void payComplete() {
         status = OrderStatus.COMPLETE;
     }

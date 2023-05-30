@@ -33,6 +33,7 @@ public class Config {
         // repository 에서 저장시 hash type으로 저장되므로, 아래 설정 적용됨.
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+        redisTemplate.setEnableTransactionSupport(true);
 
         return  redisTemplate;
     }
