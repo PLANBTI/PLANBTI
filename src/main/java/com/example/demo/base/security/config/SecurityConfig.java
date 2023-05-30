@@ -28,8 +28,11 @@ public class SecurityConfig {
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
-                        "/image/**", "/js/**").permitAll()
+                        "/image/**", "/js/**", "/test", "/send").permitAll()
                 .anyRequest().authenticated());
+
+        http.csrf(c -> c.ignoringRequestMatchers("/send"));
+        http.csrf(c -> c.ignoringRequestMatchers("/test"));
 
         return http.build();
     }
