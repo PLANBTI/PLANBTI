@@ -28,12 +28,17 @@ public class mbtiTestController {
     public String mbtiTestPage() {
         return "mbtiTest/mbtiTest.html";
     }
+    @GetMapping("/redirect")
+    public String redirectToPage(Model model) {
+        // 리다이렉트할 URL 설정
+        model.addAttribute("redirectUrl", "redirect:/member/");
+
+        return "redirect";
+    }
 
     @Value("${chatGpt.key}")
     private String chatGptkey;
 
-    //    @Value("${bard.key}")
-//    private String bardKey;
     @PostMapping("/send")
     public ResponseEntity<String> send(String message) {
         RestTemplate restTemplate = new RestTemplate();
@@ -70,11 +75,5 @@ public class mbtiTestController {
         String role;
         String content;
     }
-
-//    @AllArgsConstructor
-//    @Data
-//    static class Bard {
-//        String input;
-//    }
 
 }
