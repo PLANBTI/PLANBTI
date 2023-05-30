@@ -1,8 +1,8 @@
 package com.example.demo.base;
 
+import com.example.demo.base.home.HomeController;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
-import com.example.demo.base.home.HomeController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,10 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
@@ -52,8 +52,8 @@ class MyControllerTest {
     @Test
     void t1() throws Exception {
         mvc.perform(get("/member"))
-                .andExpect(MockMvcResultMatchers.handler().methodName("member"))
-                .andExpect(MockMvcResultMatchers.handler().handlerType(HomeController.class))
+                .andExpect(handler().methodName("member"))
+                .andExpect(handler().handlerType(HomeController.class))
                 .andExpect(status().is2xxSuccessful());
     }
 
