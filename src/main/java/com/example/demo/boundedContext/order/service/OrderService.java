@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.order.service;
 import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
+import com.example.demo.boundedContext.order.dto.OrderResponseDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.util.rq.ResponseData;
@@ -43,12 +44,13 @@ public class OrderService {
         order.payComplete();
     }
 
-    public ResponseData<Order> findLastOrderById(Long id) {
+    public ResponseData<OrderResponseDto> findLastOrderById(Long id) {
 
         Optional<Order> lastOrder = orderRepository.findLastOrder(id);
 
-        return lastOrder.map(order -> ResponseData.of("success", "성공", order))
-                .orElseGet(() -> ResponseData.of("fail", "실패", null));
+        return lastOrder
+                .map(order -> ResponseData.of("success", "성공", new OrderResponseDto(order)))
+                .orElseGet(() -> ResponseData.of("fail", "실패", new OrderResponseDto()));
 
     }
 

@@ -3,22 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-    <title>Order</title>
+    <title>주문</title>
 </head>
 <body>
 
 <main layout:fragment="main">
+    <div class="flex flex-col border rounded-[20px] justify-content align-items">
+        <div class="text-2xl text-green-700 underline justify-center text-center" th:if="${order.getOrderId()} == null">
+            주문 데이터 없음
+        </div>
+        <div class="h-screen flex flex-col gap-3 mt-3" th:if="${order.getOrderId()} != null">
+            <h1>주문내역</h1>
+            <div>
+                <label for="orderId">주문번호</label>
+                <div id="orderId" th:text="|${order.orderId}|"></div>
+            </div>
+            <div>
+                <label for="orderDate">주문 날짜</label>
+                <div id="orderDate" th:text="|${order.createDate}|"></div>
+            </div>
+            <div>
+                <label for="totalAmount">총 주문 금액</label>
+                <div id="totalAmount" th:text="|${order.getTotalAmount()}원|"></div>
+            </div>
+            <section th:if="${order}" th:each="orderItem , i : ${order.orderDetails}">
+                <label for="num">번호</label>
+                <span id="num" th:text="${i.index}">번호</span>
+                <label for="count">개수</label>
+                <span id="count" th:text="${orderItem.getCount()}">product name</span>
+                <label for="total">금액</label>
+                <span id="total" th:text="${orderItem.getAmount()}">product name</span>
+            </section>
+        </div>
+    </div>
 
-    <section th:each="orderItem , i : ${order.getOrderDetailList()}">
-        <span th:text="${i.index}">번호</span>
-        <span th:text="${orderItem.getProduct().getName()}">product name</span>
-        <span th:text="${orderItem.getCount()}">product name</span>
-        <span th:text="${orderItem.getAmount()}">product name</span>
-
-    </section>
-    <button class="btn btn-outline" onclick="order()" th:text="${order.getTotalAmount()}">총 금액 계산</button>
-
-    <script type="text/javascript" src="/js/order.js"></script>
 </main>
 </body>
 </html>
