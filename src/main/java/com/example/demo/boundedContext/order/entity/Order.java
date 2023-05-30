@@ -24,7 +24,8 @@ public class Order extends BaseEntity {
     private Member member;
     private String req;
 
-    private int price;
+    private String orderName;
+    private int totalPrice;
     private int itemCount;
 
     @Builder.Default

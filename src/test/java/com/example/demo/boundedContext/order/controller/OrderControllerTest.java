@@ -31,6 +31,6 @@ class OrderControllerTest {
         mvc.perform(get("/order/orderPage"))
                 .andExpect(handler().handlerType(OrderController.class))
                 .andExpect(handler().methodName("orderPage"))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is3xxRedirection());
     }
 }

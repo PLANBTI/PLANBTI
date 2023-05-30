@@ -5,6 +5,7 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
+import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,10 +43,13 @@ public class OrderService {
         order.payComplete();
     }
 
-    public Order findLastOrderById(Long id) {
+    public ResponseData<Order> findLastOrderById(Long id) {
 
         Optional<Order> lastOrder = orderRepository.findLastOrder(id);
-        return lastOrder.orElseGet(() -> Order.builder().build());
+
+        return lastOrder.map(order -> ResponseData.of("success", "성공", order))
+                .orElseGet(() -> ResponseData.of("fail", "실패", null));
+
     }
 
 
@@ -55,8 +59,7 @@ public class OrderService {
 
     private Order findByOrderRequest(OrderRequest orderRequest) {
 
-        String[] split = orderRequest.getPaymentKey().split("__");
-        Long orderId = Long.parseLong(split[0]);
+        Long orderId = Long.parseLong(orderRequest.getOrderId());
 
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
