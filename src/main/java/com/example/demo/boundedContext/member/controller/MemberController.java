@@ -54,6 +54,13 @@ public class MemberController {
         return "redirect:/member/mypage";
     }
 
+    @GetMapping("/shoppingbasket")
+    public String showShoppingBasket(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsername(user.getName());
+        // shoppingbasket 가져오기
+        return "member/shoppingbasket";
+    }
+
     @GetMapping("/testresult")
     public String showTestResult(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
