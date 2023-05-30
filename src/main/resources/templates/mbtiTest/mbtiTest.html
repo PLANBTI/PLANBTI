@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>세렝게티 동물 테스트</title>
+    <title>PLANBTI 테스트</title>
     <meta name="description" content="나에게 딱 맞는 식물을 MBTI를 기반으로 추천해주는 테스트">
     <meta property="og:type" content="website">
     <meta property="og:title" content="식물 유형 테스트">
@@ -15,7 +15,7 @@
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/np경m/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
     <!--    <link rel="stylesheet" href="style.css">-->
 </head>
 
@@ -42,14 +42,12 @@
 </article>
 <article class="result hidden text-center">
     <!--    <img id="img" class="rounded-circle  mt-5" src="lion.jpg" alt="animal">-->
-    <h2 id="mbtiResult" class="text-center mt-5">MBTI</h2>
+    <!--    <h2 id="mbtiResult" class="text-center mt-5"></h2>-->
     <!--        <div id="chat-container" class="text-center mt-5">설명</div>-->
-    <div id="chat-container1">
-        <!-- 채팅 내용 출력 -->
-    </div>
-    <div id="chat-container2">
+    <div id="chat-container"></div>
+    <button type="button" class="mt-5 btn btn-outline btn-success">닫기</button>
+    <button type="button" class="mt-5 btn btn-outline btn-success">서비스 더 이용하기</button>
 
-    </div>
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <!--            <div class="share addthis_inline_share_toolbox"></div>-->
 </article>
@@ -68,19 +66,60 @@
 <script>
     var num = 1;
     var q = {
-        1: { "title": "들어가니 사람들이 \"사장님 안녕하세요\" 하고 인사한다. 이때 나는?", "type": "EI", "A": "반갑게 인사한다", "B": "가볍게 눈 인사만 한다." },
-        2: { "title": "장미 가시를 손질한다.", "type": "SN", "A": "가시에 찔리지 않도록 조심한다", "B": "가시에 찔려서 피나면 어쩌지…? <br> 가시가 박히면 어떡하지…?" },
-        3: { "title": "평소 아끼던 꽃이 시들었다. 이때 나의 생각은?", "type": "TF", "A": "왜 시든거지? 해충이 있었나? 영양제를 알아봐야겠다.", "B": "내가 너무 소홀했나봐...미안해..." },
-        4: { "title": "단골손님으로 보이는 손님이 오셨다 근처에서 사 온 빵을 주시며 이것저것 물어본다", "type": "EI", "A": "자연스럽게 답을 이어가며 대화한다.", "B": "너무 고맙지만 이어지는 대화가 부담스럽게 느껴진다." },
-        5: { "title": "어떤 손님이 엄청 큰 꽃다발을 주문한다.", "type": "SN", "A": "꽃을 어떻게 구성할지 생각하며 꽃다발을 주문한다.", "B": "이렇게 큰 꽃을 누구한테 선물하려고 하시는걸까? 프로포즈하시나? 기념일이신가?" },
-        6: { "title": "같이 점심을 먹는 직원이 속이 안 좋다고 같이 못 먹는다고 했다", "type": "TF", "A": "\"어떻게 아픈데?\”라고 한다.", "B": "\"어떻게 속은 괜찮아?\”라며 걱정한다." },
-        7: { "title": "새로운 꽃을 찾기 위해 여러 꽃을 소개받았다 거기서 마음에 드는 꽃을 발견했다 이때 나의 생각은?", "type": "TF", "A": "구체적인 꽃의 정보와 예산을 궁금해한다.", "B": "\"손님들이 진짜 좋아할 것 같아\" 설렌다" },
-        8: { "title": "장미를 구매하기 위해 꽃 시장에 들렀다. 나의 행동은?", "type": "JP", "A": "장미만 사서 온다", "B": "프리지어가 너무 예쁘다 프리지어도 산다." },
-        9: { "title": "요즘 매출이 감소하고 있다고 들었다. 나의 행동은?", "type": "JP", "A": "기존의 방식을 유지한다.", "B": "꽃 시장으로 가서 새로운 꽃을 구매한다." },
-        10: { "title": "마감 준비하던 직원들이 오랜만에 회식을 하는 게 어떠냐고 물어본다.", "type": "EI", "A": "이왕 이렇게 된 거 직원들과 빨리 친해져야겠다는 생각에 같이 간다.", "B": "피곤해서 빨리 집 가고 싶다는 생각에 거절한다." },
-        11: { "title": "주말에 보자고 친구가 연락이 왔다", "type": "JP", "A": "주말에 집에서 푹 쉬기로 했는데…", "B": "좋아!" },
-        12: { "title": "드디어 하루를 마치고 눈을 감기 전 드는 생각", "type": "SN", "A": "오늘 하루도 쉽지 않구나.", "B": "눈 뜨면 돌아갈 수 있을까? 그대로면 어떡하지??" }
+        1: {"title": "들어가니 사람들이 \"사장님 안녕하세요\" 하고 인사한다. 이때 나는?", "type": "EI", "A": "반갑게 인사한다", "B": "가볍게 눈 인사만 한다."},
+        2: {
+            "title": "장미 가시를 손질한다.",
+            "type": "SN",
+            "A": "가시에 찔리지 않도록 조심한다",
+            "B": "가시에 찔려서 피나면 어쩌지…? <br> 가시가 박히면 어떡하지…?"
+        },
+        3: {
+            "title": "평소 아끼던 꽃이 시들었다. 이때 나의 생각은?",
+            "type": "TF",
+            "A": "왜 시든거지? 해충이 있었나? 영양제를 알아봐야겠다.",
+            "B": "내가 너무 소홀했나봐...미안해..."
+        },
+        4: {
+            "title": "단골손님으로 보이는 손님이 오셨다 근처에서 사 온 빵을 주시며 이것저것 물어본다",
+            "type": "EI",
+            "A": "자연스럽게 답을 이어가며 대화한다.",
+            "B": "너무 고맙지만 이어지는 대화가 부담스럽게 느껴진다."
+        },
+        5: {
+            "title": "어떤 손님이 엄청 큰 꽃다발을 주문한다.",
+            "type": "SN",
+            "A": "꽃을 어떻게 구성할지 생각하며 꽃다발을 주문한다.",
+            "B": "이렇게 큰 꽃을 누구한테 선물하려고 하시는걸까? 프로포즈하시나? 기념일이신가?"
+        },
+        6: {
+            "title": "같이 점심을 먹는 직원이 속이 안 좋다고 같이 못 먹는다고 했다",
+            "type": "TF",
+            "A": "\"어떻게 아픈데?\”라고 한다.",
+            "B": "\"어떻게 속은 괜찮아?\”라며 걱정한다."
+        },
+        7: {
+            "title": "새로운 꽃을 찾기 위해 여러 꽃을 소개받았다 거기서 마음에 드는 꽃을 발견했다 이때 나의 생각은?",
+            "type": "TF",
+            "A": "구체적인 꽃의 정보와 예산을 궁금해한다.",
+            "B": "\"손님들이 진짜 좋아할 것 같아\" 설렌다"
+        },
+        8: {"title": "장미를 구매하기 위해 꽃 시장에 들렀다. 나의 행동은?", "type": "JP", "A": "장미만 사서 온다", "B": "프리지어가 너무 예쁘다 프리지어도 산다."},
+        9: {"title": "요즘 매출이 감소하고 있다고 들었다. 나의 행동은?", "type": "JP", "A": "기존의 방식을 유지한다.", "B": "꽃 시장으로 가서 새로운 꽃을 구매한다."},
+        10: {
+            "title": "마감 준비하던 직원들이 오랜만에 회식을 하는 게 어떠냐고 물어본다.",
+            "type": "EI",
+            "A": "이왕 이렇게 된 거 직원들과 빨리 친해져야겠다는 생각에 같이 간다.",
+            "B": "피곤해서 빨리 집 가고 싶다는 생각에 거절한다."
+        },
+        11: {"title": "주말에 보자고 친구가 연락이 왔다", "type": "JP", "A": "주말에 집에서 푹 쉬기로 했는데…", "B": "좋아!"},
+        12: {
+            "title": "드디어 하루를 마치고 눈을 감기 전 드는 생각",
+            "type": "SN",
+            "A": "오늘 하루도 쉽지 않구나.",
+            "B": "눈 뜨면 돌아갈 수 있을까? 그대로면 어떡하지??"
+        }
     }
+
     /*
     var result = {
 
@@ -106,11 +145,13 @@
         $(".intro").show();
         next();
     }
+
     function intro() {
         $(".intro").hide();
         $(".question").show();
         next();
     }
+
     $("#A").click(function () {
         var type = $("#type").val();
         var preValue = $("#" + type).val();
@@ -120,6 +161,7 @@
     $("#B").click(function () {
         next();
     });
+
     function next() {
         if (num == 13) {
             $(".question").hide();
@@ -130,43 +172,24 @@
             ($("#SN").val() < 2) ? mbti += "N" : mbti += "S";
             ($("#TF").val() < 2) ? mbti += "F" : mbti += "T";
             ($("#JP").val() < 2) ? mbti += "P" : mbti += "J";
-            message += "mbti: " + "이름: " + "설명" + "양식으로" + mbti + "에 어울리는 식물 하나만 추천해줘";
+            message += "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여";
             // AJAX 요청으로 메시지 전송
             $.ajax({
                 url: "/send",
                 type: "POST",
-                data: { message : message },
+                data: {message: message},
                 // data: $.param(data),
                 // data: { message: message },
-                success: function(response) {
+                success: function (response) {
                     // 응답 받은 데이터를 HTML 업데이트로 처리
-                    var chatContainer = $("#chat-container1");
+                    var chatContainer = $("#chat-container");
                     var assistantMessage = response.choices[0].message.content;
                     var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
                     var jsonString = JSON.stringify(replacedResponse);
                     // 응답 메시지를 새로운 div 요소로 추가
                     chatContainer.append("<div class='message'>" + jsonString + "</div>");
-                    $.ajax({
-                        url: "/send",
-                        type: "POST",
-                        data: { message : jsonString },
-                        // data: $.param(data),
-                        // data: { message: message },
-                        success: function(response) {
-                            // 응답 받은 데이터를 HTML 업데이트로 처리
-                            var chatContainer = $("#chat-container2");
-                            var assistantMessage = response.choices[0].message.content;
-                            var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
-                            var jsonString = JSON.stringify(replacedResponse);
-                            // 응답 메시지를 새로운 div 요소로 추가
-                            chatContainer.append("<div class='message'>" + jsonString + "</div>");
-                        },
-                        error: function(error) {
-                            console.log("Error:", error);
-                        }
-                    });
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log("Error:", error);
                 }
             });
