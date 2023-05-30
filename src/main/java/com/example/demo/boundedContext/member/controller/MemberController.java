@@ -30,56 +30,44 @@ public class MemberController {
     private final MemberService memberService;
     private final OrderService orderService;
 
-    @GetMapping("/")
+    @GetMapping("/mypage")
     public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsername(user.getName());
         model.addAttribute("member", member);
         return "member/myPage";
     }
 
-    @GetMapping("/modify/{id}")
-    public String modify(Model model, @PathVariable("id") Long id) {
-        Member member = memberService.findById(id);
+    @GetMapping("/modify")
+    public String modify(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsername(user.getName());
         model.addAttribute("member", member);
         return "member/modify";
     }
 
-    @PostMapping("/modify/{id}")
+    @PostMapping("/modify")
     public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
-                         @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
-        if(bindingResult.hasErrors()) return "/modify/%d".formatted(id);
+                         @AuthenticationPrincipal CustomOAuth2User user) {
+        if(bindingResult.hasErrors()) return "/member/modify";
 
-        Member member = findByIdAndVerify(id, user);
-
+        Member member = memberService.findByUsername(user.getName());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
-        return "redirect:/member/";
+        return "redirect:/member/mypage";
     }
 
-    @GetMapping("/testresult/{id}")
-    public String showTestResult(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = findByIdAndVerify(id, user);
-
-        model.addAttribute("member", member);
-        return "/member/testResult";
+    @GetMapping("/testresult")
+    public String showTestResult(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsername(user.getName());
+        model.addAttribute("testresults", member.getTests());
+        return "member/testResult";
     }
 
-    @GetMapping("/orderlist/{id}")
-    public String showOrderlist(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = findByIdAndVerify(id, user);
+    @GetMapping("/orderlist")
+    public String showOrderlist(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsername(user.getName());
 
-        List<Order> orderList =orderService.findAllByMember(member);
+        List<Order> orderList = orderService.findAllByMember(member);
         model.addAttribute("orderList", orderList);
-        return "/member/orderlist";
-    }
-
-    private Member findByIdAndVerify(Long id, CustomOAuth2User user) {
-        Member member = memberService.findById(id);
-
-        if(!member.getUsername().equals(user.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-        }
-
-        return member;
+        return "member/orderlist";
     }
 
 }
