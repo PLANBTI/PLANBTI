@@ -1,6 +1,4 @@
 <html layout:decorate="~{common/layout.html}">
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,14 +8,11 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="식물 유형 테스트">
     <meta property="og:description" content="나에게 딱 맞는 식물을 MBTI를 기반으로 추천해주는 테스트">
-    <!-- <meta property="og:image" content="https://moonlit-jelly-3b83f2.netlify.app/lion.png"> -->
-    <!-- <meta property="og:url" content="http://www.mysite.com"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link href="https://cdn.jsdelivr.net/np경m/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
-    <!--    <link rel="stylesheet" href="style.css">-->
 </head>
 
 <body>
@@ -44,15 +39,9 @@
         <button id="B" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
     </article>
     <article class="result hidden text-center">
-        <!--    <img id="img" class="rounded-circle  mt-5" src="lion.jpg" alt="animal">-->
-        <!--    <h2 id="mbtiResult" class="text-center mt-5"></h2>-->
-        <!--        <div id="chat-container" class="text-center mt-5">설명</div>-->
         <div id="chat-container"></div>
         <button onclick="refreshPage()" type="button" class="mt-5 btn btn-outline">닫기</button>
         <button onclick="redirectToPage()" type="button" class="mt-5 btn btn-outline">서비스 더 이용하기</button>
-
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <!--            <div class="share addthis_inline_share_toolbox"></div>-->
     </article>
     <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
@@ -60,9 +49,6 @@
     <input type="hidden" id="SN" value="0">
     <input type="hidden" id="TF" value="0">
     <input type="hidden" id="JP" value="0">
-    <!--<script src="https://code.jquery.com/jquery-3.5.1.min.js"-->
-    <!--        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"-->
-    <!--        crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
             crossorigin="anonymous"></script>
@@ -137,27 +123,6 @@
                 "B": "눈 뜨면 돌아갈 수 있을까? 그대로면 어떡하지??"
             }
         }
-
-        /*
-        var result = {
-
-            "ISTJ": {"animal": "ISTJ"},
-            "ISFJ": {"animal": "ISFJ"},
-            "INFJ": {"animal": "INFJ"},
-            "ISTP": {"animal": "ISTP"},
-            "ISFP": {"animal": "ISFP"},
-            "INFP": {"animal": "INFP"},
-            "INTP": {"animal": "INTP"},
-            "ESTP": {"animal": "ESTP"},
-            "ESFP": {"animal": "ESFP"},
-            "ENFP": {"animal": "ENFP"},
-            "ENTP": {"animal": "ENTP"},
-            "ESTJ": {"animal": "ESTJ"},
-            "ESFJ": {"animal": "ESFJ"},
-            "ENFJ": {"animal": "ENFJ"},
-            "ENTJ": {"animal": "ENTJ"},
-        }
-        */
         function start() {
             $(".start").hide();
             $(".intro").show();
@@ -199,20 +164,15 @@
                 ($("#TF").val() < 2) ? mbti += "F" : mbti += "T";
                 ($("#JP").val() < 2) ? mbti += "P" : mbti += "J";
                 message += "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여";
-                // AJAX 요청으로 메시지 전송
                 $.ajax({
                     url: "/send",
                     type: "POST",
                     data: {message: message},
-                    // data: $.param(data),
-                    // data: { message: message },
                     success: function (response) {
-                        // 응답 받은 데이터를 HTML 업데이트로 처리
                         var chatContainer = $("#chat-container");
                         var assistantMessage = response.choices[0].message.content;
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
                         var jsonString = JSON.stringify(replacedResponse);
-                        // 응답 메시지를 새로운 div 요소로 추가
                         chatContainer.append("<div class='message'>" + jsonString + "</div>");
                     },
                     error: function (error) {
@@ -229,14 +189,6 @@
             }
         }
     </script>
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <!--    <script type과="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fd715cbced615c4"></script>-->
-    <!--
-    Copyright (c) 2020 by Likelion (https://www.codelion.net/)
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-    The codelion advertising banner image (img/banner.png) shall be included in all copies or substantial portions of the Software at the main HTML page.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-    -->
     </article>
 </main>
 </body>
