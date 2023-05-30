@@ -23,6 +23,14 @@ public class AddressService {
         return address.get();
     }
 
+    public Address findByIdAndDeleteDateIsNull(Long id) {
+        Optional<Address> address = addressRepository.findByIdAndDeleteDateIsNull(id);
+        if(address.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 주소입니다.");
+        }
+        return address.get();
+    }
+
     public Address create(String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         Address address = Address
                 .builder()

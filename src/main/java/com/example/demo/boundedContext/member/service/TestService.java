@@ -23,6 +23,14 @@ public class TestService {
         return test.get();
     }
 
+    public Test findByIdAndDeleteDateIsNull(Long id) {
+        Optional<Test> test = testRepository.findByIdAndDeleteDateIsNull(id);
+        if(test.isEmpty()) {
+            throw new DataNotFoundException("존재하지 않는 테스트 기록입니다.");
+        }
+        return test.get();
+    }
+
     public Test create(char result, String content) {
         Test test = Test
                 .builder()
