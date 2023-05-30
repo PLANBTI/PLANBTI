@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
     @GetMapping("/")
     public String every1() {
-        return "member/everyOne";
+        return "redirect:/test";
     }
 
     @GetMapping("/member/login")
