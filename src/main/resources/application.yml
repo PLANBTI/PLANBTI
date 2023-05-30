@@ -1,7 +1,7 @@
+
 spring:
   profiles:
     include: secret
-    active: dev
 
   jpa:
     generate-ddl: true
@@ -10,6 +10,10 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
+
+  datasource:
+    url: jdbc:mariadb://${yourDb:localhost:3306}/planbti_dev
+    username: ${yourName:sonhansol}
 
   security:
     oauth2:
