@@ -44,6 +44,15 @@ public class MemberController {
         return "member/myPage";
     }
 
+    // 회원 정보 조회
+    @GetMapping("/profile")
+    public String showProfile(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+
+        model.addAttribute("member", member);
+        return "member/profile";
+    }
+
     @GetMapping("/modify")
     public String modify(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
@@ -59,7 +68,7 @@ public class MemberController {
 
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
-        return "redirect:/member/mypage";
+        return "redirect:/member/profile";
     }
 
     @GetMapping("/shoppingbasket")
@@ -90,6 +99,14 @@ public class MemberController {
 
         model.addAttribute("orderList", orderList);
         return "member/orderlist";
+    }
+
+    // soft-delete, 회원 탈퇴
+    @GetMapping("/delete")
+    public String delete(@AuthenticationPrincipal CustomOAuth2User user) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+        memberService.delete(member);
+        return "redirect:/member/login";
     }
 
 }

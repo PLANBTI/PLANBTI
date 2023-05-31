@@ -1,0 +1,52 @@
+<html layout:decorate="~{common/layout.html}">
+
+<head>
+    <title>My Page</title>
+</head>
+
+<body>
+
+<main layout:fragment="main"  class="flex flex-col container mx-auto min-h-screen max-w-2xl">
+    <div class="pt-4 font-extrabold text-xl mt-20">회원 정보</div>
+    <div class="w-full">
+        <table class="table w-full mt-12">
+            <tbody>
+            <tr>
+                <th>Username</th>
+                <td th:text="${member.username}"></td>
+            </tr>
+            <tr>
+                <th>E-mail</th>
+                <td th:text="${member.email}"></td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td th:text="${member.phoneNumber}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="mt-20"><b>주소지 목록</b></p>
+        <div th:if="${#lists.isEmpty(member.addresses)}">
+            등록된 주소지가 없습니다.
+        </div>
+        <div th:if="${!#lists.isEmpty(member.addresses)}" th:each="address : ${member.addresses}"
+             tabindex="0" class="collapse border border-base-300 bg-base-100 rounded-box">
+            <div th:text="${address.name}" class="collapse-title text-lg font-medium"></div>
+            <div class="collapse-content">
+                <p th:text="|주소 : ${address.addr}|"></p>
+                <p th:text="|상세 주소 : ${address.addrDetail}|"></p>
+                <p th:text="|우편 번호 : ${address.zipCode}|"></p>
+                <p th:text="|연락처 : ${address.phoneNumber}|"></p>
+                <kbd th:if="${address.isDefault()}" class="kbd kbd-sm">기본 배송지</kbd>
+            </div>
+        </div>
+        <div class="w-full flex mt-20">
+            <a href="/member/modify" class="btn btn-outline btn-success mt-12 grow mr-2">회원 정보 수정</a>
+            <a href="/member/delete" class="btn btn-outline grow-0 mt-12">회원 탈퇴</a>
+        </div>
+    </div>
+</main>
+
+</body>
+
+</html>
