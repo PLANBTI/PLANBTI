@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 
 spring:
+=======
+sspring:
+>>>>>>> 5b53017 (docs : application 문서 수정)
   profiles:
     include: secret
+    active: dev
 
   jpa:
     generate-ddl: true
@@ -11,10 +16,13 @@ spring:
       hibernate:
         default_batch_fetch_size: 100
 
+<<<<<<< HEAD
   datasource:
     url: jdbc:mariadb://${yourDb:localhost:3306}/planbti_dev
     username: ${yourName:sonhansol}
 
+=======
+>>>>>>> 5b53017 (docs : application 문서 수정)
   security:
     oauth2:
       client:
@@ -65,4 +73,5 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
 
