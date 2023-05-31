@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 @Entity
-@Table(name = "Orders")
+@Table(name = "Orders",indexes = {@Index(name = "toss_uuid",columnList = "uuid")})
 public class Order extends BaseEntity {
 
     @ManyToOne
