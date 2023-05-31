@@ -49,13 +49,13 @@ public class CustomInitData {
                         .orderName("orderName")
                         .member(user)
                         .build();
+                orderRepository.save(order);
 
-                OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
+                orderDetailRepository.save(OrderDetail.builder()
                         .product(product1)
                         .count(2)
                         .order(order)
                         .build());
-                orderRepository.save(order);
 
 
                 Member admin = Member.builder()
