@@ -7,7 +7,7 @@
 <body>
 
 <main layout:fragment="main" class="flex items-center justify-center container mx-auto min-h-screen max-w-2xl">
-    <div th:if="${#lists.isEmpty(shoppingbasket)}">
+    <div th:if="${#lists.isEmpty(products)}">
         <p>장바구니에 담긴 상품이 없습니다.</p>
     </div>
 </main>
