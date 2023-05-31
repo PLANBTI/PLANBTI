@@ -61,9 +61,6 @@ class OrderRepositoryTest {
 
         Order order3 = orderRepository.save(Order.builder().status(OrderStatus.COMPLETE)
                 .member(member).build());
-        System.out.println("order3.getStatus() = " + order3.getStatus());
-        System.out.println("order2.getStatus() = " + order2.getStatus());
-        System.out.println("order1.getStatus() = " + order1.getStatus());
 
         OrderResponseDto order = orderService.findLastOrderById(member.getId()).getContent();
         Assertions.assertThat(order.getOrderId()).isEqualTo(order2.getId());
