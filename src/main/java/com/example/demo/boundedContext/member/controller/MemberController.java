@@ -52,7 +52,7 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
                          @AuthenticationPrincipal CustomOAuth2User user) {
-        if(bindingResult.hasErrors()) return "/member/modify";
+        if(bindingResult.hasErrors()) return "member/modify";
 
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
