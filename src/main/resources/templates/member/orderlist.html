@@ -6,10 +6,10 @@
 
 <body>
 
-    <main layout:fragment="main" class="container mx-auto py-8 grow max-w-2xl">
-        <th:block th:if="${orderList.isEmpty()}">
-            <span>주문 내역이 존재하지 않습니다.</span>
-        </th:block>
+    <main layout:fragment="main" class="flex items-center justify-center container mx-auto min-h-screen max-w-2xl">
+        <div th:if="${orderList.isEmpty()}">
+            <p>주문 내역이 존재하지 않습니다.</p>
+        </div>
         <section th:if="!${orderList.isEmpty()}">
             <div th:each="order: ${orderList}" class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
                 <figure>
