@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+@ActiveProfiles("test")
 @Transactional
 @SpringBootTest
 class OrderRepositoryTest {
@@ -32,6 +34,7 @@ class OrderRepositoryTest {
     PasswordEncoder passwordEncoder;
 
     Member member;
+
     @BeforeEach
     void setUp() {
         String encode = passwordEncoder.encode("1111");
@@ -48,13 +51,16 @@ class OrderRepositoryTest {
     @Test
     @DisplayName("findLastOrderById test")
     void t1() {
-        for (int i = 0; i < 5; i++) {
-            orderRepository.save(Order.builder()
-                    .member(member).totalPrice(i * 1000).itemCount(i).build());
-        }
+
+        Order order1 = orderRepository.save(Order.builder()
+                .member(member).build());
+
+        Order order2 = orderRepository.save(Order.builder()
+                .member(member).build());
+
 
         OrderResponseDto order = orderService.findLastOrderById(member.getId()).getContent();
-        Assertions.assertThat(order.getTotalAmount()).isEqualTo(4000);
+        Assertions.assertThat(order.getOrderId()).isEqualTo(order2.getId());
     }
 
 }
