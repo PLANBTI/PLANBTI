@@ -42,7 +42,16 @@
         </div>
         <div class="w-full flex mt-20">
             <a href="/member/modify" class="btn btn-outline btn-success mt-12 grow mr-2">회원 정보 수정</a>
-            <a href="/member/delete" class="btn btn-outline grow-0 mt-12">회원 탈퇴</a>
+            <a href="#modal-1" class="btn btn-outline grow-0 mt-12">회원 탈퇴</a>
+            <div class="modal" id="modal-1">
+                <div class="modal-box">
+                    <h3 class="font-bold text-lg">정말로 회원 탈퇴하시겠습니까?</h3>
+                    <div class="modal-action">
+                        <a href="/member/profile" class="btn btn-success">취소</a>
+                        <a href="/member/delete" class="btn btn-active btn-ghost">회원 탈퇴</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
