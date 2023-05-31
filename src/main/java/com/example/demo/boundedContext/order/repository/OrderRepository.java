@@ -15,4 +15,6 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Optional<Order> findLastOrder(@Param("id") Long id);
 
     List<Order> findByMember(Member member);
+
+    Optional<Order> findByUuid(String uuid);
 }

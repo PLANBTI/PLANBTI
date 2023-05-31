@@ -7,36 +7,96 @@
 </head>
 <body>
 
-<main layout:fragment="main">
-    <div class="flex flex-col border rounded-[20px] justify-content align-items">
+<main class="min-w-full" layout:fragment="main">
+    <script th:inline="javascript">
+        const orderId = /*[[${order.uuid}]]*/ null;
+        const orderName = /*[[${order.orderName}]]*/ null;
+        const orderTotalPrice = /*[[${order.totalAmount}]]*/ null;
+    </script>
+    <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
         <div class="text-2xl text-green-700 underline justify-center text-center" th:if="${order.getOrderId()} == null">
             주문 데이터 없음
         </div>
-        <div class="h-screen flex flex-col gap-3 mt-3" th:if="${order.getOrderId()} != null">
-            <h1>주문내역</h1>
-            <div>
-                <label for="orderId">주문번호</label>
-                <div id="orderId" th:text="|${order.orderId}|"></div>
+        <div class="h-screen flex flex-col justify-center align-items gap-3 mt-3" th:if="${order.getOrderId()} != null">
+            <table class="text-center border">
+                <tr>
+                    <th colspan="2" class="text-xl bg-gray-400 font-bold">주문내역</th>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문번호</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.orderId}|"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문 날짜</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate" th:text="${#temporals.format(order.createDate, 'yyyy-MM-dd')}"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">총 주문 금액</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount" th:text="|${order.getTotalAmount()}원|"></td>
+                </tr>
+            </table>
+            <table class="text-center border">
+                <thead>
+                    <tr>
+                        <th class="text-xl font-bold">번호</th>
+                        <th class="text-xl font-bold">개수</th>
+                        <th class="text-xl font-bold">금액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="detailsRow" class = "flex justify-center gap-3 cursor-pointer border" style="display: none;" th:if="${order}" th:each="orderItem , i : ${order.orderDetails}">
+                        <td class="text-xl" id="num" th:text="${i.index}">번호</td>
+                        <td class="text-xl" id="count" th:text="${orderItem.getCount()}">개수</td>
+                        <td class="text-xl" id="total" th:text="|${orderItem.getAmount()}원|">금액</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-outline btn-primary" id="showButton" onclick="toggleRowDetails()">주문정보보기</button>
+            <div id="payment-method"></div>
+            <div id="agreement"></div>
+            <div class="flex justify-center mt-3">
+                <button id="payment-button" class="btn btn-outline">결제하기</button>
             </div>
-            <div>
-                <label for="orderDate">주문 날짜</label>
-                <div id="orderDate" th:text="|${order.createDate}|"></div>
-            </div>
-            <div>
-                <label for="totalAmount">총 주문 금액</label>
-                <div id="totalAmount" th:text="|${order.getTotalAmount()}원|"></div>
-            </div>
-            <section th:if="${order}" th:each="orderItem , i : ${order.orderDetails}">
-                <label for="num">번호</label>
-                <span id="num" th:text="${i.index}">번호</span>
-                <label for="count">개수</label>
-                <span id="count" th:text="${orderItem.getCount()}">product name</span>
-                <label for="total">금액</label>
-                <span id="total" th:text="${orderItem.getAmount()}">product name</span>
-            </section>
+            <script th:inline="javascript">
+                const clientKey = "test_ck_O6BYq7GWPVvKaD0ZD0arNE5vbo1d"
+                const customerKey = "6y55RyJjHQlDlz_ssl9Pr"
+                const button = document.getElementById("payment-button")
+
+                const paymentWidget = PaymentWidget(clientKey, customerKey)
+
+                paymentWidget.renderPaymentMethods("#payment-method", orderTotalPrice)
+
+                paymentWidget.renderAgreement('#agreement')
+
+                button.addEventListener("click", function () {
+                    console.log(orderId);
+                    console.log(orderTotalPrice);
+                    paymentWidget.requestPayment({
+                        orderId: orderId,
+                        orderName: orderName,
+                        successUrl: "http://localhost:8080/toss/success",
+                        failUrl: "http://localhost:8080/toss/fail",
+                        customerEmail: "customer123@gmail.com",
+                        customerName: "김토스"
+                    })
+                })
+                function toggleRowDetails() {
+                    const detailsRow = document.getElementById('detailsRow');
+                    const $button = document.querySelector("#showButton");
+                    if (detailsRow.style.display === 'none') {
+                        detailsRow.style.display = 'table-row';
+                        $button.textContent = '숨기기';
+                    } else {
+                        detailsRow.style.display = 'none';
+                        $button.textContent = '주문정보보기';
+                    }
+                }
+            </script>
         </div>
     </div>
-
 </main>
+
+
+
 </body>
 </html>
