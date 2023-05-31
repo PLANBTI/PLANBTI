@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +28,9 @@ public class Order extends BaseEntity {
     private String orderName;
     private int totalPrice;
     private int itemCount;
+
+    @Builder.Default
+    private String uuid = UUID.randomUUID().toString();
 
     @Builder.Default
     @Column(name = "order_status")

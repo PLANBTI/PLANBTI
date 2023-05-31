@@ -61,9 +61,7 @@ public class OrderService {
 
     private Order findByOrderRequest(OrderRequest orderRequest) {
 
-        Long orderId = Long.parseLong(orderRequest.getOrderId());
-
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Optional<Order> optionalOrder = orderRepository.findByUuid(orderRequest.getOrderId());
 
         if (optionalOrder.isEmpty())
             throw new OrderException("status update 에러 발생");

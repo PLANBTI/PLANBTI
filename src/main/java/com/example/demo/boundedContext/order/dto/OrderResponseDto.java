@@ -17,13 +17,17 @@ public class OrderResponseDto {
     private Long orderId;
     private LocalDateTime createDate;
     private Long totalAmount;
+    private String orderName;
+    private String uuid;
 
     private List<OrderItemDto> orderDetails = new ArrayList<>();
 
     public OrderResponseDto(Order order) {
         this.orderId = order.getId();
-        createDate = order.getCreateDate();
-        totalAmount = order.getTotalAmount();
+        this.createDate = order.getCreateDate();
+        this.totalAmount = order.getTotalAmount();
+        this.orderName = order.getOrderName();
+        this.uuid =order.getUuid();
         order.getOrderDetailList()
                 .forEach(i -> orderDetails.add(new OrderItemDto(i.getProduct().getName(),i.getCount(),i.getAmount())));
     }
