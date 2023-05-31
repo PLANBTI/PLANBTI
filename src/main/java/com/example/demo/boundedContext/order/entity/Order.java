@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +30,9 @@ public class Order extends BaseEntity {
     private int itemCount;
 
     @Builder.Default
+    private String uuid = UUID.randomUUID().toString();
+
+    @Builder.Default
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.BEFORE;
@@ -43,10 +47,10 @@ public class Order extends BaseEntity {
     private Address address;
 
 
-
     public void addOrderDetail(OrderDetail orderDetail) {
         orderDetailList.add(orderDetail);
     }
+
     public boolean canOrder(OrderRequest orderRequest) {
         return !isPaid() && orderRequest.getAmount().equals(getTotalAmount());
     }
@@ -58,7 +62,6 @@ public class Order extends BaseEntity {
             return 0L;
         return orderDetailList.stream().map(OrderDetail::getAmount).mapToLong(i -> i).sum();
     }
-
 
     public void payComplete() {
         status = OrderStatus.COMPLETE;

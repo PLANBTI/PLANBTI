@@ -39,4 +39,8 @@ public class Rq {
     public Long getMemberId() {
         return member.getId();
     }
+
+    public String getUsername() {
+        return member.getUsername();
+    }
 }

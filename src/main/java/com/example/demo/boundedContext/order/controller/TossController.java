@@ -32,15 +32,22 @@ public class TossController {
     @Value("${toss.secretKey}")
     public String secretKey;
 
-    @ResponseBody
     @GetMapping("/success")
-    public ResponseEntity<String> orderByToss(OrderRequest orderRequest) throws Exception {
+    public String orderByToss(Model model,OrderRequest orderRequest) throws Exception {
 
         if (!orderService.verifyRequest(orderRequest,rq.getMemberId())) {
-            return new ResponseEntity<>("잘못된 주문 요청입니다.",HttpStatus.BAD_REQUEST);
+            return "order/orderPage";
         }
 
-        return requestPermitToss(orderRequest);
+        ResponseEntity<String> response = requestPermitToss(orderRequest);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            orderService.orderPayComplete(orderRequest);
+            model.addAttribute("result","success");
+        } else {
+            model.addAttribute("result","fail");
+        }
+
+        return "redirect:/order/result";
     }
 
     @GetMapping(value = "fail")
@@ -56,7 +63,7 @@ public class TossController {
         return "redirect:/order/orderPage";
     }
 
-    private ResponseEntity<String> requestPermitToss(OrderRequest orderRequest) {
+    private  ResponseEntity<String> requestPermitToss(OrderRequest orderRequest) {
 
         String authorizations = "Basic " + new String(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
 
@@ -70,10 +77,7 @@ public class TossController {
         RequestEntity<OrderRequest> request = new RequestEntity<>(orderRequest, headers, HttpMethod.POST, uri);
 
         ResponseEntity<String> exchange = restTemplate.exchange(request, String.class);
-        if (exchange.getStatusCode().is2xxSuccessful()) {
-            orderService.orderPayComplete(orderRequest);
 
-        }
         return exchange;
     }
 }

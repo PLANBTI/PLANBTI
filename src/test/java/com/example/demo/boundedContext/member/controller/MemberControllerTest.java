@@ -51,8 +51,9 @@ public class MemberControllerTest {
     @WithUserDetails(value = "user1")
     @DisplayName("modify")
     void t002() throws Exception {
+
         ResultActions resultActions = mvc
-                .perform(post("/member/modify/1")
+                .perform(post("/member/modify")
                         .with(csrf())
                         .param("email", "user1@google.com")
                         .param("phoneNumber", "010-1111-2222")
@@ -63,8 +64,8 @@ public class MemberControllerTest {
                 .andExpect(handler().methodName("modify"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsername("user1");
-        assertThat(member.getEmail()).isEqualTo("user1@google.com");
-        assertThat(member.getPhoneNumber()).isEqualTo("010-1111-2222");
+        Member findMember = memberService.findByUsername("user1");
+        assertThat(findMember.getEmail()).isEqualTo("user1@google.com");
+        assertThat(findMember.getPhoneNumber()).isEqualTo("010-1111-2222");
     }
 }
