@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-    @Query("select o from Order o where o.member.id = :id order by o.id desc limit 1")
+    @Query("select o from Order o join o.member m where m.id = :id and" +
+            " o.status = 'BEFORE' order by o.id desc limit 1")
     Optional<Order> findLastOrder(@Param("id") Long id);
 
     List<Order> findByMember(Member member);

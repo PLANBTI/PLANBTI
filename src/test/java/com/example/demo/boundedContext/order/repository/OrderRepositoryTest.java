@@ -5,6 +5,7 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.dto.OrderResponseDto;
 import com.example.demo.boundedContext.order.entity.Order;
+import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.service.OrderService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,12 +53,17 @@ class OrderRepositoryTest {
     @DisplayName("findLastOrderById test")
     void t1() {
 
-        Order order1 = orderRepository.save(Order.builder()
+        Order order1 = orderRepository.save(Order.builder().status(OrderStatus.COMPLETE)
                 .member(member).build());
 
         Order order2 = orderRepository.save(Order.builder()
                 .member(member).build());
 
+        Order order3 = orderRepository.save(Order.builder().status(OrderStatus.COMPLETE)
+                .member(member).build());
+        System.out.println("order3.getStatus() = " + order3.getStatus());
+        System.out.println("order2.getStatus() = " + order2.getStatus());
+        System.out.println("order1.getStatus() = " + order1.getStatus());
 
         OrderResponseDto order = orderService.findLastOrderById(member.getId()).getContent();
         Assertions.assertThat(order.getOrderId()).isEqualTo(order2.getId());
