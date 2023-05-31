@@ -1,11 +1,13 @@
 package com.example.demo.boundedContext.member.controller;
 
+import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
+import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import jakarta.validation.Valid;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -62,9 +65,13 @@ public class MemberController {
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
-        ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
-
-        model.addAttribute("shoppingbasket", shoppingBasket);
+        try {
+            ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
+            List<Product> products = shoppingBasket.getProducts();
+            model.addAttribute("products", products);
+        } catch (DataNotFoundException e) {
+            model.addAttribute("products", new ArrayList<Product>());
+        }
         return "member/shoppingbasket";
     }
 

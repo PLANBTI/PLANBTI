@@ -8,7 +8,7 @@
 
 <main layout:fragment="main" class="flex flex-col items-center justify-center container mx-auto min-h-screen max-w-2xl">
     <h1 class="text-2xl mt-8 font-black">회원 정보 수정</h1>
-    <form class="w-full">
+    <form class="w-full" th:action="@{/member/modify}" th:object="${MemberModifyForm}" method="POST">
         <div>
             <input type="text" name="email" placeholder="E-mail" class="input input-bordered w-full mt-12" />
         </div>
@@ -16,7 +16,7 @@
             <input type="text" name="phoneNumber" placeholder="Phone Number" class="input input-bordered w-full mt-12" />
         </div>
         <div>
-            <input type="submit" value="회원 정보 수정" class="btn btn-outline w-full mt-12">
+            <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
         </div>
     </form>
 </main>
