@@ -64,7 +64,7 @@ public class Order extends BaseEntity {
     }
 
 
-    public void payComplete() {
+    public void updateComplete() {
         status = OrderStatus.COMPLETE;
     }
 

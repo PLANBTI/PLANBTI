@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.product.entity;
 
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -25,4 +26,9 @@ public class Product extends BaseEntity {
     private int salePrice;
     private int count;
 
+    public void updateProductCount(int purchase) {
+        if (count - purchase < 0)
+            throw new OrderException("재고가 부족합니다");
+        this.count -= purchase;
+    }
 }
