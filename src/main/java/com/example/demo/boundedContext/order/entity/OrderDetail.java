@@ -25,19 +25,17 @@ public class OrderDetail extends BaseEntity {
 
     private int count;
 
-    public void addOrder(Order order) {
-
-        order.addOrderDetail(this);
-        order.addPrice(getAmount());
-        order.addCount(count);
-        this.order = order;
-    }
-
-    public void addProduct(Product product) {
+    public void addOrder(Order order,Product product) {
         if (product.getCount() <= 0 )
             throw new NotEnoughProductCount("수량이 부족합니다.");
         this.product = product;
+
+        order.addOrderDetail(this);
+        order.addCount(count);
+        order.addPrice(getAmount());
+        this.order = order;
     }
+
 
     public int getAmount() {
         return product.getPrice() * count;
