@@ -2,12 +2,17 @@
 spring:
   profiles:
     include: secret
+    active: dev
 
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c1777b (feat: mbtiController 유효성 검증)
   security:
     oauth2:
       client:
