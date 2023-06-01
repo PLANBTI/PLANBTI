@@ -30,8 +30,8 @@ class MailServiceTest {
     void t1() {
         // Given
         String email = "test@example.com";
-        String subject = "Test Subject";
-        String content = "Test Content";
+        String subject = "MbtiTest Subject";
+        String content = "MbtiTest Content";
 
         // When
         googleMailService.sendMail(email, subject, content);
