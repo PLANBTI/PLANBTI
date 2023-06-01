@@ -26,8 +26,12 @@ public class Order extends BaseEntity {
     private String req;
 
     private String orderName;
-    private int totalPrice;
-    private int itemCount;
+
+    @Builder.Default
+    private Long totalPrice = 0L;
+
+    @Builder.Default
+    private Long itemCount = 0L;
 
     @Builder.Default
     private String uuid = UUID.randomUUID().toString();
@@ -52,18 +56,23 @@ public class Order extends BaseEntity {
     }
 
     public boolean canOrder(OrderRequest orderRequest) {
-        return !isPaid() && orderRequest.getAmount().equals(getTotalAmount());
+        return !isPaid() && orderRequest.getAmount().equals(totalPrice);
     }
+
     public boolean isPaid() {
         return status.equals(OrderStatus.COMPLETE);
     }
-    public Long getTotalAmount() {
-        if (orderDetailList.isEmpty())
-            return 0L;
-        return orderDetailList.stream().map(OrderDetail::getAmount).mapToLong(i -> i).sum();
-    }
+
 
     public void payComplete() {
         status = OrderStatus.COMPLETE;
+    }
+
+    public void addPrice(int amount) {
+        this.totalPrice += amount;
+    }
+
+    public void addCount(int count) {
+        this.itemCount += count;
     }
 }

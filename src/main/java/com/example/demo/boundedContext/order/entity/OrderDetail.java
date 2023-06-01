@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.order.entity;
 
 import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.base.exception.NotEnoughProductCount;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -23,6 +24,20 @@ public class OrderDetail extends BaseEntity {
     private Order order;
 
     private int count;
+
+    public void addOrder(Order order) {
+
+        order.addOrderDetail(this);
+        order.addPrice(getAmount());
+        order.addCount(count);
+        this.order = order;
+    }
+
+    public void addProduct(Product product) {
+        if (product.getCount() <= 0 )
+            throw new NotEnoughProductCount("수량이 부족합니다.");
+        this.product = product;
+    }
 
     public int getAmount() {
         return product.getPrice() * count;
