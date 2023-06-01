@@ -15,11 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +47,19 @@ public class mbtiTestController {
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response) {
         RestTemplate restTemplate = new RestTemplate();
+        String compare = "";
+        List<String> mbtiList = Arrays.asList("ISTJ", "ISTP", "ISFJ", "ISFP", "INTJ", "INTP", "INFJ", "INFP", "ESTJ", "ESTP", "ESFJ", "ESFP", "ENTJ", "ENTP", "ENFJ", "ENFP");
+        for (String mbti : mbtiList) {
+            if (message.contains(mbti)) {
+                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
+                break;
+            }
+        }
+        if (!message.equals(compare)) {
+            // 요청 값이 유효하지 않을 경우 에러 처리
+            return ResponseEntity.badRequest().body("Invalid request");
 
+        }
         URI uri = UriComponentsBuilder
                 .fromUriString("https://api.openai.com/v1/chat/completions")
                 .build()
@@ -65,7 +79,7 @@ public class mbtiTestController {
         ResponseEntity<String> responseEntity = restTemplate.exchange(httpEntity, String.class);
 
         String responseBody = responseEntity.getBody();
-        // JSON 식물 이름만 추출
+        // JSON에서 식물 이름만 추출
         String originalString = responseBody;
         String patternString = "<h1>(.*?)</h1>";
 
@@ -74,12 +88,10 @@ public class mbtiTestController {
 
         if (matcher.find()) {
             String mbtiTestResult = matcher.group(1);
-            System.out.println(mbtiTestResult);
-            // 쿠키에 식물이름 추가
+            // 쿠키 결과 추가
             setCookie(response, "mbtiTestResult", mbtiTestResult);
         }
         return responseEntity;
-//        return restTemplate.exchange(httpEntity, String.class);
     }
     // 쿠키를 생성하고 값을 설정하는 메서드
     public void setCookie(HttpServletResponse response, String name, String value) {
@@ -100,5 +112,4 @@ public class mbtiTestController {
         String role;
         String content;
     }
-
 }
