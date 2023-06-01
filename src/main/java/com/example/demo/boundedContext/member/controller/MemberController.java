@@ -106,7 +106,7 @@ public class MemberController {
     public String delete(@AuthenticationPrincipal CustomOAuth2User user) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         memberService.delete(member);
-        return "redirect:/member/login";
+        return "redirect:/logout";
     }
 
 }

@@ -73,6 +73,7 @@ public class MemberService {
         return member.get();
     }
 
+    @Transactional
     public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)
@@ -83,6 +84,7 @@ public class MemberService {
     }
 
     // soft-delete
+    @Transactional
     public void delete(Member member) {
         Member deletedMember = member
                 .toBuilder()

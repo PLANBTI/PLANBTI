@@ -1,0 +1,40 @@
+<html layout:decorate="~{common/layout.html}">
+
+<head>
+    <title>배송지 추가</title>
+</head>
+
+<body>
+
+<main layout:fragment="main"  class="flex flex-col container mx-auto min-h-screen max-w-2xl">
+    <h1 class="text-2xl mt-8 font-black">배송지 추가</h1>
+    <form class="w-full" th:action="@{/address/create}" th:object="${AddressForm}" method="POST"
+          onsubmit="Validation__modify(this); return false;">
+        <div>
+            <input type="text" name="name" placeholder="이름" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="text" name="addr" placeholder="주소" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="text" name="addrDetail" placeholder="상세 주소" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="text" name="zipCode" placeholder="우편번호" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <input type="text" name="phoneNumber" placeholder="연락처" class="input input-bordered w-full mt-12" />
+        </div>
+        <div>
+            <h2 class="mt-12">기본 배송지 여부</h2>
+            <input type="checkbox" name="isDefault" class="toggle toggle-success" checked />
+        </div>
+        <div>
+            <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
+        </div>
+    </form>
+</main>
+
+</body>
+
+</html>
