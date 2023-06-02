@@ -3,10 +3,6 @@ spring:
     include: secret
     active: dev
 
-  sql:
-    init:
-      mode: always
-
   jpa:
     generate-ddl: true
     hibernate:
