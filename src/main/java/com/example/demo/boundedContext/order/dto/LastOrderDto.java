@@ -16,6 +16,7 @@ public class LastOrderDto {
 
     private Long orderId;
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
     private Long totalAmount;
     private String orderName;
     private String uuid;
@@ -25,6 +26,7 @@ public class LastOrderDto {
     public LastOrderDto(Order order) {
         this.orderId = order.getId();
         this.createDate = order.getCreateDate();
+        this.modifyDate = order.getModifyDate();
         this.totalAmount = order.getTotalPrice();
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
