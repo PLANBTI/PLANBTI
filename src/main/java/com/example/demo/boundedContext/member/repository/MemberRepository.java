@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> ,CustomMemberRepository{
     Optional<Member> findByUsername(String username);
+
     Optional<Member> findByIdAndDeleteDateIsNull(Long id);
+
     Optional<Member> findByUsernameAndDeleteDateIsNull(String username);
 }

@@ -1,10 +1,10 @@
 package com.example.demo.boundedContext.member.service;
 
+import com.example.demo.base.Role;
 import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
-import com.example.demo.base.Role;
-import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,8 +42,8 @@ public class MemberService {
     }
 
     public Member findById(Long id) {
-        Optional<Member>member = memberRepository.findById(id);
-        if(member.isEmpty()) {
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 유저입니다.");
         }
         return member.get();
@@ -51,7 +51,7 @@ public class MemberService {
 
     public Member findByUsername(String username) {
         Optional<Member> member = memberRepository.findByUsername(username);
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 유저입니다.");
         }
         return member.get();
@@ -59,7 +59,7 @@ public class MemberService {
 
     public Member findByIdAndDeleteDateIsNull(Long id) {
         Optional<Member> member = memberRepository.findByIdAndDeleteDateIsNull(id);
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 유저입니다.");
         }
         return member.get();
@@ -67,7 +67,7 @@ public class MemberService {
 
     public Member findByUsernameAndDeleteDateIsNull(String username) {
         Optional<Member> member = memberRepository.findByUsernameAndDeleteDateIsNull(username);
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 유저입니다.");
         }
         return member.get();
