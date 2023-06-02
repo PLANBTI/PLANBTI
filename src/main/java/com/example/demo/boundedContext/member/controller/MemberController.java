@@ -12,17 +12,14 @@ import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +61,7 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
                          @AuthenticationPrincipal CustomOAuth2User user) {
-        if(bindingResult.hasErrors()) return "member/modify";
+        if (bindingResult.hasErrors()) return "member/modify";
 
         Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());

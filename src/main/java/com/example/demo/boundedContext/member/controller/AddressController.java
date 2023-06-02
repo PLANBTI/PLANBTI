@@ -5,7 +5,6 @@ import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.service.AddressService;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -58,7 +57,7 @@ public class AddressController {
     public String modify(@PathVariable Long id, Model model) {
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
 
-        if(address == null) {
+        if (address == null) {
             throw new DataNotFoundException("address not found");
         }
 

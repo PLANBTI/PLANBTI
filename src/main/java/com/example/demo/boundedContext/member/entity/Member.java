@@ -1,13 +1,15 @@
 package com.example.demo.boundedContext.member.entity;
 
-import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
-import jakarta.persistence.*;
+import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
