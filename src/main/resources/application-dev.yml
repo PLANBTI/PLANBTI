@@ -1,9 +1,0 @@
-spring:
-  sql:
-    init:
-      mode: never
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: false

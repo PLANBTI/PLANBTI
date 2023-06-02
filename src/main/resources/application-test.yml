@@ -10,9 +10,6 @@ spring:
       ddl-auto: create
     generate-ddl: true
 
-  sql:
-    init:
-      mode: never
 
 
 
