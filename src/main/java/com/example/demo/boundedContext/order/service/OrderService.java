@@ -81,6 +81,13 @@ public class OrderService {
 
     }
 
+    public ResponseData<LastOrderDto> findCompleteLastOrder(Long id) {
+        Optional<Order> lastOrder = orderRepository.findCompleteLastOrder(id);
+        return lastOrder
+                .map(order -> ResponseData.of("success", "성공", new LastOrderDto(order)))
+                .orElseGet(() -> ResponseData.of("fail", "실패", new LastOrderDto()));
+    }
+
 
     public List<Order> findAllByMember(Member member) {
         return orderRepository.findByMember(member);
