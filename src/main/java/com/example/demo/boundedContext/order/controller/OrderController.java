@@ -33,7 +33,12 @@ public class OrderController {
     }
 
     @GetMapping("/result")
-    public String resultPage() {
+    public String resultPage(Model model) {
+        String username = rq.getUsername();
+        Member member = memberService.findByUsername(username);
+        ResponseData<LastOrderDto> responseData = orderService.findCompleteLastOrder(member.getId());
+        model.addAttribute("order", responseData.getContent());
+
         return "order/result";
     }
 
