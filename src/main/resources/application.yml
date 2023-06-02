@@ -3,10 +3,15 @@ spring:
     include: secret
     active: dev
 
+  sql:
+    init:
+      mode: always
+
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create
+
 
   security:
     oauth2:
