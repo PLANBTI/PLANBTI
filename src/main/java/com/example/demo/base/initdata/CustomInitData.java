@@ -56,16 +56,14 @@ public class CustomInitData {
                         .product(product1)
                         .count(2)
                         .build();
-                orderDetail1.addOrder(order);
-                orderDetail1.addProduct(product1);
+                orderDetail1.addOrder(order,product1);
                 orderDetailRepository.save(orderDetail1);
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
                         .product(product1)
                         .count(2)
                         .build();
-                orderDetail2.addOrder(order);
-                orderDetail2.addProduct(product1);
+                orderDetail2.addOrder(order,product1);
                 orderDetailRepository.save(orderDetail2);
 
                 Member admin = Member.builder()
