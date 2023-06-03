@@ -36,8 +36,7 @@ public class OrderService {
         if (!isOrderOwner(memberId, order))
             throw new OrderException("해당 주문에 권한 없음");
 
-        if (!order.canOrder(orderRequest))
-            throw new OrderException("총합 계산이 맞지 않습니다.");
+        order.canOrder(orderRequest);
 
         orderPayComplete(orderRequest);
         tossPaymentInfra.requestPermitToss(orderRequest);
@@ -48,15 +47,15 @@ public class OrderService {
         Optional<Order> optionalOrder = orderRepository.findByUuid(orderRequest.getOrderId());
 
         if (optionalOrder.isEmpty())
-            throw new OrderException("status update 에러 발생");
-
+            throw new OrderException("존재하지 않는 주문입니다");
 
         return optionalOrder.get();
     }
 
-    private static boolean isOrderOwner(Long memberId, Order order) {
+    private boolean isOrderOwner(Long memberId, Order order) {
         return order.getMember().getId().equals(memberId);
     }
+
 
     @Transactional
     public void orderPayComplete(OrderRequest orderRequest) {

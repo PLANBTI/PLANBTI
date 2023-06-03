@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.order.entity;
 
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.base.entity.BaseEntity;
@@ -55,12 +56,19 @@ public class Order extends BaseEntity {
         orderDetailList.add(orderDetail);
     }
 
-    public boolean canOrder(OrderRequest orderRequest) {
-        return !isPaid() && orderRequest.getAmount().equals(totalPrice);
+    public void canOrder(OrderRequest orderRequest) {
+        isPaid();
+        isEqualAmount(orderRequest.getAmount());
     }
 
-    public boolean isPaid() {
-        return status.equals(OrderStatus.COMPLETE);
+    public void isPaid() {
+         if (!status.equals(OrderStatus.BEFORE))
+             throw new OrderException("이미 주문 완료한 상품입니다.");
+    }
+
+    public void isEqualAmount(Long totalAmount) {
+        if (!totalAmount.equals(totalPrice))
+            throw new OrderException("총합이 맞지 않습니다.");
     }
 
 

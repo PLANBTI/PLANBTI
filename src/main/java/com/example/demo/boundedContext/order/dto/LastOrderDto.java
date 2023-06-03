@@ -31,13 +31,14 @@ public class LastOrderDto {
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
         order.getOrderDetailList()
-                .forEach(i -> orderDetails.add(new OrderItemDto(i.getProduct().getName(),i.getCount(),i.getAmount())));
+                .forEach(i -> orderDetails.add(new OrderItemDto(i.getId(),i.getProduct().getName(),i.getCount(),i.getAmount())));
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     static class OrderItemDto {
+        private Long orderItemId;
         private String productName;
         private int count;
         private int amount;
@@ -48,5 +49,9 @@ public class LastOrderDto {
             amount = orderDetail.getAmount();
 
         }
+    }
+
+    public boolean isEmpty() {
+        return orderId == null;
     }
 }
