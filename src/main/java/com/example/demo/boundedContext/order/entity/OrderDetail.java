@@ -23,6 +23,10 @@ public class OrderDetail extends BaseEntity {
     @ManyToOne
     private Order order;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private OrderItemStatus status = OrderItemStatus.PENDING;
+
     private int count;
 
     public void addOrder(Order order,Product product) {
@@ -39,5 +43,10 @@ public class OrderDetail extends BaseEntity {
 
     public int getAmount() {
         return product.getPrice() * count;
+    }
+
+    public void orderComplete() {
+        this.status = OrderItemStatus.PLACED;
+        product.updateProductCount(count);
     }
 }
