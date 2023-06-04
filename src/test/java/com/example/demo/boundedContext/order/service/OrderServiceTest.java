@@ -86,7 +86,6 @@ class OrderServiceTest {
         OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 8000L);
         Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
 
-        orderService.verifyAndRequestToss(orderRequest, member.getId());
         assertThat(order.getTotalPrice()).isEqualTo(8000L);
 
     }
@@ -97,9 +96,8 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 1000L);
 
-        Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
 
-        Assertions.assertThatThrownBy(() -> orderService.verifyAndRequestToss(orderRequest, member.getId()))
+        Assertions.assertThatThrownBy(() -> orderService.verifyRequest(orderRequest, member.getId()))
                 .isInstanceOf(OrderException.class);
     }
 
@@ -109,9 +107,8 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 2000L);
 
-        Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
 
-        assertThatThrownBy(() -> orderService.verifyAndRequestToss(orderRequest, member.getId()))
+        assertThatThrownBy(() -> orderService.verifyRequest(orderRequest, member.getId()))
                 .isInstanceOf(OrderException.class);
     }
 
@@ -120,9 +117,8 @@ class OrderServiceTest {
     void noAuthorityForOrder() {
         OrderRequest orderRequest = new OrderRequest("1__2__3", "12123", 1000L);
 
-        Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
 
-        assertThatThrownBy(() -> orderService.verifyAndRequestToss(orderRequest, member.getId()))
+        assertThatThrownBy(() -> orderService.verifyRequest(orderRequest, member.getId()))
                 .isInstanceOf(OrderException.class);
     }
 
@@ -139,9 +135,7 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", save.getUuid(), product.getPrice() * 1200L);
 
-        Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
-
-        assertThatThrownBy(() -> orderService.verifyAndRequestToss(orderRequest, member.getId()))
+        assertThatThrownBy(() -> orderService.verifyRequest(orderRequest, member.getId()))
                 .isInstanceOf(OrderException.class).hasMessageContaining("재고가 부족합니다");
     }
 }
