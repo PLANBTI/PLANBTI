@@ -47,6 +47,5 @@ public class OrderDetail extends BaseEntity {
 
     public void orderComplete() {
         this.status = OrderItemStatus.PLACED;
-        product.updateProductCount(count);
     }
 }
