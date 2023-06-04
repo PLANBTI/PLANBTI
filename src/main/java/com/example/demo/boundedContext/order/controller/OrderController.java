@@ -34,12 +34,23 @@ public class OrderController {
 
     @GetMapping("/result")
     public String resultPage(Model model) {
+        ResponseData<LastOrderDto> responseData = findLastCompleteOrderOne();
+        model.addAttribute("order", responseData.getContent());
+        return "order/result";
+    }
+
+    @GetMapping("/orderStatus")
+    public String orderStatus(Model model) {
+        ResponseData<LastOrderDto> responseData = findLastCompleteOrderOne();
+        model.addAttribute("order", responseData.getContent());
+        return "product/orderHistory";
+
+    }
+
+    private ResponseData<LastOrderDto> findLastCompleteOrderOne() {
         String username = rq.getUsername();
         Member member = memberService.findByUsername(username);
-        ResponseData<LastOrderDto> responseData = orderService.findCompleteLastOrder(member.getId());
-        model.addAttribute("order", responseData.getContent());
-
-        return "order/result";
+        return orderService.findCompleteLastOrder(member.getId());
     }
 
 }
