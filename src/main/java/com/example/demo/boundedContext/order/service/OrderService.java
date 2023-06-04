@@ -61,12 +61,6 @@ public class OrderService {
     public void orderPayComplete(OrderRequest orderRequest) {
         Order order = findByOrderRequest(orderRequest);
 
-        order.getOrderDetailList().forEach(i -> {
-            Long id = i.getProduct().getId();
-            Product product = productRepository.findByIdWithLock(id).orElseThrow();
-            product.updateProductCount(i.getCount());
-        });
-
         order.updateComplete();
     }
 

@@ -74,6 +74,9 @@ public class Order extends BaseEntity {
 
     public void updateComplete() {
         status = OrderStatus.COMPLETE;
+        for (OrderDetail item : orderDetailList) {
+            item.orderComplete();
+        }
     }
 
     public void addPrice(int amount) {
