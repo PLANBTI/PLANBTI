@@ -39,13 +39,15 @@
                 <thead>
                     <tr>
                         <th class="text-xl font-bold">번호</th>
+                        <th class="text-xl font-bold">상품명</th>
                         <th class="text-xl font-bold">개수</th>
                         <th class="text-xl font-bold">금액</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="detailsRow" class = "flex justify-center gap-3 cursor-pointer border" style="display: none;" th:if="${order}" th:each="orderItem , i : ${order.orderDetails}">
-                        <td class="text-xl" id="num" th:text="${i.index}">번호</td>
+                <tbody id="detailsRow" class="hidden">
+                    <tr class = "gap-3 cursor-pointer border"  th:each="orderItem , i : ${order.orderDetails}" >
+                        <td class="text-xl" id="num" th:text="${i.index+1}">번호</td>
+                        <td class="text-xl" id="name" th:text="${orderItem.getProductName()}"></td>
                         <td class="text-xl" id="count" th:text="${orderItem.getCount()}">개수</td>
                         <td class="text-xl" id="total" th:text="|${orderItem.getAmount()}원|">금액</td>
                     </tr>
@@ -83,11 +85,12 @@
                 function toggleRowDetails() {
                     const detailsRow = document.getElementById('detailsRow');
                     const $button = document.querySelector("#showButton");
-                    if (detailsRow.style.display === 'none') {
-                        detailsRow.style.display = 'table-row';
+
+                    if (detailsRow.classList.contains('hidden')) {
+                        detailsRow.classList.remove('hidden');
                         $button.textContent = '숨기기';
                     } else {
-                        detailsRow.style.display = 'none';
+                        detailsRow.classList.add('hidden');
                         $button.textContent = '주문정보보기';
                     }
                 }

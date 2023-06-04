@@ -1,12 +1,15 @@
 package com.example.demo.boundedContext.member.entity;
 
-import com.example.demo.base.entity.BaseEntity;
-import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
-import jakarta.persistence.*;
+import com.example.demo.base.entity.BaseEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -19,6 +22,7 @@ import java.util.Set;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
+@SQLDelete(sql = "UPDATE member SET delete_date = NOW() WHERE id = ?")
 @Entity
 public class Member extends BaseEntity {
 
@@ -33,7 +37,7 @@ public class Member extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
-    private List<Test> tests = new ArrayList<>();
+    private List<MbtiTest> tests = new ArrayList<>();
 
     @Convert(converter = CustomConverter.class)
     @Builder.Default

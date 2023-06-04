@@ -17,8 +17,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.oauth2Login(oauth -> oauth.loginPage("/member/login").defaultSuccessUrl("/"))
-                .formLogin(form -> form.loginPage("/member/login").defaultSuccessUrl("/"))
+        http.oauth2Login(oauth -> oauth.loginPage("/member/login"))
+                .formLogin(form -> form.loginPage("/member/login"))
                 .logout(logout -> logout
                         .invalidateHttpSession(true));
 

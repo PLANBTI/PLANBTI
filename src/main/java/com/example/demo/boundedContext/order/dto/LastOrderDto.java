@@ -12,20 +12,22 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderResponseDto {
+public class LastOrderDto {
 
     private Long orderId;
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
     private Long totalAmount;
     private String orderName;
     private String uuid;
 
     private List<OrderItemDto> orderDetails = new ArrayList<>();
 
-    public OrderResponseDto(Order order) {
+    public LastOrderDto(Order order) {
         this.orderId = order.getId();
         this.createDate = order.getCreateDate();
-        this.totalAmount = order.getTotalAmount();
+        this.modifyDate = order.getModifyDate();
+        this.totalAmount = order.getTotalPrice();
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
         order.getOrderDetailList()

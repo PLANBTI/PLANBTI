@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.member.service;
 import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class AddressService {
 
     public Address findById(Long id) {
         Optional<Address> address = addressRepository.findById(id);
-        if(address.isEmpty()) {
+        if (address.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 주소입니다.");
         }
         return address.get();
@@ -25,7 +26,7 @@ public class AddressService {
 
     public Address findByIdAndDeleteDateIsNull(Long id) {
         Optional<Address> address = addressRepository.findByIdAndDeleteDateIsNull(id);
-        if(address.isEmpty()) {
+        if (address.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 주소입니다.");
         }
         return address.get();
@@ -44,6 +45,24 @@ public class AddressService {
 
         addressRepository.save(address);
         return address;
+    }
+
+    public Address modify(Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
+        Address address = findByIdAndDeleteDateIsNull(id);
+        Address address1 = address
+                .toBuilder()
+                .name(name)
+                .addr(addr)
+                .addrDetail(addrDetail)
+                .zipCode(zipCode)
+                .phoneNumber(phoneNumber)
+                .isDefault(isDefault)
+                .build();
+
+        if (address.equals(address1)) throw new ValidationException("already exists");
+
+        addressRepository.save(address1);
+        return address1;
     }
 
     // soft-delete

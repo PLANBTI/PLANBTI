@@ -6,7 +6,34 @@
 </head>
 <body>
 <main class="min-w-full" layout:fragment="main">
-    <h1 th:text="${result}">결과</h1>
+
+    <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
+
+        <div class="h-screen flex flex-col justify-center align-items gap-3 mt-3" th:if="${order.getOrderId()} != null">
+            <h1 class="text-center text-blue-800 text-3xl underline font-bold">주문완료</h1>
+            <table class="text-center border">
+                <tr>
+                    <th colspan="2" class="text-xl bg-gray-400 font-bold">주문내역</th>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문번호</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.orderId}|"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문 날짜</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate" th:text="${#temporals.format(order.modifyDate, 'yyyy-MM-dd')}"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">총 주문 금액</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount" th:text="|${order.getTotalAmount()}원|"></td>
+                </tr>
+            </table>
+            <div class="flex justify-center mt-3">
+                <button id="payment-button" class="btn btn-outline"><a th:href="@{/}">홈으로</a></button>
+            </div>
+        </div>
+
+    </div>
 </main>
 </body>
 </html>

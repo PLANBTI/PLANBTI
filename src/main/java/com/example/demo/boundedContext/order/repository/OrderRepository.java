@@ -15,6 +15,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
             " o.status = 'BEFORE' order by o.id desc limit 1")
     Optional<Order> findLastOrder(@Param("id") Long id);
 
+    @Query("select o from Order o join o.member m where m.id = :id and" +
+            " o.status = 'COMPLETE' order by o.id desc limit 1")
+    Optional<Order> findCompleteLastOrder(@Param("id") Long id);
+
     List<Order> findByMember(Member member);
 
     Optional<Order> findByUuid(String uuid);

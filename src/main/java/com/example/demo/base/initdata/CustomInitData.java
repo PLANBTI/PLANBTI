@@ -31,6 +31,7 @@ public class CustomInitData {
             @Transactional
             public void run(String... args) throws Exception {
                 Product product1 = productRepository.save(Product.builder()
+                                .count(10)
                         .price(15000)
                         .name("product1").build());
 
@@ -51,12 +52,19 @@ public class CustomInitData {
                         .build();
                 orderRepository.save(order);
 
-                orderDetailRepository.save(OrderDetail.builder()
+                OrderDetail orderDetail1 = OrderDetail.builder()
                         .product(product1)
                         .count(2)
-                        .order(order)
-                        .build());
+                        .build();
+                orderDetail1.addOrder(order,product1);
+                orderDetailRepository.save(orderDetail1);
 
+                OrderDetail orderDetail2 = OrderDetail.builder()
+                        .product(product1)
+                        .count(2)
+                        .build();
+                orderDetail2.addOrder(order,product1);
+                orderDetailRepository.save(orderDetail2);
 
                 Member admin = Member.builder()
                         .username("admin")

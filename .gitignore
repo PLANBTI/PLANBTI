@@ -56,3 +56,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+./db
+/src/main/resources/schema.sql
+

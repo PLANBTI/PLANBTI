@@ -6,17 +6,38 @@
 
 <body>
 
-<main layout:fragment="main" class="container mx-auto min-h-screen grow max-w-2xl">
+<main layout:fragment="main" class="flex flex-col items-center justify-center container mx-auto min-h-screen max-w-2xl">
+    <script>
+        function Validation__modify(form) {
+
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regex.test(form.email.value.trim())) {
+                alert("이메일 주소를 정확히 입력해주세요.");
+                form.email.focus();
+                return;
+            }
+
+            if (form.phoneNumber.value.trim().length === 0) {
+                alert("휴대폰 번호를 정확히 입력해주세요.");
+                form.phoneNumber.focus();
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+
     <h1 class="text-2xl mt-8 font-black">회원 정보 수정</h1>
-    <form class="flex flex-col">
+    <form class="w-full" th:action="@{/member/modify}" th:object="${MemberModifyForm}" method="POST"
+          onsubmit="Validation__modify(this); return false;">
         <div>
-            <input type="text" placeholder="E-mail" class="input input-bordered w-full mt-12" />
+            <input type="text" name="email" placeholder="E-mail" class="input input-bordered w-full mt-12" />
         </div>
         <div>
-            <input type="text" placeholder="Phone Number" class="input input-bordered w-full mt-12" />
+            <input type="text" name="phoneNumber" placeholder="Phone Number" class="input input-bordered w-full mt-12" />
         </div>
         <div>
-            <input type="submit" value="회원 정보 수정" class="btn btn-outline w-full mt-12">
+            <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
         </div>
     </form>
 </main>
