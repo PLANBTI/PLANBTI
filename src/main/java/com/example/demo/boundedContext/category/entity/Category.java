@@ -13,6 +13,8 @@ import lombok.experimental.SuperBuilder;
 public class Category extends BaseEntity {
 
     @Column(nullable = false)
+    @Id
+    private Long id;
     private String name;
 
 }
