@@ -18,4 +18,14 @@ public class MemberEventListener {
         memberService.whenAfterCreateAddress(event.getMember(), event.getAddress());
     }
 
+    @EventListener
+    public void listen(EventAfterModifyAddress event) {
+        memberService.whenAfterModifyAddress(event.getMember(), event.getAddress(), event.getModifiedAddress());
+    }
+
+    @EventListener
+    public void listen(EventAfterDeleteAddress event) {
+        memberService.whenAfterModifyAddress(event.getMember(), event.getAddress(), event.getDeletedAddress());
+    }
+
 }
