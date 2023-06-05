@@ -42,42 +42,27 @@ public class MemberService {
     }
 
     public Member findById(Long id) {
-        Optional<Member> member = memberRepository.findById(id);
-        if (member.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 유저입니다.");
-        }
-        return member.get();
+        return memberRepository.findById(id).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByUsername(String username) {
-        Optional<Member> member = memberRepository.findByUsername(username);
-        if (member.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 유저입니다.");
-        }
-        return member.get();
+        return memberRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByIdAndDeleteDateIsNull(Long id) {
-        Optional<Member> member = memberRepository.findByIdAndDeleteDateIsNull(id);
-        if (member.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 유저입니다.");
-        }
-        return member.get();
+        return memberRepository.findByIdAndDeleteDateIsNull(id).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByUsernameAndDeleteDateIsNull(String username) {
-        Optional<Member> member = memberRepository.findByUsernameAndDeleteDateIsNull(username);
-        if (member.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 유저입니다.");
-        }
-        return member.get();
+        return memberRepository.findByUsernameAndDeleteDateIsNull(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     @Transactional
     public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)
-                .phoneNumber(phoneNumber).build();
+                .phoneNumber(phoneNumber)
+                .build();
 
         memberRepository.save(modifiedMember);
         return modifiedMember;
@@ -86,10 +71,10 @@ public class MemberService {
     // soft-delete
     @Transactional
     public void delete(Member member) {
-        Member deletedMember = member
-                .toBuilder()
+        Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
+
         memberRepository.save(deletedMember);
     }
 
