@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.order.dto;
 
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -15,7 +16,7 @@ import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 @Getter
 public class OrderExchangeDto {
 
-    @NotBlank
+    @NotNull
     private Long orderItemId;
 
     private String productName;
