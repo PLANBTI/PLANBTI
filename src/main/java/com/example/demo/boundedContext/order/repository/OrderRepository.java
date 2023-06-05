@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository extends JpaRepository<Order,Long> {
+public interface OrderRepository extends JpaRepository<Order,Long>,CustomOrderRepository {
 
-    @Query("select o from Order o join o.member m where m.id = :id and" +
-            " o.status = 'BEFORE' order by o.id desc limit 1")
+    @Query("select o from Order o join o.orderDetailList ol join o.member m where m.id = :id and" +
+            " o.status = 'BEFORE'  order by o.id desc limit 1")
     Optional<Order> findLastOrder(@Param("id") Long id);
 
     @Query("select o from Order o join o.member m where m.id = :id and" +
