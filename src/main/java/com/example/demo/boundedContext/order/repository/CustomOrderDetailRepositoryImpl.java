@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.order.repository;
 
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
+import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,12 +18,12 @@ import static com.example.demo.boundedContext.product.entity.QProduct.product;
 @RequiredArgsConstructor
 @Transactional
 @Repository
-public class CustomOrderDetailRepositoryImpl implements  CustomOrderDetailRepository {
+public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<OrderExchangeDto> findByIdWithMemberId(Long orderId, Long orderItemId, Long memberId) {
+    public Optional<OrderExchangeDto> findByOrderIdAndMemberId(Long orderId, Long orderItemId, Long memberId) {
 
         OrderExchangeDto orderExchangeDto = jpaQueryFactory.select(Projections.constructor(
                         OrderExchangeDto.class, orderDetail.id, product.name, orderDetail.count, product.price
@@ -30,21 +31,24 @@ public class CustomOrderDetailRepositoryImpl implements  CustomOrderDetailReposi
                 .from(order)
                 .join(order.orderDetailList, orderDetail)
                 .join(orderDetail.product, product)
-                .where(equalOrderId(orderId), equalMember(memberId), equalOrderItemId(orderItemId))
+                .where(equalOrderId(orderId),
+                        equalMember(memberId),
+                        equalOrderItemId(orderItemId),
+                        orderDetail.status.eq(OrderItemStatus.PLACED))
                 .fetchOne();
 
         return Optional.ofNullable(orderExchangeDto);
     }
 
     private static BooleanExpression equalOrderId(Long orderId) {
-        return order.id.eq(orderId);
+        return orderId != null ? order.id.eq(orderId) : null;
     }
 
     private BooleanExpression equalOrderItemId(Long orderItemId) {
-        return orderDetail.id.eq(orderItemId);
+        return orderItemId != null ? orderDetail.id.eq(orderItemId) : null;
     }
 
     private BooleanExpression equalMember(Long memberId) {
-        return order.member.id.eq(memberId);
+        return memberId != null ? order.member.id.eq(memberId) : null;
     }
 }

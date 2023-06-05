@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout.html}" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>교환 반품</title>
+</head>
+<body>
+<main class="min-w-full" layout:fragment="main">
+
+    <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
+
+        <div class="h-screen flex flex-col justify-center align-items gap-3 mt-3" th:if="${!order.isEmpty()}">
+            <h1 class="text-center text-blue-800 text-3xl underline font-bold">현재 나의 주문 내역</h1>
+            <table class="text-center border">
+                <tr>
+                    <th colspan="2" class="text-xl bg-gray-400 font-bold">주문내역</th>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문번호</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId"
+                        th:text="|${order.orderId}|"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">주문 날짜</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate"
+                        th:text="${#temporals.format(order.modifyDate, 'yyyy-MM-dd')}"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">총 주문 금액</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount"
+                        th:text="|${order.getTotalAmount()}원|"></td>
+                </tr>
+            </table>
+            <table class="text-center border">
+                <thead>
+                <tr>
+                    <th class="text-xl font-bold">번호</th>
+                    <th class="text-xl font-bold">상품명</th>
+                    <th class="text-xl font-bold">개수</th>
+                    <th class="text-xl font-bold">금액</th>
+                    <th class="text-xl font-bold">--</th>
+                </tr>
+                </thead>
+                <tbody id="detailsRow" class="hidden">
+                <tr class="gap-3 cursor-pointer border" th:each="orderItem , i : ${order.orderDetails}">
+                    <td class="text-xl" id="num" th:text="${i.index+1}">번호</td>
+                    <td class="text-xl" id="name" th:text="${orderItem.productName}">이름</td>
+                    <td class="text-xl" id="count" th:text="${orderItem.count}">개수</td>
+                    <td class="text-xl" id="total" th:text="|${orderItem.amount}원|">금액</td>
+                    <td class="text-xl" id="exchange">
+                        <div class="flex flex-col gap-3 m-2">">
+                            <button type="button" class="btn btn-outline btn-info"
+                                    data-action="exchange" th:data-orderItemId="${orderItem.orderItemId}"
+                                    th:disabled="${orderItem.status != 'PENDING' and orderItem.status != 'PLACED'}"
+                                    onclick="requestExchange(this)">
+                                교환 및 반품
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function requestExchange(e) {
+            const action = e.dataset.action;
+            const orderItemId = e.dataset.orderItemId;
+            let check = prompt(`정말 ${action}하시겠습니까?`);
+
+            if (!check) {
+                return;
+            }
+
+            const orderId = /*[[${order.id}]]*/ null;
+            const formData = new FormData();
+            formData.append("orderItemId", orderItemId);
+            formData.append("action",action);
+
+            fetch("/product/exchange/"+orderId, {
+                method: "POST",
+                body: formData,
+                cache: "no-cache"
+            }).then(response => {
+
+            })
+                .catch(e => {
+                    alert("잠시 후에 다시 시도해주세요");
+                    location.reload();
+                });
+        }
+
+    </script>
+</main>
+</body>
+</html>

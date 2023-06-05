@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.order.dto;
 
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class LastOrderDto {
     private Long totalAmount;
     private String orderName;
     private String uuid;
+    private OrderItemStatus status;
 
     private List<OrderItemDto> orderDetails = new ArrayList<>();
 
@@ -31,7 +33,7 @@ public class LastOrderDto {
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
         order.getOrderDetailList()
-                .forEach(i -> orderDetails.add(new OrderItemDto(i.getId(),i.getProduct().getName(),i.getCount(),i.getAmount())));
+                .forEach(i -> orderDetails.add(new OrderItemDto(i)));
     }
 
     @Getter
@@ -42,12 +44,14 @@ public class LastOrderDto {
         private String productName;
         private int count;
         private int amount;
+        private OrderItemStatus status;
 
         public OrderItemDto(OrderDetail orderDetail) {
-            productName = orderDetail.getProduct().getName();
-            count = orderDetail.getCount();
-            amount = orderDetail.getAmount();
-
+            this.orderItemId = orderDetail.getId();
+            this.productName = orderDetail.getProduct().getName();
+            this.count = orderDetail.getCount();
+            this.amount = orderDetail.getAmount();
+            this.status = orderDetail.getStatus();
         }
     }
 

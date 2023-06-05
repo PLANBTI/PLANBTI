@@ -1,9 +1,10 @@
 package com.example.demo.boundedContext.order.entity;
 
+import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 @Entity
-@Table(name = "Orders",indexes = {@Index(name = "toss_uuid",columnList = "uuid")})
+@Table(name = "Orders", indexes = {@Index(name = "toss_uuid", columnList = "uuid")})
 public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,8 +55,16 @@ public class Order extends BaseEntity {
 
     public void addOrderDetail(OrderDetail orderDetail) {
         orderDetailList.add(orderDetail);
-        this.totalPrice += orderDetail.getCount();
-        this.itemCount += orderDetail.getAmount();
+        appPrice(orderDetail.getAmount());
+        addCount(orderDetail.getCount());
+    }
+
+    private void addCount(int count) {
+        this.itemCount += count;
+    }
+
+    private void appPrice(int price) {
+        this.totalPrice += price;
     }
 
     public void canOrder(OrderRequest orderRequest) {
@@ -64,8 +73,8 @@ public class Order extends BaseEntity {
     }
 
     public void isPaid() {
-         if (!status.equals(OrderStatus.BEFORE))
-             throw new OrderException("이미 주문 완료한 상품입니다.");
+        if (!status.equals(OrderStatus.BEFORE))
+            throw new OrderException("이미 주문 완료한 상품입니다.");
     }
 
     public void isEqualAmount(Long totalAmount) {
@@ -79,5 +88,20 @@ public class Order extends BaseEntity {
         for (OrderDetail item : orderDetailList) {
             item.orderComplete();
         }
+    }
+
+    public void returnProduct(OrderExchangeDto dto) {
+
+        this.itemCount -= dto.getCount();
+        this.totalPrice -= dto.getTotalPrice();
+
+        for (OrderDetail orderDetail : orderDetailList) {
+            if (orderDetail.getId().equals(dto.getOrderItemId())) {
+                orderDetail.updateStatus(OrderItemStatus.RETURN);
+                orderDetail.decreaseCount(dto.getCount());
+                break;
+            }
+        }
+
     }
 }
