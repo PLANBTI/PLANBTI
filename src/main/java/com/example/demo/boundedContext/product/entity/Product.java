@@ -41,4 +41,8 @@ public class Product extends BaseEntity {
     public boolean isEnoughCount(int count) {
         return this.count - count >= 0;
     }
+
+    public void addCount(int count) {
+        this.count +=count;
+    }
 }

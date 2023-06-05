@@ -89,9 +89,9 @@ class OrderRepositoryTest {
         orderDetail.addOrder(order,product);
         orderDetailRepository.save(orderDetail);
 
-        OrderExchangeDto dto = orderDetailRepository.findByIdWithMemberId(order.getId(), orderDetail.getId(), member.getId()).orElseThrow();
+        OrderExchangeDto dto = orderDetailRepository.findByOrderIdAndMemberId(order.getId(), orderDetail.getId(), member.getId()).orElseThrow();
 
-        Assertions.assertThat(dto.getAmount()).isEqualTo(product.getPrice() * orderDetail.getCount());
+        Assertions.assertThat(dto.getTotalPrice()).isEqualTo(product.getPrice() * orderDetail.getCount());
         Assertions.assertThat(dto.getOrderItemId()).isEqualTo(orderDetail.getId());
         Assertions.assertThat(dto.getProductName()).isEqualTo("product");
 
