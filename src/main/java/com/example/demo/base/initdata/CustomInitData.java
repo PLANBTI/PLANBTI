@@ -39,7 +39,10 @@ public class CustomInitData {
                                 .count(10)
                         .price(15000)
                         .name("product1").build());
-
+                Product product2 = productRepository.save(Product.builder()
+                        .count(100)
+                        .price(10000)
+                        .name("product2").build());
 
                 String encode = passwordEncoder.encode("1111");
                 Member user = Member.builder()
@@ -58,18 +61,16 @@ public class CustomInitData {
                 orderRepository.save(order);
 
                 OrderDetail orderDetail1 = OrderDetail.builder()
-                        .product(product1)
                         .count(2)
                         .build();
                 orderDetail1.addOrder(order,product1);
                 orderDetailRepository.save(orderDetail1);
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
-                        .product(product1)
                         .status(OrderItemStatus.PLACED)
                         .count(2)
                         .build();
-                orderDetail2.addOrder(order,product1);
+                orderDetail2.addOrder(order,product2);
                 orderDetailRepository.save(orderDetail2);
 
                 Address address = Address.builder()
