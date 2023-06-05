@@ -57,7 +57,7 @@ public class MbtiTestController {
         List<String> mbtiList = Arrays.asList("ISTJ", "ISTP", "ISFJ", "ISFP", "INTJ", "INTP", "INFJ", "INFP", "ESTJ", "ESTP", "ESFJ", "ESFP", "ENTJ", "ENTP", "ENFJ", "ENFP");
         for (String mbti : mbtiList) {
             if (message.contains(mbti)) {
-                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
+                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
                 break;
             }
         }
