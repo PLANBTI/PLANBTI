@@ -8,6 +8,7 @@ import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.entity.Product;
@@ -65,6 +66,7 @@ public class CustomInitData {
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
                         .product(product1)
+                        .status(OrderItemStatus.PLACED)
                         .count(2)
                         .build();
                 orderDetail2.addOrder(order,product1);

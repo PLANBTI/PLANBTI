@@ -10,6 +10,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +28,7 @@ public class OrderDetail extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private OrderItemStatus status = OrderItemStatus.PENDING;
+    private OrderItemStatus status = PENDING;
 
     private int count;
 
@@ -45,10 +47,18 @@ public class OrderDetail extends BaseEntity {
     }
 
     public void orderComplete() {
-        if (status.equals(OrderItemStatus.PENDING)) {
-            this.status = OrderItemStatus.PLACED;
+        if (status.equals(PENDING)) {
+            updateStatus(PLACED);
         } else {
             throw new OrderException("Item이 주문 가능한 상태가 아닙니다.");
         }
+    }
+
+    public void updateStatus(OrderItemStatus status) {
+        this.status = status;
+    }
+
+    public void decreaseCount(int count) {
+        this.count -= count;
     }
 }

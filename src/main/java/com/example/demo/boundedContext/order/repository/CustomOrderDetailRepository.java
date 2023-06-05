@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface CustomOrderDetailRepository {
 
-    Optional<OrderExchangeDto> findByIdWithMemberId(Long orderId, Long orderItemId, Long memberId);
+    Optional<OrderExchangeDto> findByOrderIdAndMemberId(Long orderId, Long orderItemId, Long memberId);
 }
