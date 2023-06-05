@@ -1,18 +1,18 @@
 
 spring:
+  cache:
+    cache-names: mbtiTestCache
+    caffeine:
+      spec: maximumSize=1000, expireAfterAccess=5m
   profiles:
     include: secret
-    active: dev
+#    active: dev
 
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c1777b (feat: mbtiController 유효성 검증)
   security:
     oauth2:
       client:
