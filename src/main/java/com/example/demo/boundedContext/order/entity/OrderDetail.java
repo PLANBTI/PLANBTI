@@ -47,11 +47,7 @@ public class OrderDetail extends BaseEntity {
     }
 
     public void orderComplete() {
-        if (status.equals(PENDING)) {
-            updateStatus(PLACED);
-        } else {
-            throw new OrderException("Item이 주문 가능한 상태가 아닙니다.");
-        }
+        updateStatus(PLACED);
     }
 
     public void updateStatus(OrderItemStatus status) {

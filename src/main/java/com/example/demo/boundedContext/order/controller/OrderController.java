@@ -53,13 +53,13 @@ public class OrderController {
 
     @GetMapping("/exchange/{id}")
     public String exchangeGet(Model model,
-            @PathVariable(name = "id") Long orderDetailId) {
+                              @PathVariable(name = "id") Long orderId,
+                              @RequestParam Long orderItemId) {
 
-        OrderExchangeDto dto = orderDetailService.findOrderDetailById(orderDetailId, null, rq.getMemberId());
+        OrderExchangeDto dto = orderDetailService.findOrderDetailById(orderId, orderItemId, rq.getMemberId());
 
-        model.addAttribute("orderDetail",dto);
+        model.addAttribute("orderDetail", dto);
         return "order/exchange";
-
     }
 
     @PostMapping("/exchange/{id}")
@@ -74,7 +74,7 @@ public class OrderController {
         if (!dto.isReturn()) {
             orderDetailService.exchange(dto);
         } else {
-            orderDetailService.returnProduct(orderId,dto);
+            orderDetailService.returnProduct(orderId, dto);
         }
 
         return "redirect:/order/orderInfo";
