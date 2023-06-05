@@ -50,8 +50,9 @@
                     <td class="text-xl" id="exchange">
                         <div class="flex flex-col gap-3 m-2">">
                             <button type="button" class="btn btn-outline btn-info"
-                                    data-action="exchange" th:data-orderItemId="${orderItem.orderItemId}"
-                                    th:disabled="${orderItem.status != 'PENDING' and orderItem.status != 'PLACED'}"
+                                    th:data-orderId="${order.orderId}"
+                                    th:data-orderItemId="${orderItem.orderItemId}"
+                                    th:disabled="${orderItem.status != 'PENDING' or orderItem.status != 'PLACED'}"
                                     onclick="requestExchange(this)">
                                 교환 및 반품
                             </button>
@@ -64,30 +65,11 @@
     </div>
     <script th:inline="javascript">
         function requestExchange(e) {
-            const action = e.dataset.action;
-            const orderItemId = e.dataset.orderItemId;
-            let check = prompt(`정말 ${action}하시겠습니까?`);
+            const orderId = button.dataset.orderId;
+            const orderItemId = button.dataset.orderItemId;
 
-            if (!check) {
-                return;
-            }
+            window.location.href = `/exchange/${orderId}?orderItemId=${orderItemId}`;
 
-            const orderId = /*[[${order.id}]]*/ null;
-            const formData = new FormData();
-            formData.append("orderItemId", orderItemId);
-            formData.append("action",action);
-
-            fetch("/product/exchange/"+orderId, {
-                method: "POST",
-                body: formData,
-                cache: "no-cache"
-            }).then(response => {
-
-            })
-                .catch(e => {
-                    alert("잠시 후에 다시 시도해주세요");
-                    location.reload();
-                });
         }
 
     </script>
