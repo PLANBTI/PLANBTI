@@ -15,10 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,7 +28,6 @@ public class AddressController {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @NotBlank
     public static class AddressForm {
         private String name;
         private String addr;
@@ -39,7 +35,6 @@ public class AddressController {
         @Size(min = 5, max = 7)
         private String zipCode;
         private String phoneNumber;
-        private boolean isDefault;
     }
 
     @GetMapping("/create")
@@ -48,8 +43,8 @@ public class AddressController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid AddressForm form, @AuthenticationPrincipal CustomOAuth2User user) {
-        addressService.create(form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), form.isDefault());
+    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault, @AuthenticationPrincipal CustomOAuth2User user) {
+        addressService.create(form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
         return "redirect:/member/profile";
     }
 
@@ -66,8 +61,8 @@ public class AddressController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, @Valid AddressForm form) {
-        addressService.modify(id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), form.isDefault());
+    public String modify(@PathVariable Long id, @RequestParam(name = "isDefault", required = false) boolean isDefault, @Valid AddressForm form) {
+        addressService.modify(id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
 
         return "redirect:/member/profile";
     }
