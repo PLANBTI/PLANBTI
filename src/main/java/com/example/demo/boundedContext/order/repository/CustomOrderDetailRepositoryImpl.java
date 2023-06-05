@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 import static com.example.demo.boundedContext.order.entity.QOrder.order;
 import static com.example.demo.boundedContext.order.entity.QOrderDetail.orderDetail;
 import static com.example.demo.boundedContext.product.entity.QProduct.product;
@@ -34,10 +35,14 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
                 .where(equalOrderId(orderId),
                         equalMember(memberId),
                         equalOrderItemId(orderItemId),
-                        orderDetail.status.eq(OrderItemStatus.PLACED))
+                        isBeforeDeliver())
                 .fetchOne();
 
         return Optional.ofNullable(orderExchangeDto);
+    }
+
+    private static BooleanExpression isBeforeDeliver() {
+        return orderDetail.status.eq(PLACED).or(orderDetail.status.eq(PENDING));
     }
 
     private static BooleanExpression equalOrderId(Long orderId) {
