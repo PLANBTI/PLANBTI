@@ -26,6 +26,9 @@ public class Product extends BaseEntity {
     private int salePrice;
     private int count;
 
+    @Version
+    private Long version;
+
     public void updateProductCount(int purchase) {
         if (count - purchase < 0)
             throw new OrderException("재고가 부족합니다");
