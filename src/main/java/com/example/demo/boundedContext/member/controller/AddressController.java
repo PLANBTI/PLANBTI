@@ -1,18 +1,18 @@
 package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.base.exception.DataNotFoundException;
-import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.entity.Address;
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.AddressService;
+import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 public class AddressController {
 
     private final AddressService addressService;
+    private final MemberService memberService;
+    private final Rq rq;
 
     @Data
     @NoArgsConstructor
@@ -43,8 +45,9 @@ public class AddressController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault, @AuthenticationPrincipal CustomOAuth2User user) {
-        addressService.create(form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
+    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        addressService.create(member, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
         return "redirect:/member/profile";
     }
 
