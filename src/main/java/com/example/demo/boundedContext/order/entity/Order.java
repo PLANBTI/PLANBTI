@@ -22,7 +22,7 @@ import java.util.UUID;
 @Table(name = "Orders",indexes = {@Index(name = "toss_uuid",columnList = "uuid")})
 public class Order extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     private String req;
 
@@ -54,6 +54,8 @@ public class Order extends BaseEntity {
 
     public void addOrderDetail(OrderDetail orderDetail) {
         orderDetailList.add(orderDetail);
+        this.totalPrice += orderDetail.getCount();
+        this.itemCount += orderDetail.getAmount();
     }
 
     public void canOrder(OrderRequest orderRequest) {
@@ -77,13 +79,5 @@ public class Order extends BaseEntity {
         for (OrderDetail item : orderDetailList) {
             item.orderComplete();
         }
-    }
-
-    public void addPrice(int amount) {
-        this.totalPrice += amount;
-    }
-
-    public void addCount(int count) {
-        this.itemCount += count;
     }
 }

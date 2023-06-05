@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.order.entity;
 
 import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.exception.NotEnoughProductCount;
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -16,11 +17,11 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class OrderDetail extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 
     @Enumerated(EnumType.STRING)
@@ -35,8 +36,6 @@ public class OrderDetail extends BaseEntity {
         this.product = product;
 
         order.addOrderDetail(this);
-        order.addCount(count);
-        order.addPrice(getAmount());
         this.order = order;
     }
 
@@ -46,6 +45,10 @@ public class OrderDetail extends BaseEntity {
     }
 
     public void orderComplete() {
-        this.status = OrderItemStatus.PLACED;
+        if (status.equals(OrderItemStatus.PENDING)) {
+            this.status = OrderItemStatus.PLACED;
+        } else {
+            throw new OrderException("Item이 주문 가능한 상태가 아닙니다.");
+        }
     }
 }
