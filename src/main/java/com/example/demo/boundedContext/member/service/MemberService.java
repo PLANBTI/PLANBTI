@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.member.service;
 import com.example.demo.base.Role;
 import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
+import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -78,4 +80,14 @@ public class MemberService {
         memberRepository.save(deletedMember);
     }
 
+    @Transactional
+    public void whenAfterCreateAddress(Member member, Address address) {
+        List<Address> list = member.getAddresses();
+        list.add(address);
+
+        Member member1 = member.toBuilder()
+                .addresses(list)
+                .build();
+        memberRepository.save(member1);
+    }
 }

@@ -28,20 +28,24 @@
         <p class="mt-20"><b>주소지 목록</b></p>
         <div th:if="${#lists.isEmpty(member.addresses)}">
             <p>등록된 배송지가 없습니다.</p>
-            <a href="/address/create" class="btn btn-outline btn-success mt-12 grow">배송지 추가</a>
         </div>
         <div th:if="${!#lists.isEmpty(member.addresses)}" th:each="address : ${member.addresses}"
-             tabindex="0" class="collapse border border-base-300 bg-base-100 rounded-box">
-            <div th:text="${address.name}" class="collapse-title text-lg font-medium"></div>
-            <div class="collapse-content">
+             class="card w-96 bg-base-100 shadow-lg mb-10">
+            <div class="card-body">
+                <h2 th:text="${address.name}" class="font-black"></h2>
                 <p th:text="|주소 : ${address.addr}|"></p>
                 <p th:text="|상세 주소 : ${address.addrDetail}|"></p>
                 <p th:text="|우편 번호 : ${address.zipCode}|"></p>
                 <p th:text="|연락처 : ${address.phoneNumber}|"></p>
                 <kbd th:if="${address.isDefault()}" class="kbd kbd-sm">기본 배송지</kbd>
-                <a th:href="@{/address/modify/{id}(id=${address.getId()})}" class="btn btn-outline btn-success mt-12 grow mr-2">수정</a>
-                <a th:href="@{/address/delete/{id}(id=${address.getId()})}" class="btn btn-outline grow-0 mt-12">삭제</a>
+                <div class="card-actions justify-end">
+                    <a th:href="@{/address/modify/{id}(id=${address.getId()})}" class="btn btn-outline btn-success mt-12 grow mr-2">수정</a>
+                    <a th:href="@{/address/delete/{id}(id=${address.getId()})}" class="btn btn-outline grow-0 mt-12">삭제</a>
+                </div>
             </div>
+        </div>
+        <div>
+            <a href="/address/create" class="btn btn-outline btn-success mt-12 grow">배송지 추가</a>
         </div>
         <div class="w-full flex mt-20">
             <a href="/member/modify" class="btn btn-outline btn-success mt-12 grow mr-2">회원 정보 수정</a>

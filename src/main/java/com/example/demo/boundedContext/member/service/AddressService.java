@@ -1,10 +1,13 @@
 package com.example.demo.boundedContext.member.service;
 
+import com.example.demo.base.event.EventAfterCreateAddress;
 import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Address;
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class AddressService {
 
     private final AddressRepository addressRepository;
+    private final ApplicationEventPublisher publisher;
 
     public Address findById(Long id) {
         Optional<Address> address = addressRepository.findById(id);
@@ -32,9 +36,8 @@ public class AddressService {
         return address.get();
     }
 
-    public Address create(String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
-        Address address = Address
-                .builder()
+    public Address create(Member member, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
+        Address address = Address.builder()
                 .name(name)
                 .addr(addr)
                 .addrDetail(addrDetail)
@@ -42,15 +45,16 @@ public class AddressService {
                 .phoneNumber(phoneNumber)
                 .isDefault(isDefault)
                 .build();
-
         addressRepository.save(address);
+
+        publisher.publishEvent(new EventAfterCreateAddress(this, member, address));
+
         return address;
     }
 
     public Address modify(Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         Address address = findByIdAndDeleteDateIsNull(id);
-        Address address1 = address
-                .toBuilder()
+        Address address1 = address.toBuilder()
                 .name(name)
                 .addr(addr)
                 .addrDetail(addrDetail)
@@ -67,8 +71,7 @@ public class AddressService {
 
     // soft-delete
     public void delete(Address address) {
-        Address address1 = address
-                .toBuilder()
+        Address address1 = address.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
         addressRepository.save(address1);
