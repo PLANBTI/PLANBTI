@@ -1,6 +1,8 @@
 package com.example.demo.boundedContext.member.service;
 
 import com.example.demo.base.event.EventAfterCreateAddress;
+import com.example.demo.base.event.EventAfterDeleteAddress;
+import com.example.demo.base.event.EventAfterModifyAddress;
 import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
@@ -52,9 +54,9 @@ public class AddressService {
         return address;
     }
 
-    public Address modify(Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
+    public Address modify(Member member, Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         Address address = findByIdAndDeleteDateIsNull(id);
-        Address address1 = address.toBuilder()
+        Address modifiedAddress = address.toBuilder()
                 .name(name)
                 .addr(addr)
                 .addrDetail(addrDetail)
@@ -63,17 +65,20 @@ public class AddressService {
                 .isDefault(isDefault)
                 .build();
 
-        if (address.equals(address1)) throw new ValidationException("already exists");
+        if (address.equals(modifiedAddress)) throw new ValidationException("already exists");
 
-        addressRepository.save(address1);
-        return address1;
+        publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
+        addressRepository.save(modifiedAddress);
+        return modifiedAddress;
     }
 
     // soft-delete
-    public void delete(Address address) {
-        Address address1 = address.toBuilder()
+    public void delete(Member member, Address address) {
+        Address deletedAddress = address.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
-        addressRepository.save(address1);
+
+        publisher.publishEvent(new EventAfterDeleteAddress(this, member, address, deletedAddress));
+        addressRepository.save(deletedAddress);
     }
 }

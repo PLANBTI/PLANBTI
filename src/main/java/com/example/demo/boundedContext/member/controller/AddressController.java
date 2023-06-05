@@ -64,8 +64,9 @@ public class AddressController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, @RequestParam(name = "isDefault", required = false) boolean isDefault, @Valid AddressForm form) {
-        addressService.modify(id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
+    public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        addressService.modify(member, id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
 
         return "redirect:/member/profile";
     }
@@ -74,7 +75,9 @@ public class AddressController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
-        addressService.delete(address);
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+
+        addressService.delete(member, address);
         return "redirect:/member/profile";
     }
 }

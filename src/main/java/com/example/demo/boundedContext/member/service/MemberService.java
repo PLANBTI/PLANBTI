@@ -90,4 +90,16 @@ public class MemberService {
                 .build();
         memberRepository.save(member1);
     }
+
+    @Transactional
+    public void whenAfterModifyAddress(Member member, Address address, Address modifiedAddress) {
+        List<Address> list = member.getAddresses();
+        list.remove(address);
+        list.add(modifiedAddress);
+
+        Member member1 = member.toBuilder()
+                .addresses(list)
+                .build();
+        memberRepository.save(member1);
+    }
 }
