@@ -6,6 +6,7 @@ import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.AddressService;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class AddressController {
 
     private final AddressService addressService;
     private final MemberService memberService;
+    private final Rq rq;
 
     @Data
     @NoArgsConstructor
@@ -45,9 +47,8 @@ public class AddressController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault,
-                         @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         addressService.create(member, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
         return "redirect:/member/profile";
     }
@@ -65,9 +66,8 @@ public class AddressController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault,
-                         @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         addressService.modify(member, id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
 
         return "redirect:/member/profile";
@@ -75,9 +75,9 @@ public class AddressController {
 
     // soft-delete
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, @AuthenticationPrincipal CustomOAuth2User user) {
+    public String delete(@PathVariable Long id) {
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         addressService.delete(member, address);
         return "redirect:/member/profile";
