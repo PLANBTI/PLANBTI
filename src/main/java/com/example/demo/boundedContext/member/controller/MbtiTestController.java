@@ -34,7 +34,7 @@ public class MbtiTestController {
     }
     @GetMapping("/redirect")
     public String redirectToPage(Model model) {
-        // 리다이렉트할 URL 설정
+
         model.addAttribute("redirectUrl", "redirect:/shop/");
 
         return "redirect";
