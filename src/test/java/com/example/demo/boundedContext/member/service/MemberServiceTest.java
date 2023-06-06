@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,5 +105,18 @@ public class MemberServiceTest {
         assertThat(list.get(0).getAddr()).isEqualTo("대구시");
         assertThat(list.get(0).getAddrDetail()).isEqualTo("수성구");
         assertThat(list.get(0).getZipCode()).isEqualTo("11111");
+    }
+
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("event - whenAfterDeleteAddress")
+    void t005() {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        List<Address> list = member.getAddresses();
+        Address deleteAddress = list.get(0);
+
+        memberService.whenAfterDeleteAddress(member, deleteAddress);
+
+        assertThat(list.size()).isEqualTo(0);
     }
 }
