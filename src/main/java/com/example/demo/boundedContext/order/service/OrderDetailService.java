@@ -7,8 +7,10 @@ import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.entity.Product;
+import com.example.demo.boundedContext.product.event.ProductIncreaseEvent;
 import com.example.demo.boundedContext.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ public class OrderDetailService {
 
     private final OrderDetailRepository orderDetailRepository;
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
+    private final ApplicationEventPublisher publisher;
 
     public OrderExchangeDto findOrderDetailById(Long orderId, Long orderItemId, Long memberId) {
 
@@ -40,9 +42,6 @@ public class OrderDetailService {
         Order order = orderRepository.findById(orderId).orElseThrow();
         order.returnProduct(dto);
 
-        Product product = productRepository.findByName(dto.getProductName())
-                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
-
-        product.addCount(dto.getCount());
+        publisher.publishEvent(new ProductIncreaseEvent(dto.getProductName(),dto.getCount()));
     }
 }
