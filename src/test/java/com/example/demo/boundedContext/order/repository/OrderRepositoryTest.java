@@ -3,7 +3,7 @@ package com.example.demo.boundedContext.order.repository;
 import com.example.demo.base.Role;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
-import com.example.demo.boundedContext.order.dto.LastOrderDto;
+import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
@@ -70,7 +70,7 @@ class OrderRepositoryTest {
         Order order3 = orderRepository.save(Order.builder().status(OrderStatus.COMPLETE)
                 .member(member).build());
 
-        LastOrderDto order = orderService.findLastOrderById(member.getId()).getContent();
+        OrderRequestDto order = orderService.findLastOrderByStatus(member.getId(),OrderStatus.BEFORE).getContent();
         Assertions.assertThat(order.getOrderId()).isEqualTo(order2.getId());
     }
 
