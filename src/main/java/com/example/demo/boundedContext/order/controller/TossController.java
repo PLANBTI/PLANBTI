@@ -33,10 +33,11 @@ public class TossController {
         try {
             orderService.verifyRequest(orderRequest,rq.getMemberId());
             tossPaymentService.requestPermitToss(orderRequest);
+
             return "redirect:/order/result";
 
         } catch (OrderException e) {
-            model.addAttribute("fail",e.getMessage());
+
             return "order/orderPage";
         }
     }

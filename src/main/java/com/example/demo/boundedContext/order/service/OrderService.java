@@ -2,10 +2,11 @@ package com.example.demo.boundedContext.order.service;
 
 import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.order.dto.LastOrderDto;
+import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.event.ProductDecreaseEvent;
 import com.example.demo.util.rq.ResponseData;
@@ -28,6 +29,7 @@ public class OrderService {
     private final ApplicationEventPublisher publisher;
 
 
+    @Transactional
     public void verifyRequest(OrderRequest orderRequest, Long memberId) {
 
         verify(orderRequest,memberId);
@@ -73,21 +75,14 @@ public class OrderService {
         }
     }
 
-    public ResponseData<LastOrderDto> findLastOrderById(Long id) {
+    public ResponseData<OrderRequestDto> findLastOrderByStatus(Long id,OrderStatus status) {
 
-        Optional<Order> lastOrder = orderRepository.findLastOrder(id);
+        Optional<Order> lastOrder = orderRepository.findCompleteOrderOneByStatus(id, status);
 
         return lastOrder
-                .map(order -> ResponseData.of("success", "성공", new LastOrderDto(order)))
-                .orElseGet(() -> ResponseData.of("fail", "실패", new LastOrderDto()));
+                .map(order -> ResponseData.of("success", "성공", new OrderRequestDto(order)))
+                .orElseGet(() -> ResponseData.of("fail", "실패", new OrderRequestDto()));
 
-    }
-
-    public ResponseData<LastOrderDto> findCompleteLastOrder(Long id) {
-        Optional<Order> lastOrder = orderRepository.findCompleteLastOrder(id);
-        return lastOrder
-                .map(order -> ResponseData.of("success", "성공", new LastOrderDto(order)))
-                .orElseGet(() -> ResponseData.of("fail", "실패", new LastOrderDto()));
     }
 
     public List<Order> findAllByMember(Member member) {

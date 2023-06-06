@@ -6,6 +6,7 @@ import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
@@ -15,11 +16,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,12 +80,22 @@ class OrderServiceTest {
 
     @DisplayName("주문 검증 성공 테스트")
     @Test
-    void verifyOrderSuccess() {
+    void verifyOrderSuccess1() {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 8000L);
-        Mockito.when(tossPaymentInfra.requestPermitToss(orderRequest)).thenReturn(ResponseEntity.ok("good"));
-
+        orderService.verifyRequest(orderRequest,member.getId());
         assertThat(order.getTotalPrice()).isEqualTo(8000L);
+
+    }
+
+    @DisplayName("주문 상태 Before -> Complete 성공 테스트")
+    @Test
+    void verifyOrderSuccess2() {
+
+        OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 8000L);
+
+        orderService.verifyRequest(orderRequest,member.getId());
+        assertThat(order.getStatus()).isEqualTo(OrderStatus.COMPLETE);
 
     }
 

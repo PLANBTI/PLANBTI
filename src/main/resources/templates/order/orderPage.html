@@ -71,8 +71,6 @@
                 paymentWidget.renderAgreement('#agreement')
 
                 button.addEventListener("click", function () {
-                    console.log(orderId);
-                    console.log(orderTotalPrice);
                     paymentWidget.requestPayment({
                         orderId: orderId,
                         orderName: orderName,
