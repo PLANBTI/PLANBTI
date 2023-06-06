@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.member.controller;
 
+import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -67,5 +69,22 @@ public class MemberControllerTest {
         Member findMember = memberService.findByUsername("user1");
         assertThat(findMember.getEmail()).isEqualTo("user1@google.com");
         assertThat(findMember.getPhoneNumber()).isEqualTo("010-1111-2222");
+    }
+
+    @Test
+    @WithUserDetails(value = "user1")
+    @DisplayName("delete, 회원 탈퇴")
+    void t003() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/member/delete")
+                ).andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("delete"))
+                .andExpect(status().is3xxRedirection());
+
+        assertThatThrownBy(() -> memberService.findByUsernameAndDeleteDateIsNull("user1"))
+                .isInstanceOf(DataNotFoundException.class);
     }
 }

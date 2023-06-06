@@ -1,7 +1,9 @@
 package com.example.demo.base.initdata;
 
 import com.example.demo.base.Role;
+import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
@@ -23,7 +25,7 @@ public class CustomInitData {
     @Bean
     CommandLineRunner initData(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository, ProductRepository productRepository,
-                               OrderDetailRepository orderDetailRepository) {
+                               OrderDetailRepository orderDetailRepository, AddressRepository addressRepository) {
 
         return new CommandLineRunner() {
 
@@ -65,6 +67,16 @@ public class CustomInitData {
                         .build();
                 orderDetail2.addOrder(order,product1);
                 orderDetailRepository.save(orderDetail2);
+
+                Address address = Address.builder()
+                        .member(user)
+                        .name("배송지 1")
+                        .addr("서울시")
+                        .addrDetail("중구")
+                        .zipCode("00000")
+                        .phoneNumber("01012345678")
+                        .build();
+                addressRepository.save(address);
 
                 Member admin = Member.builder()
                         .username("admin")
