@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.mbtiTest.controller;
+package com.example.demo.boundedContext.member.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,7 +41,7 @@ public class MbtiTestController {
         return "redirect";
     }
 
-    @Value("${chatGpt.key}")
+    @Value("${chatGpt.api-key}")
     private String chatGptkey;
 
     @Cacheable(value = "mbtiTestCache", key = "#message")

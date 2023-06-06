@@ -1,4 +1,3 @@
-
 spring:
   cache:
     cache-names: mbtiTestCache
@@ -6,7 +5,7 @@ spring:
       spec: maximumSize=1000, expireAfterAccess=5m
   profiles:
     include: secret
-#    active: dev
+    active: dev
 
   jpa:
     generate-ddl: true
