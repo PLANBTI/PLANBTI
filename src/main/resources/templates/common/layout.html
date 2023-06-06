@@ -7,7 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/87140d707c.js" crossorigin="anonymous"></script>
-    <script src="/resource/common/common.css"></script>
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+
+    <script src="/resource/common/common.js"></script>
+    <link href="/resource/common/common.css" rel="stylesheet">
+    <script th:inline="javascript">
+        // 타임리프 문법(파라미터, ? 뒤에 입력된 매개변수들)
+        const params = JSON.parse('[( ${@rq.paramsJsonStr} )]');
+    </script>
 </head>
 
 <body class="flex flex-col">
@@ -47,7 +55,31 @@
 </nav>
 
 <main layout:fragment="main"></main>
+<script th:inline="javascript">
+    if (params.msg) {
+        toastNotice(params.msg[0]);
+    }
 
+    if (params.errorMsg) {
+        toastWarning(params.errorMsg[0]);
+    }
+
+    $(window).bind("pageshow", function (event) {
+        const localStorageKeyAboutHistoryBackErrorMsg = "historyBackErrorMsg___" + location.href;
+
+        if (localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg)) {
+            toastWarning(localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg));
+            localStorage.removeItem(localStorageKeyAboutHistoryBackErrorMsg);
+        } else {
+            const localStorageKeyAboutHistoryBackErrorMsg = "historyBackErrorMsg___null";
+
+            if (localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg)) {
+                toastWarning(localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg));
+                localStorage.removeItem(localStorageKeyAboutHistoryBackErrorMsg);
+            }
+        }
+    });
+</script>
 <footer class="bg-green-100 py-8">
     <div class="container mx-auto text-center">
         <p><i class="fa-regular fa-copyright"></i> 2023 <b>PLANBTI</b>. All rights reserved.</p>
