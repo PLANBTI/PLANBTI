@@ -66,7 +66,7 @@ public class OrderController {
             @Valid OrderExchangeDto dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "order/exchange";
+            return rq.historyBack("실패하였습니다. 잠시후에 다시 이용해주세요");
         }
 
         if (!dto.isReturn()) {
@@ -75,6 +75,6 @@ public class OrderController {
             orderDetailService.returnProduct(orderId, dto);
         }
 
-        return "redirect:/order/orderInfo";
+        return rq.redirectWithMsg("/order/orderInfo","요청이 성공하였습니다.");
     }
 }
