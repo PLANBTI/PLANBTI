@@ -1,5 +1,4 @@
 package com.example.demo.base.initdata;
-
 import com.example.demo.base.Role;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.category.entity.Category;
@@ -27,9 +26,9 @@ public class CustomInitData {
     @Bean
     CommandLineRunner initData(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository, ProductRepository productRepository,
+
                                OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
-
-
+        
         return new CommandLineRunner() {
 
             @Override
