@@ -34,7 +34,7 @@ public class OrderDetailService {
 
     public void exchange(OrderExchangeDto dto) {
         OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderItemId()).orElseThrow();
-        orderDetail.updateStatus(EXCHANGE);
+        orderDetail.orderExchange();
     }
 
     public void returnProduct(Long orderId, OrderExchangeDto dto) {

@@ -50,6 +50,10 @@ public class OrderDetail extends BaseEntity {
         updateStatus(PLACED);
     }
 
+    public void orderExchange() {
+        updateStatus(EXCHANGE);
+    }
+
     public void updateStatus(OrderItemStatus status) {
         this.status = status;
     }
