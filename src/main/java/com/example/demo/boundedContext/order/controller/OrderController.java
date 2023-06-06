@@ -2,8 +2,8 @@ package com.example.demo.boundedContext.order.controller;
 
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
-import com.example.demo.boundedContext.order.dto.LastOrderDto;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
+import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.service.OrderDetailService;
 import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.util.rq.ResponseData;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.demo.boundedContext.order.entity.OrderStatus.BEFORE;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 
 @RequiredArgsConstructor
 @RequestMapping("/order")
@@ -29,7 +32,7 @@ public class OrderController {
     public String orderPage(Model model) {
         String username = rq.getUsername();
         Member member = memberService.findByUsername(username);
-        ResponseData<LastOrderDto> responseData = orderService.findLastOrderById(member.getId());
+        ResponseData<OrderRequestDto> responseData = orderService.findLastOrderByStatus(member.getId(), BEFORE);
 
         model.addAttribute("order", responseData.getContent());
         return "order/orderPage";
@@ -38,17 +41,16 @@ public class OrderController {
 
     @GetMapping("/result")
     public String resultPage(Model model) {
-        ResponseData<LastOrderDto> responseData = findLastCompleteOrderOne();
-        model.addAttribute("order", responseData.getContent());
+        ResponseData<OrderRequestDto> lastOrderComplete = orderService.findLastOrderByStatus(rq.getMemberId(),COMPLETE);
+        model.addAttribute("order", lastOrderComplete.getContent());
         return "order/result";
     }
 
     @GetMapping("/orderInfo")
     public String orderStatus(Model model) {
-        ResponseData<LastOrderDto> responseData = findLastCompleteOrderOne();
-        model.addAttribute("order", responseData.getContent());
+        ResponseData<OrderRequestDto> lastOrderComplete = orderService.findLastOrderByStatus(rq.getMemberId(),COMPLETE);
+        model.addAttribute("order", lastOrderComplete.getContent());
         return "order/orderInfo";
-
     }
 
     @GetMapping("/exchange/{id}")
@@ -79,11 +81,4 @@ public class OrderController {
 
         return "redirect:/order/orderInfo";
     }
-
-    private ResponseData<LastOrderDto> findLastCompleteOrderOne() {
-        String username = rq.getUsername();
-        Member member = memberService.findByUsername(username);
-        return orderService.findCompleteLastOrder(member.getId());
-    }
-
 }
