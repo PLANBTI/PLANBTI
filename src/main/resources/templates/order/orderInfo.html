@@ -41,20 +41,21 @@
                     <th class="text-xl font-bold">--</th>
                 </tr>
                 </thead>
-                <tbody id="detailsRow" class="hidden">
+                <tbody id="detailsRow">
                 <tr class="gap-3 cursor-pointer border" th:each="orderItem , i : ${order.orderDetails}">
                     <td class="text-xl" id="num" th:text="${i.index+1}">번호</td>
                     <td class="text-xl" id="name" th:text="${orderItem.productName}">이름</td>
                     <td class="text-xl" id="count" th:text="${orderItem.count}">개수</td>
                     <td class="text-xl" id="total" th:text="|${orderItem.amount}원|">금액</td>
                     <td class="text-xl" id="exchange">
-                        <div class="flex flex-col gap-3 m-2">">
+                        <div class="flex flex-col gap-3 m-2">
                             <button type="button" class="btn btn-outline btn-info"
-                                    th:data-orderId="${order.orderId}"
-                                    th:data-orderItemId="${orderItem.orderItemId}"
-                                    th:disabled="${orderItem.status != 'PENDING' or orderItem.status != 'PLACED'}"
+                                    th:data-orderid="${order.orderId}"
+                                    th:data-orderitemid="${orderItem.orderItemId}"
+                                    th:disabled="${#strings.toString(orderItem.status) != 'PENDING' and #strings.toString(orderItem.status) != 'PLACED'}"
                                     onclick="requestExchange(this)">
-                                교환 및 반품
+                                <span th:if="${#strings.toString(orderItem.status) == 'PENDING' or #strings.toString(orderItem.status) == 'PLACED'}">교환 및 반품 신청</span>
+                                <span th:unless="${#strings.toString(orderItem.status) == 'PENDING' or #strings.toString(orderItem.status) == 'PLACED'}">교환 및 반품 신청 불가</span>
                             </button>
                         </div>
                     </td>
@@ -64,11 +65,11 @@
         </div>
     </div>
     <script th:inline="javascript">
-        function requestExchange(e) {
-            const orderId = button.dataset.orderId;
-            const orderItemId = button.dataset.orderItemId;
+        function requestExchange(button) {
+            const orderId = button.dataset.orderid;
+            const orderItemId = button.dataset.orderitemid;
 
-            window.location.href = `/exchange/${orderId}?orderItemId=${orderItemId}`;
+            window.location.href = `/order/exchange/${orderId}?orderItemId=${orderItemId}`;
 
         }
 

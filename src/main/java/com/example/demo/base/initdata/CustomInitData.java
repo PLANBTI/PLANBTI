@@ -67,7 +67,6 @@ public class CustomInitData {
                 orderDetailRepository.save(orderDetail1);
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
-                        .status(OrderItemStatus.PLACED)
                         .count(2)
                         .build();
                 orderDetail2.addOrder(order,product2);
