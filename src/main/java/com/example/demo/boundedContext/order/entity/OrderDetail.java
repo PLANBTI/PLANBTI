@@ -2,12 +2,15 @@ package com.example.demo.boundedContext.order.entity;
 
 import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.exception.NotEnoughProductCount;
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,12 +19,16 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class OrderDetail extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private OrderItemStatus status = PENDING;
 
     private int count;
 
@@ -31,13 +38,31 @@ public class OrderDetail extends BaseEntity {
         this.product = product;
 
         order.addOrderDetail(this);
-        order.addCount(count);
-        order.addPrice(getAmount());
         this.order = order;
     }
 
 
     public int getAmount() {
         return product.getPrice() * count;
+    }
+
+    public void orderComplete() {
+        updateStatus(PLACED);
+    }
+
+    public boolean isBeforePaying() {
+        return status.equals(PENDING);
+    }
+
+    public void orderExchange() {
+        updateStatus(EXCHANGE);
+    }
+
+    public void updateStatus(OrderItemStatus status) {
+        this.status = status;
+    }
+
+    public void decreaseCount(int count) {
+        this.count -= count;
     }
 }

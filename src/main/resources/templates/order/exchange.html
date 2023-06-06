@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout.html}" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main layout:fragment="main" class="min-h-screen flex justify-center items-center">
+    <form method="post" id="orderForm" th:action
+          class="w-full p-6 max-w-sm border rounded-[20px] h-4/6"
+          th:object="${orderDetail}">
+        <div class="flex justify-center">
+            <figure class="md:flex md:items-center mb-6">
+                <img src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" class="rounded-xl"/>
+            </figure>
+        </div>
+        <div class="md:flex md:items-center mb-6">
+
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+                    물품 이름
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <input th:name="${orderDetail.productName}" th:value="${orderDetail.productName}"
+                       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                       id="inline-full-name" type="text" disabled>
+            </div>
+        </div>
+        <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-password">
+                    개수
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <select th:field="*{count}"
+                        class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+                    <option th:each="i : ${#numbers.sequence(1, orderDetail.count)}" th:value="${i}" th:text="${i}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-password">
+                    금액
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <input th:name="${orderDetail.getTotalPrice}" th:value="${orderDetail.getTotalPrice}"
+                       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                       id="inline-password" disabled>
+            </div>
+        </div>
+        <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-password">
+                    사유
+                </label>
+            </div>
+            <div class="md:w-2/3">
+                <input  th:field="*{reason}"
+                       class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                           id="inline-password" type="text">
+            </div>
+        </div>
+        <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+                <button class="shadow bg-gradient-to-r from-indigo-200 via-red-200 to-yellow-100
+                 hover:from-yellow-100 via-yellow-300 to-yellow-500 focus:shadow-outline focus:outline-none text-black font-bold py-2 px-4 rounded"
+                  data-action="EXCHANGE" onclick="submitForm(this)"  >
+                    교환하기
+                </button>
+            </div>
+            <div class="md:w-2/3">
+                <button class="shadow bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600
+                 hover:from-gray-700 via-gray-900 to-black focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    data-action="RETURN"  onclick="submitForm(this)"  >
+                    반품하기
+                </button>
+            </div>
+        </div>
+    </form>
+    <script th:inline="javascript">
+        function submitForm(button) {
+            const form = document.getElementById('orderForm');
+            const exchangeInput = document.createElement('input');
+            const itemId = document.createElement('input');
+            const actionInput = button.getAttribute('data-action')
+            const orderItemId =/*[[${orderDetail.orderItemId}]]*/ null;
+
+            exchangeInput.setAttribute('type', 'hidden');
+            exchangeInput.setAttribute('name', 'exchange');
+            exchangeInput.setAttribute('value', actionInput);
+
+            itemId.setAttribute('type', 'hidden');
+            itemId.setAttribute('name', 'orderItemId');
+            itemId.setAttribute('value', orderItemId);
+
+            form.appendChild(exchangeInput);
+            form.appendChild(itemId);
+            form.submit();
+        }
+    </script>
+</main>
+</body>
+</html>

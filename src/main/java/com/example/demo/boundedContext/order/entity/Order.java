@@ -1,8 +1,10 @@
 package com.example.demo.boundedContext.order.entity;
 
+import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -18,10 +20,10 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 @Entity
-@Table(name = "Orders",indexes = {@Index(name = "toss_uuid",columnList = "uuid")})
+@Table(name = "Orders", indexes = {@Index(name = "toss_uuid", columnList = "uuid")})
 public class Order extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     private String req;
 
@@ -52,27 +54,56 @@ public class Order extends BaseEntity {
 
 
     public void addOrderDetail(OrderDetail orderDetail) {
+        if (!orderDetail.isBeforePaying()) {
+            throw new OrderException("주문에 넣을 수 없습니다.");
+        }
         orderDetailList.add(orderDetail);
+        addPrice(orderDetail.getAmount());
+        addCount(orderDetail.getCount());
     }
 
-    public boolean canOrder(OrderRequest orderRequest) {
-        return !isPaid() && orderRequest.getAmount().equals(totalPrice);
+    private void addCount(int count) {
+        this.itemCount += count;
     }
 
-    public boolean isPaid() {
-        return status.equals(OrderStatus.COMPLETE);
+    private void addPrice(int price) {
+        this.totalPrice += price;
+    }
+
+    public void canOrder(OrderRequest orderRequest) {
+        isPaid();
+        isEqualAmount(orderRequest.getAmount());
+    }
+
+    public void isPaid() {
+        if (!status.equals(OrderStatus.BEFORE))
+            throw new OrderException("이미 주문 완료한 상품입니다.");
+    }
+
+    public void isEqualAmount(Long totalAmount) {
+        Long sum = orderDetailList.stream()
+                .filter(i -> i.getStatus().equals(OrderItemStatus.PENDING))
+                .map(OrderDetail::getAmount).mapToLong(i -> i).sum();
+        if (!totalAmount.equals(sum))
+            throw new OrderException("총합이 맞지 않습니다.");
     }
 
 
     public void updateComplete() {
-        status = OrderStatus.COMPLETE;
+        this.status = OrderStatus.COMPLETE;
+        for (OrderDetail item : orderDetailList) {
+            item.orderComplete();
+        }
     }
 
-    public void addPrice(int amount) {
-        this.totalPrice += amount;
-    }
+    public void returnProduct(OrderExchangeDto dto) {
 
-    public void addCount(int count) {
-        this.itemCount += count;
+        this.itemCount -= dto.getCount();
+        this.totalPrice -= dto.getTotalPrice();
+        orderDetailList.stream().filter(i -> i.getId().equals(dto.getOrderItemId()))
+                .forEach( i -> {
+                    i.updateStatus(OrderItemStatus.RETURN);
+                    i.decreaseCount(dto.getCount());
+                });
     }
 }

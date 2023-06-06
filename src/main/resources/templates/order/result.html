@@ -24,8 +24,8 @@
                     <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate" th:text="${#temporals.format(order.modifyDate, 'yyyy-MM-dd')}"></td>
                 </tr>
                 <tr>
-                    <td class="text-xl border  py-2 font-bold">총 주문 금액</td>
-                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount" th:text="|${order.getTotalAmount()}원|"></td>
+                    <td class="text-xl border  py-2 font-bold">금액</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.totalAmount}원|"></td>
                 </tr>
             </table>
             <div class="flex justify-center mt-3">

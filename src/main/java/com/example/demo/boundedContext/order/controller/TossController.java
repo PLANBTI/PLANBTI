@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.order.controller;
 
+import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
 import com.example.demo.boundedContext.order.service.OrderService;
@@ -11,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @RequestMapping("/toss")
@@ -20,6 +20,7 @@ public class TossController {
 
 
     private final OrderService orderService;
+    private final TossPaymentInfra tossPaymentService;
     private final Rq rq;
 
 
@@ -27,13 +28,16 @@ public class TossController {
     public String secretKey;
 
     @GetMapping("/success")
-    public String orderByToss(Model model,OrderRequest orderRequest) throws Exception {
+    public String orderByToss(OrderRequest orderRequest) throws Exception {
 
         try {
-            orderService.verifyAndRequestToss(orderRequest,rq.getMemberId());
+            orderService.verifyRequest(orderRequest,rq.getMemberId());
+            tossPaymentService.requestPermitToss(orderRequest);
+
             return "redirect:/order/result";
-        } catch (Exception e) {
-            model.addAttribute("fail","실패");
+
+        } catch (OrderException e) {
+
             return "order/orderPage";
         }
     }
