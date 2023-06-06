@@ -33,15 +33,10 @@ public class OrderRequestDto {
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
         order.getOrderDetailList()
-                .stream().filter(OrderRequestDto::isEqualStatus)
                 .forEach(i -> {
                     totalAmount += i.getAmount();
                     orderDetails.add(new OrderItemDto(i));
                 });
-    }
-
-    private static boolean isEqualStatus(OrderDetail i) {
-        return i.getStatus().equals(OrderItemStatus.PENDING);
     }
 
     @Getter

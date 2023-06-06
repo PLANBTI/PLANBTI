@@ -24,16 +24,12 @@ import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 public class OrderController {
 
     private final OrderService orderService;
-    private final MemberService memberService;
     private final OrderDetailService orderDetailService;
     private final Rq rq;
 
     @GetMapping("/orderPage")
     public String orderPage(Model model) {
-        String username = rq.getUsername();
-        Member member = memberService.findByUsername(username);
-        ResponseData<OrderRequestDto> responseData = orderService.findLastOrderByStatus(member.getId(), BEFORE);
-
+        ResponseData<OrderRequestDto> responseData = orderService.findLastOrderByStatus(rq.getMemberId(), BEFORE);
         model.addAttribute("order", responseData.getContent());
         return "order/orderPage";
 
