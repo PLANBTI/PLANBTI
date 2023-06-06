@@ -36,9 +36,6 @@
         <button id="A" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
         <button id="B" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
     </article>
-<!--    <article id="loading-screen" class="hidden text-center">-->
-<!--        <span id="loading-text">로딩 중...</span>-->
-<!--    </article>-->
     <article class="result hidden text-center">
 <!--        <img src="${imageUrl}" alt="Image from Naver">-->
         <div id="chat-container">
@@ -154,18 +151,10 @@
         function redirectToPage() {
             window.location.href = /*[[${redirectUrl}]]*/ '';
         }
-        // // 로딩 화면 숨기기
-        // function hideLoadingScreen() {
-        //     // var loadingScreen = document.getElementById('loading-screen');
-        //     $(".loading-screen").hide();
-        // }
 
         function next() {
             if (num == 13) {
-                // $(".question").hide();
                 $(".question").hide();
-                // $(".loading-screen").show();
-                // setTimeout(hideLoadingScreen, 15000);
                 $(".result").show();
                 var message = "";
                 var mbti = "";
