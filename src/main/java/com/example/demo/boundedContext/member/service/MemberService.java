@@ -59,6 +59,10 @@ public class MemberService {
         return memberRepository.findByUsernameAndDeleteDateIsNull(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
+    public List<Member> findAll() {
+        return memberRepository.findAll();
+    }
+
     public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)
