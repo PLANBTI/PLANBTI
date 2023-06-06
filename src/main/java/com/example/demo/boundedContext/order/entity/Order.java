@@ -54,6 +54,9 @@ public class Order extends BaseEntity {
 
 
     public void addOrderDetail(OrderDetail orderDetail) {
+        if (!orderDetail.isBeforePaying()) {
+            throw new OrderException("주문에 넣을 수 없습니다.");
+        }
         orderDetailList.add(orderDetail);
         addPrice(orderDetail.getAmount());
         addCount(orderDetail.getCount());

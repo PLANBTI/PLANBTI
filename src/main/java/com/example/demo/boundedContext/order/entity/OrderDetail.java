@@ -50,6 +50,10 @@ public class OrderDetail extends BaseEntity {
         updateStatus(PLACED);
     }
 
+    public boolean isBeforePaying() {
+        return status.equals(PENDING);
+    }
+
     public void orderExchange() {
         updateStatus(EXCHANGE);
     }
