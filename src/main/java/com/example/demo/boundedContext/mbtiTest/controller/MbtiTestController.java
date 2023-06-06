@@ -1,14 +1,11 @@
 package com.example.demo.boundedContext.mbtiTest.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,8 +28,6 @@ import java.util.regex.Pattern;
 @Controller
 @RequiredArgsConstructor
 public class MbtiTestController {
-
-//    private static final Logger log = LoggerFactory.getLogger(MbtiTestController.class);
 
     @GetMapping("/test")
     public String mbtiTestPage() {
@@ -63,7 +58,6 @@ public class MbtiTestController {
         }
         if (!message.equals(compare)) {
             // 요청 값이 유효하지 않을 경우 에러 처리
-//            log.error("Invalid request: {}", message);
             return ResponseEntity.badRequest().body("Invalid request");
 
         }
@@ -97,7 +91,6 @@ public class MbtiTestController {
             String mbtiTestResult = matcher.group(1);
             // 쿠키 결과 추가
             setCookie(response, "mbtiTestResult", mbtiTestResult);
-//            log.info("Set cookie with mbtiTestResult: {}", mbtiTestResult);
         }
         return responseEntity;
     }
@@ -105,7 +98,6 @@ public class MbtiTestController {
     public void setCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie = new Cookie(name, value);
         response.addCookie(cookie);
-//        log.info("Added cookie: {}={}", name, value);
     }
 
     @AllArgsConstructor
