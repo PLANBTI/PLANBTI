@@ -32,13 +32,13 @@ public class admController {
 
     @GetMapping("/faq")
     public String showFaq(Model model) {
-        // 문의 내역, 코멘트 내역 불러와서 model에 담기
-        return "faqList";
+        // 문의 내역 불러와서 model에 담기
+        return "adm/faqList";
     }
 
     @GetMapping("/reviews")
     public String showReviews(Model model) {
-        // 리뷰 내역 불러와서 model에 담기
+        // 상품평 내역 불러와서 model에 담기
         return "adm/reviews";
     }
 
