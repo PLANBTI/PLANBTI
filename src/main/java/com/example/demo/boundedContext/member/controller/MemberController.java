@@ -10,6 +10,7 @@ import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.service.ShoppingBasketService;
+import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,13 +30,15 @@ import java.util.List;
 @RequestMapping("/member")
 @PreAuthorize("isAuthenticated()")
 public class MemberController {
+
     private final MemberService memberService;
     private final OrderService orderService;
     private final ShoppingBasketService shoppingBasketService;
+    private final Rq rq;
 
     @GetMapping("/mypage")
-    public String showMyPage(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String showMyPage(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         model.addAttribute("member", member);
         return "member/myPage";
@@ -43,34 +46,33 @@ public class MemberController {
 
     // 회원 정보 조회
     @GetMapping("/profile")
-    public String showProfile(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String showProfile(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         model.addAttribute("member", member);
         return "member/profile";
     }
 
     @GetMapping("/modify")
-    public String modify(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String modify(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         model.addAttribute("member", member);
         return "member/modify";
     }
 
     @PostMapping("/modify")
-    public String modify(@Valid MemberModifyForm form, BindingResult bindingResult,
-                         @AuthenticationPrincipal CustomOAuth2User user) {
+    public String modify(@Valid MemberModifyForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "member/modify";
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         memberService.modify(member, form.getEmail(), form.getPhoneNumber());
         return "redirect:/member/profile";
     }
 
     @GetMapping("/shoppingbasket")
-    public String showShoppingBasket(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String showShoppingBasket(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         try {
             ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
             List<Product> products = shoppingBasket.getProducts();
@@ -82,16 +84,16 @@ public class MemberController {
     }
 
     @GetMapping("/testresult")
-    public String showTestResult(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String showTestResult(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         model.addAttribute("testresults", member.getTests());
         return "member/testResult";
     }
 
     @GetMapping("/orderlist")
-    public String showOrderlist(Model model, @AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String showOrderlist(Model model) {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         List<Order> orderList = orderService.findAllByMember(member);
 
         model.addAttribute("orderList", orderList);
@@ -100,8 +102,8 @@ public class MemberController {
 
     // soft-delete, 회원 탈퇴
     @GetMapping("/delete")
-    public String delete(@AuthenticationPrincipal CustomOAuth2User user) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(user.getName());
+    public String delete() {
+        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         memberService.delete(member);
         return "redirect:/logout";
     }
