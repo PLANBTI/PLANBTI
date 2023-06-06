@@ -55,7 +55,7 @@ public class Order extends BaseEntity {
 
     public void addOrderDetail(OrderDetail orderDetail) {
         orderDetailList.add(orderDetail);
-        appPrice(orderDetail.getAmount());
+        addPrice(orderDetail.getAmount());
         addCount(orderDetail.getCount());
     }
 
@@ -63,7 +63,7 @@ public class Order extends BaseEntity {
         this.itemCount += count;
     }
 
-    private void appPrice(int price) {
+    private void addPrice(int price) {
         this.totalPrice += price;
     }
 
@@ -78,13 +78,16 @@ public class Order extends BaseEntity {
     }
 
     public void isEqualAmount(Long totalAmount) {
-        if (!totalAmount.equals(totalPrice))
+        Long sum = orderDetailList.stream()
+                .filter(i -> i.getStatus().equals(OrderItemStatus.PENDING))
+                .map(OrderDetail::getAmount).mapToLong(i -> i).sum();
+        if (!totalAmount.equals(sum))
             throw new OrderException("총합이 맞지 않습니다.");
     }
 
 
     public void updateComplete() {
-        status = OrderStatus.COMPLETE;
+        this.status = OrderStatus.COMPLETE;
         for (OrderDetail item : orderDetailList) {
             item.orderComplete();
         }
@@ -94,14 +97,10 @@ public class Order extends BaseEntity {
 
         this.itemCount -= dto.getCount();
         this.totalPrice -= dto.getTotalPrice();
-
-        for (OrderDetail orderDetail : orderDetailList) {
-            if (orderDetail.getId().equals(dto.getOrderItemId())) {
-                orderDetail.updateStatus(OrderItemStatus.RETURN);
-                orderDetail.decreaseCount(dto.getCount());
-                break;
-            }
-        }
-
+        orderDetailList.stream().filter(i -> i.getId().equals(dto.getOrderItemId()))
+                .forEach( i -> {
+                    i.updateStatus(OrderItemStatus.RETURN);
+                    i.decreaseCount(dto.getCount());
+                });
     }
 }
