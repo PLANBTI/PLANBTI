@@ -13,28 +13,31 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LastOrderDto {
+public class OrderRequestDto {
 
     private Long orderId;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
-    private Long totalAmount;
+    private Long totalAmount = 0L;
     private String orderName;
     private String uuid;
     private OrderItemStatus status;
 
     private List<OrderItemDto> orderDetails = new ArrayList<>();
 
-    public LastOrderDto(Order order) {
+    public OrderRequestDto(Order order) {
         this.orderId = order.getId();
         this.createDate = order.getCreateDate();
         this.modifyDate = order.getModifyDate();
-        this.totalAmount = order.getTotalPrice();
+
         this.orderName = order.getOrderName();
         this.uuid =order.getUuid();
         order.getOrderDetailList()
-                .stream().filter(LastOrderDto::isEqualStatus)
-                .forEach(i -> orderDetails.add(new OrderItemDto(i)));
+                .stream().filter(OrderRequestDto::isEqualStatus)
+                .forEach(i -> {
+                    totalAmount += i.getAmount();
+                    orderDetails.add(new OrderItemDto(i));
+                });
     }
 
     private static boolean isEqualStatus(OrderDetail i) {
