@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.member.entity;
 
 import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,8 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Address extends BaseEntity {
 
+    @ManyToOne
+    private Member member;
     private String name;
     private String addr;
     private String addrDetail;

@@ -25,7 +25,7 @@ public class MemberEventListener {
 
     @EventListener
     public void listen(EventAfterDeleteAddress event) {
-        memberService.whenAfterModifyAddress(event.getMember(), event.getAddress(), event.getDeletedAddress());
+        memberService.whenAfterDeleteAddress(event.getMember(), event.getAddress());
     }
 
 }

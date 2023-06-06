@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Member saveOAuth2Member(DivideOAuth2User customOAuth2User) {
         Optional<Member> findByName = memberRepository.findByUsername(customOAuth2User.getUsername());
 
@@ -59,7 +59,6 @@ public class MemberService {
         return memberRepository.findByUsernameAndDeleteDateIsNull(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
-    @Transactional
     public Member modify(Member member, String email, String phoneNumber) {
         Member modifiedMember = member.toBuilder()
                 .email(email)
@@ -71,7 +70,6 @@ public class MemberService {
     }
 
     // soft-delete
-    @Transactional
     public void delete(Member member) {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
@@ -80,7 +78,6 @@ public class MemberService {
         memberRepository.save(deletedMember);
     }
 
-    @Transactional
     public void whenAfterCreateAddress(Member member, Address address) {
         List<Address> list = member.getAddresses();
         list.add(address);
@@ -91,11 +88,20 @@ public class MemberService {
         memberRepository.save(member1);
     }
 
-    @Transactional
     public void whenAfterModifyAddress(Member member, Address address, Address modifiedAddress) {
         List<Address> list = member.getAddresses();
         list.remove(address);
         list.add(modifiedAddress);
+
+        Member member1 = member.toBuilder()
+                .addresses(list)
+                .build();
+        memberRepository.save(member1);
+    }
+
+    public void whenAfterDeleteAddress(Member member, Address address) {
+        List<Address> list = member.getAddresses();
+        list.remove(address);
 
         Member member1 = member.toBuilder()
                 .addresses(list)

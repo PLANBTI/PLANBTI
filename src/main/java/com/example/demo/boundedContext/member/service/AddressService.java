@@ -7,12 +7,14 @@ import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,8 +40,13 @@ public class AddressService {
         return address.get();
     }
 
+    public List<Address> findByMember(Member member) {
+        return addressRepository.findByMember(member);
+    }
+
     public Address create(Member member, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         Address address = Address.builder()
+                .member(member)
                 .name(name)
                 .addr(addr)
                 .addrDetail(addrDetail)
@@ -56,6 +63,11 @@ public class AddressService {
 
     public Address modify(Member member, Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         Address address = findByIdAndDeleteDateIsNull(id);
+
+        if(!address.getMember().equals(member)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot access");
+        }
+
         Address modifiedAddress = address.toBuilder()
                 .name(name)
                 .addr(addr)
@@ -65,7 +77,9 @@ public class AddressService {
                 .isDefault(isDefault)
                 .build();
 
-        if (address.equals(modifiedAddress)) throw new ValidationException("already exists");
+        if (address.equals(modifiedAddress)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "already exists");
+        }
 
         publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
         addressRepository.save(modifiedAddress);
@@ -74,11 +88,15 @@ public class AddressService {
 
     // soft-delete
     public void delete(Member member, Address address) {
+        if(!address.getMember().equals(member)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot access");
+        }
+
         Address deletedAddress = address.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
 
-        publisher.publishEvent(new EventAfterDeleteAddress(this, member, address, deletedAddress));
+        publisher.publishEvent(new EventAfterDeleteAddress(this, member, address));
         addressRepository.save(deletedAddress);
     }
 }
