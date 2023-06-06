@@ -32,12 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class AddressControllerTest {
 
-    @Autowired
-    MockMvc mvc;
-    @Autowired
-    AddressService addressService;
-    @Autowired
-    MemberService memberService;
+    @Autowired MockMvc mvc;
+    @Autowired AddressService addressService;
+    @Autowired MemberService memberService;
 
     @Test
     @WithUserDetails("user1")
@@ -93,21 +90,21 @@ public class AddressControllerTest {
         assertThat(list.get(0).getZipCode()).isEqualTo("22222");
     }
 
-//    @Test
-//    @WithUserDetails("user1")
-//    @DisplayName("delete")
-//    void t003() throws Exception {
-//        ResultActions resultActions = mvc
-//                .perform(get("/address/delete/1"))
-//                .andDo(print());
-//
-//        resultActions
-//                .andExpect(handler().handlerType(AddressController.class))
-//                .andExpect(handler().methodName("delete"))
-//                .andExpect(status().is3xxRedirection());
-//
-//        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-//        List<Address> list = addressService.findByMember(member);
-//        assertThat(list.size()).isEqualTo(0);
-//    }
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("delete")
+    void t003() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/address/delete/1"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(AddressController.class))
+                .andExpect(handler().methodName("delete"))
+                .andExpect(status().is3xxRedirection());
+
+        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        List<Address> list = addressService.findByMember(member);
+        assertThat(list.size()).isEqualTo(0);
+    }
 }

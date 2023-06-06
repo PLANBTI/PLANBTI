@@ -20,6 +20,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Profile({"dev", "test"})
 @Configuration
@@ -81,6 +84,12 @@ public class CustomInitData {
                         .phoneNumber("01012345678")
                         .build();
                 addressRepository.save(address);
+
+                List<Address> list = user.getAddresses();
+                list.add(address);
+                Member modifiedUser = user.toBuilder()
+                        .addresses(list).build();
+                memberRepository.save(modifiedUser);
 
                 Member admin = Member.builder()
                         .username("admin")
