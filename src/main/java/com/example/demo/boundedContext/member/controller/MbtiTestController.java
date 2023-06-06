@@ -88,15 +88,16 @@ public class MbtiTestController {
     }
     // 유효성 검증 체크 메소드
     private boolean checkMessage(String message) {
+        String pattern = "([IE][SN][TF][PJ])";
+        Pattern mbtiPattern = Pattern.compile(pattern);
+        Matcher matcher = mbtiPattern.matcher(message);
+
         String compare = "";
-        List<String> mbtiList = Arrays.asList("ISTJ", "ISTP", "ISFJ", "ISFP", "INTJ", "INTP", "INFJ", "INFP", "ESTJ", "ESTP", "ESFJ", "ESFP", "ENTJ", "ENTP", "ENFJ", "ENFP");
-        for (String mbti : mbtiList) {
-            if (message.contains(mbti)) {
-                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
-                break;
-            }
+        if (matcher.find()) {
+            String mbti = matcher.group(1);
+            compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
         }
-        return message.contains(compare);
+        return message.equals(compare);
     }
 
     // 쿠키를 생성하고 값을 설정하는 메서드
