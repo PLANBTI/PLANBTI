@@ -1,9 +1,12 @@
 package com.example.demo.boundedContext.faq.entity;
 
-import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -16,15 +19,15 @@ public class Faq extends BaseEntity {
     @ManyToOne
     private Member member;
 
-    private String category;
+    @Column(name = "faq_category")
+    @Enumerated(EnumType.STRING)
+    private FaqCategory category;
+
     private String title;
     private String content;
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Comment comment;
-
-    @Column(nullable = false)
-    private String name;
 
 }
