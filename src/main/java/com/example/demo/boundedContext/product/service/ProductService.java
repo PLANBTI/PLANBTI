@@ -18,5 +18,10 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new DataNotFoundException("존재하지 않는 Product입니다."));
     }
 
+    public Product findByName(String name) {
+        return productRepository.findByName(name)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
+    }
+
 
 }

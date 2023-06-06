@@ -28,7 +28,7 @@ public class TossController {
     public String secretKey;
 
     @GetMapping("/success")
-    public String orderByToss(Model model,OrderRequest orderRequest) throws Exception {
+    public String orderByToss(OrderRequest orderRequest) throws Exception {
 
         try {
             orderService.verifyRequest(orderRequest,rq.getMemberId());
