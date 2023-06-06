@@ -26,7 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequiredArgsConstructor
 public class MbtiTestController {
 
     @GetMapping("/test")
@@ -48,19 +47,12 @@ public class MbtiTestController {
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response) {
         RestTemplate restTemplate = new RestTemplate();
-        String compare = "";
-        List<String> mbtiList = Arrays.asList("ISTJ", "ISTP", "ISFJ", "ISFP", "INTJ", "INTP", "INFJ", "INFP", "ESTJ", "ESTP", "ESFJ", "ESFP", "ENTJ", "ENTP", "ENFJ", "ENFP");
-        for (String mbti : mbtiList) {
-            if (message.contains(mbti)) {
-                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
-                break;
-            }
-        }
-        if (!message.equals(compare)) {
+
+        if (!checkMessage(message)) {
             // 요청 값이 유효하지 않을 경우 에러 처리
             return ResponseEntity.badRequest().body("Invalid request");
-
         }
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://api.openai.com/v1/chat/completions")
                 .build()
@@ -94,6 +86,19 @@ public class MbtiTestController {
         }
         return responseEntity;
     }
+    // 유효성 검증 체크 메소드
+    private boolean checkMessage(String message) {
+        String compare = "";
+        List<String> mbtiList = Arrays.asList("ISTJ", "ISTP", "ISFJ", "ISFP", "INTJ", "INTP", "INFJ", "INFP", "ESTJ", "ESTP", "ESFJ", "ESFP", "ENTJ", "ENTP", "ENFJ", "ENFP");
+        for (String mbti : mbtiList) {
+            if (message.contains(mbti)) {
+                compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
+                break;
+            }
+        }
+        return message.contains(compare);
+    }
+
     // 쿠키를 생성하고 값을 설정하는 메서드
     public void setCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie = new Cookie(name, value);

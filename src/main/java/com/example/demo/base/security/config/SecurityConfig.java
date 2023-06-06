@@ -29,7 +29,6 @@ public class SecurityConfig {
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
                         "/image/**", "/js/**", "/test/**", "/send","/").permitAll()
-
                 .anyRequest().authenticated());
 
         http.csrf(c -> c.ignoringRequestMatchers("/send"));
