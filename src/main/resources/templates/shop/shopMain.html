@@ -1,156 +1,66 @@
-<!DOCTYPE html>
-<html data-theme="light">
+<html layout:decorate="~{common/layout.html}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://kit.fontawesome.com/87140d707c.js" crossorigin="anonymous"></script>
-    <script src="/resource/common/common.js"></script>
+    <title>SHOP | PLANBTI</title>
 </head>
 
-<body class="flex flex-col">
-<nav class="navbar bg-base-100 flex drop-shadow-md">
-    <div class="navbar-start">
-        <div class="dropdown">
-            <label tabindex="0" class="btn btn-ghost btn-circle">
-                <i class="fa-solid fa-bars"></i>
-            </label>
-            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a href="#">MBTI Test</a></li>
-                <li><a href="#">My Page</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
+<body>
+
+<main layout:fragment="main" class="container mx-12 py-8 min-h-screen">
+    <div class="flex flex-row mt-24">
+        <ul class="menu bg-base-100 w-60 flex-none">
+            <li><a>ISTJ</a></li>
+            <li><a>ISFJ</a></li>
+            <li><a>INFJ</a></li>
+            <li><a>INTJ</a></li>
+            <li><a>ISTP</a></li>
+            <li><a>ISFP</a></li>
+            <li><a>INFP</a></li>
+            <li><a>INTP</a></li>
+            <li><a>ESTP</a></li>
+            <li><a>ESFP</a></li>
+            <li><a>ENFP</a></li>
+            <li><a>ENTP</a></li>
+            <li><a>ESTJ</a></li>
+            <li><a>ESFJ</a></li>
+            <li><a>ENFJ</a></li>
+            <li><a>ENTJ</a></li>
+        </ul>
+        <div th:if="${!paging.isEmpty()}" class="flex flex-wrap xl:min-w-full">
+            <a href="#" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
+                <img src="" class="h-44 bg-green-500"> <!-- 식물 이미지 -->
+                <div class="w-60 h-20 p-4">
+                    <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>
+                    <p class="flex justify-end" th:text="|${product.getSalePrice()} 원|"></p>
+                </div>
+            </a>
         </div>
     </div>
-    <div class="navbar-center justify-content hidden sm:block">
-        <a class="btn btn-ghost normal-case" id="title">PLANBTI</a>
-    </div>
-    <div class="navbar-end pr-4">
-        <button class="btn btn-ghost btn-circle">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-        <button class="btn btn-ghost btn-circle">
-            <i class="fa-regular fa-map"></i>
-        </button>
-        <button class="btn btn-ghost btn-circle">
-            <i class="fa-regular fa-heart"></i>
-        </button>
-        <button class="btn btn-ghost btn-circle">
-            <i class="fa-solid fa-cart-shopping"></i>
-        </button>
-        <button class="btn btn-ghost">
-            Sign in
-        </button>
-        <button class="btn btn-active btn-sm">
-            Sign up
-        </button>
-    </div>
-</nav>
 
-<img class="hero_header" src="images/hero_header.jpg">
-<h1>Our new Products</h1>
-
-<main layout:fragment="main" class="container mx-auto py-8 grow">
-    <nav class="nav" role="navigation">
-        <ul class="navlist">
-            <li><label>ISTJ</label></li>
-            <li><label>ISFJ</label></li>
-            <li><label>INFJ</label></li>
-            <li><label>INTJ</label></li>
-            <li><label>ISTP</label></li>
-            <li><label>ISFP</label></li>
-            <li><label>INFP</label></li>
-            <li><label>INTP</label></li>
-            <li><label>ESTP</label></li>
-            <li><label>ESFP</label></li>
-            <li><label>ENFP</label></li>
-            <li><label>ENTP</label></li>
-            <li><label>ESTJ</label></li>
-            <li><label>ESFJ</label></li>
-            <li><label>ENFJ</label></li>
-            <li><label>ENTJ</label></li>
+    <!-- 페이징처리 시작 -->
+    <div th:if="${!paging.isEmpty()}" class="w-full mt-20">
+        <ul class="pagination flex justify-center">
+            <li class="page-item m-2" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item m-2">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page - 1}|}"></a>
+            </li>
+            <li class="page-item m-2" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number}|}">
+                    <span>다음</span>
+                </a>
+            </li>
         </ul>
-    </nav>
-</main>
-<div class="products">
-    <a href="#">
-        <img src="shop/product/식물1.jpg">
-        <p>뱅갈 고무나무</p>
-        <p class="price">39,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant1.jpeg">
-        <p>스투키</p>
-        <p class="price">29,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant2.jpg">
-        <p>산세베리아</p>
-        <p class="price">59,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant3.jpg">
-        <p>산세베리아</p>
-        <p class="price">29,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant4.jpg">
-        <p>산세베리아</p>
-        <p class="price">39,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant2.jpg">
-        <p>산세베리아</p>
-        <p class="price">49,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant2.jpg">
-        <p>산세베리아</p>
-        <p class="price">59,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant2.jpg">
-        <p>산세베리아</p>
-        <p class="price">69,000</p>
-    </a>
-    <a href="#">
-        <img src="image/plant2.jpg">
-        <p>산세베리아</p>
-        <p class="price">29,000</p>
-    </a>
-    <div class="clearfix"></div>
-</div>
-
-<!-- 페이징처리 시작 -->
-<div th:if="${!paging.isEmpty()}">
-    <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{|?page=${paging.number-1}|}">
-                <span>이전</span>
-            </a>
-        </li>
-        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-            th:classappend="${page == paging.number} ? 'active'"
-            class="page-item">
-            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-        </li>
-        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                <span>다음</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<!-- 페이징처리 끝 -->
-
-<footer class="bg-green-100 py-8">
-    <div class="container mx-auto text-center">
-        <p><i class="fa-regular fa-copyright"></i> 2023 <b>PLANBTI</b>. All rights reserved.</p>
     </div>
-</footer>
+    <!-- 페이징처리 끝 -->
+
+</main>
+
 </body>
 
 </html>
