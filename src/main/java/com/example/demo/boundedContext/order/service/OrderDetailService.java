@@ -36,10 +36,13 @@ public class OrderDetailService {
     }
 
     public void returnProduct(Long orderId, OrderExchangeDto dto) {
+
         Order order = orderRepository.findById(orderId).orElseThrow();
         order.returnProduct(dto);
+
         Product product = productRepository.findByName(dto.getProductName())
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
+
         product.addCount(dto.getCount());
     }
 }

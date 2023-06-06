@@ -11,7 +11,7 @@ import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
 @Getter
 public class OrderExchangeDto {
