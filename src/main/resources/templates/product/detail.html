@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html layout:decorate="~{common/layout.html}" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>교환 반품</title>
+</head>
+<body>
+<main class="min-w-full" layout:fragment="main">
+
+    <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
+
+        <div class="h-screen flex flex-col justify-center align-items gap-3 mt-3">
+            <h1 class="text-center text-blue-800 text-3xl underline font-bold">제품 상세</h1>
+            <table class="text-center border">
+                <tr>
+                    <th colspan="2" class="text-xl bg-gray-400 font-bold">제품</th>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">제품 이름</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId"
+                        th:text="|${product.name}|"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">가격</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate"
+                        th:text="${product.price}"></td>
+                </tr>
+                <tr>
+                    <td class="text-xl border  py-2 font-bold">남은 수량</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount"
+                        th:text="${product.count}"></td>
+                </tr>
+
+            </table>
+            <form id="customForm" method="POST" th:action="@{/product/order}" class="w-full max-w-lg flex flex-col justify-content align-items gap-3 mx-auto">
+                <div class="inline-block my-4">
+                    <div class="flex">
+                        <input type="hidden" name="id" th:value="${product.id}">
+                        <button type="button" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-l" onclick="decrementCount()">-</button>
+                        <input name="count" id="countInput" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 rounded-none shadow leading-tight focus:outline-none focus:shadow-outline text-center" type="text" value="1" readonly>
+                        <button type="button" class="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-r" onclick="incrementCount()">+</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline btn-primary mt-4" type="button">장바구니에 담기</button>
+                <button class="btn btn-outline btn-accent" onclick="requestOrder(this)">주문하기</button>
+            </form>
+
+
+        </div>
+        <script th:inline="javascript">
+            let count = 1;
+            const countInput = document.getElementById("countInput");
+            const maxCount =/*[[${product.count}]]*/ 10;
+            function incrementCount() {
+                if (count < maxCount) {
+                    count++;
+                    countInput.value = count;
+                }
+            }
+            function decrementCount() {
+                if (count > 1) {
+                    count--;
+                    countInput.value = count;
+                }
+            }
+
+            function requestOrder() {
+                const productId =/*[[${product.id}]]*/ null;
+                const count = document.querySelector("#countInput").value;
+                console.log(productId);
+                console.log("count="+count);
+
+                if (count > maxCount || count < 0) {
+                    alert('잘못된 수량요청입니다. \n 다시 입력해 주세요');
+                    return;
+                }
+                const form = document.querySelector("#customForm");
+                form.submit();
+            }
+        </script>
+</main>
+</body>
+</html>
