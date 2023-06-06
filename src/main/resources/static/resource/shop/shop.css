@@ -61,3 +61,73 @@ ul{padding:0; margin:0}
 
 .navlist input[type=checkbox]:checked + label + ul {
     max-height: 1000px; }
+
+#title {
+    font-family: "TTWanjudaedunsancheB";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2")
+    format("woff2");
+    font-size: 1.5rem;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+ul{padding:0; margin:0}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 992px;
+}
+
+.hero_header{
+    height: 450px;
+    width: 100%;
+}
+
+body h1{
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    font-size: 24px;
+    font-style: bold;
+    color: #545454;
+}
+
+.products {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    width: 740px;
+    text-align: center;
+}
+
+.products img{
+    width: 225px;
+    height: 225px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.products a{
+    text-decoration: none;
+    color: black;
+    float: left;
+    font-size: 16px;
+}
+
+.price{
+    margin-top: 4px;
+    margin-bottom: 80px;
+}
+
+.clearfix{
+    clear: both;
+}
