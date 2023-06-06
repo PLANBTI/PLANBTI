@@ -16,7 +16,7 @@ public class ShopService {
     private final ProductRepository productRepository;
 
     public Page<Product> getList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 12);
         return this.productRepository.findAll(pageable);
     }
 
