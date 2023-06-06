@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: create
 
+
   security:
     oauth2:
       client:
@@ -51,4 +52,3 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
-
