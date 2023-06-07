@@ -1,7 +1,11 @@
 package com.example.demo.base.adm.controller;
 
+import com.example.demo.boundedContext.faq.Service.FaqService;
+import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.product.entity.Review;
+import com.example.demo.boundedContext.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,8 @@ import java.util.List;
 public class admController {
 
     private final MemberService memberService;
+    private final FaqService faqService;
+    private final ReviewService reviewService;
 
     @GetMapping("")
     public String showAdmMain() {
@@ -32,13 +38,15 @@ public class admController {
 
     @GetMapping("/faq")
     public String showFaq(Model model) {
-        // 문의 내역 불러와서 model에 담기
+        List<Faq> faqList = faqService.findAll();
+        model.addAttribute(faqList);
         return "adm/faqList";
     }
 
     @GetMapping("/reviews")
     public String showReviews(Model model) {
-        // 상품평 내역 불러와서 model에 담기
+        List<Review> reviews = reviewService.findAll();
+        model.addAttribute("reviews", reviews);
         return "adm/reviews";
     }
 
