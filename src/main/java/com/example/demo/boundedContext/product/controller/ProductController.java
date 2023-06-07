@@ -1,19 +1,20 @@
 package com.example.demo.boundedContext.product.controller;
 
-import com.example.demo.boundedContext.order.service.ProductOrderFacade;
+import com.example.demo.boundedContext.order.service.ProductFacade;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
+import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.service.ProductService;
+import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/product")
@@ -21,17 +22,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductController {
 
     private final Rq rq;
+    private final ReviewService reviewService;
     private final ProductService productService;
-    private final ProductOrderFacade productOrderService;
+    private final ProductFacade productFacade;
 
     @GetMapping("/detail/{id}")
     public String viewDetailProduct(Model model, @PathVariable(name = "id") Long productId) {
 
         Product product = productService.findById(productId);
-
+        List<ReviewDto> reviewList = reviewService.findByProductId(productId,0L);
         model.addAttribute("product", product);
+        model.addAttribute("reviewList", reviewList);
 
         return "product/detail";
+    }
+
+    @ResponseBody
+    @PostMapping("/more/{id}")
+    public List<ReviewDto> moreReview( @PathVariable(name = "id") Long productId,Long offset) {
+
+        return reviewService.findByProductId(productId,offset);
     }
 
     @PostMapping("/order")
@@ -46,7 +56,7 @@ public class ProductController {
         if (product.getCount() < dto.getCount())
             return rq.historyBack("잘못된 요청입니다.");
 
-        productOrderService.createOrderOne(dto, rq.getMemberId());
+        productFacade.createOrderOne(dto, rq.getMemberId());
 
         return rq.redirectWithMsg("/order/orderPage","주문하러 가기");
     }

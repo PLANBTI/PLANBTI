@@ -17,7 +17,9 @@ import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.entity.Product;
+import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.repository.ProductRepository;
+import com.example.demo.boundedContext.product.repository.ReviewRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +38,7 @@ public class CustomInitData {
     CommandLineRunner initData(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository, ProductRepository productRepository,
                                FaqRepository faqRepository, CommentRepository commentRepository,
-
+                               ReviewRepository reviewRepository,
                                OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
 
         return new CommandLineRunner() {
@@ -52,6 +54,19 @@ public class CustomInitData {
                         .count(100)
                         .price(10000)
                         .name("product2").build());
+
+                for (int i = 0; i < 3; i++) {
+                    Review review = Review.builder()
+                            .content("content!!!!"+i)
+                            .title("title"+i)
+                            .rate(i)
+                            .build();
+                    product1.addReview(review);
+                    reviewRepository.save(review);
+                }
+
+
+
 
                 String encode = passwordEncoder.encode("1111");
                 Member user = Member.builder()

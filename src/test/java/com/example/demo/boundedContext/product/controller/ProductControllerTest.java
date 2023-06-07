@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.product.controller;
 
-import com.example.demo.boundedContext.order.service.ProductOrderFacade;
+import com.example.demo.boundedContext.order.service.ProductFacade;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.service.ProductService;
@@ -42,7 +42,7 @@ class ProductControllerTest {
     ProductService productService;
 
     @MockBean
-    ProductOrderFacade facade;
+    ProductFacade facade;
 
     @WithUserDetails(value = "user1",setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("product get요청")

@@ -3,15 +3,21 @@ package com.example.demo.boundedContext.product.service;
 import com.example.demo.base.exception.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.product.entity.Product;
+
+import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class ReviewService {
 
@@ -68,5 +74,10 @@ public class ReviewService {
 
     public void deleteHard(Review review) {
         reviewRepository.delete(review);
+    }
+
+    public List<ReviewDto> findByProductId(Long productId,Long offset) {
+        return reviewRepository.findReviewByProductId(productId,offset);
+
     }
 }
