@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @ActiveProfiles("test")
 @SpringBootTest
-class ProductOrderFacadeTest {
+class ProductFacadeTest {
 
     @Autowired
-    ProductOrderFacade facade;
+    ProductFacade facade;
     @Autowired
     ProductRepository productRepository;
     @Autowired

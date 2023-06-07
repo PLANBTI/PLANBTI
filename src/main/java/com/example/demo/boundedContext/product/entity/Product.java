@@ -4,12 +4,12 @@ import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.category.entity.Category;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +29,11 @@ public class Product extends BaseEntity {
     private int salePrice;
     private int count;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+
     @Version
     private Long version;
 
@@ -45,4 +50,11 @@ public class Product extends BaseEntity {
     public void addCount(int count) {
         this.count +=count;
     }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+        review.addProduct(this);
+    }
+
+
 }
