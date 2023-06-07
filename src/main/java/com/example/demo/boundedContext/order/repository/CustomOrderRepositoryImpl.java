@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.order.repository;
 
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -15,10 +16,17 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
     private final JPAQueryFactory jpaQueryFactory;
     public Optional<Order> findCompleteOrderOneByStatus(Long id, OrderStatus status) {
         Order order1 = jpaQueryFactory.selectFrom(order)
-                .where(order.member.id.eq(id))
-                .where(order.status.eq(status))
+                .where(isEqualMember(id), isEqualStatus(status))
                 .orderBy(order.id.desc()).limit(1L).fetchOne();
 
         return Optional.ofNullable(order1);
+    }
+
+    private static BooleanExpression isEqualStatus(OrderStatus status) {
+        return status != null ? order.status.eq(status) : null;
+    }
+
+    private static BooleanExpression isEqualMember(Long memberId) {
+        return memberId != null ?order.member.id.eq(memberId) : null;
     }
 }

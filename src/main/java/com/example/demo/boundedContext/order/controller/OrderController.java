@@ -70,9 +70,9 @@ public class OrderController {
         }
 
         if (!dto.isReturn()) {
-            orderDetailService.exchange(dto);
+            orderDetailService.exchange(dto,rq.getMemberId());
         } else {
-            orderDetailService.returnProduct(orderId, dto);
+            orderDetailService.returnProduct(orderId, dto,rq.getMemberId());
         }
 
         return rq.redirectWithMsg("/order/orderInfo","요청이 성공하였습니다.");

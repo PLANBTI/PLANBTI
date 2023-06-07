@@ -67,7 +67,7 @@ class OrderDetailServiceTest {
         OrderExchangeDto dto = new OrderExchangeDto(orderDetail1.getId(), null, 2, product.getPrice());
 
         //when
-        orderDetailService.exchange(dto);
+        orderDetailService.exchange(dto,member.getId());
 
         //then
         assertThat(orderDetail1.getStatus()).isEqualTo(OrderItemStatus.EXCHANGE);
@@ -100,7 +100,7 @@ class OrderDetailServiceTest {
         OrderExchangeDto dto = new OrderExchangeDto(orderDetail1.getId(), product.getName(), 2, product.getPrice());
 
         //when
-        orderDetailService.returnProduct(order.getId(),dto);
+        orderDetailService.returnProduct(order.getId(),dto,member.getId());
 
         //then
         assertThat(orderDetail1.getStatus()).isEqualTo(OrderItemStatus.RETURN);

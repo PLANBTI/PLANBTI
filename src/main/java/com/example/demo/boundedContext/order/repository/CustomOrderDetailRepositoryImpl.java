@@ -1,7 +1,7 @@
 package com.example.demo.boundedContext.order.repository;
 
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
-import com.example.demo.boundedContext.order.entity.OrderItemStatus;
+import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
+import static com.example.demo.boundedContext.member.entity.QMember.member;
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.PENDING;
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.PLACED;
 import static com.example.demo.boundedContext.order.entity.QOrder.order;
 import static com.example.demo.boundedContext.order.entity.QOrderDetail.orderDetail;
 import static com.example.demo.boundedContext.product.entity.QProduct.product;
@@ -32,13 +34,25 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
                 .from(order)
                 .join(order.orderDetailList, orderDetail)
                 .join(orderDetail.product, product)
-                .where(equalOrderId(orderId),
-                        equalMember(memberId),
-                        equalOrderItemId(orderItemId),
-                        isBeforeDeliver())
+                .where(equalOrderId(orderId)
+                        .and(equalMember(memberId))
+                        .and(equalOrderItemId(orderItemId))
+                        .and(isBeforeDeliver()))
                 .fetchOne();
 
         return Optional.ofNullable(orderExchangeDto);
+    }
+
+    @Override
+    public Optional<OrderDetail> findByIdAndMemberId(Long orderItemId, Long memberId) {
+
+        OrderDetail orderDetail1 = jpaQueryFactory.selectFrom(orderDetail)
+                .join(orderDetail.order, order)
+                .join(order.member, member)
+                .where(equalOrderId(orderItemId).and(equalMember(memberId)))
+                .fetchOne();
+
+        return Optional.ofNullable(orderDetail1);
     }
 
     private static BooleanExpression isBeforeDeliver() {
