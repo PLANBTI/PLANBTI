@@ -5,6 +5,7 @@ import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
 import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.util.rq.Rq;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,11 +35,13 @@ public class TossController {
             orderService.verifyRequest(orderRequest,rq.getMemberId());
             tossPaymentService.requestPermitToss(orderRequest);
 
-            return "redirect:/order/result";
+            return rq.redirectWithMsg("/order/result","결제가 완료되었습니다.");
 
-        } catch (OrderException e) {
+        } catch (OrderException e1) {
+            return rq.historyBack("결제에 실패하였습니다.");
 
-            return "order/orderPage";
+        } catch (OptimisticLockException e2) {
+            return rq.historyBack("죄송합니다 잠시후에 다시 이용해주세요.");
         }
     }
 

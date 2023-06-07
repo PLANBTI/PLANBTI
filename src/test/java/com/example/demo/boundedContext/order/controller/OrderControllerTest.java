@@ -115,7 +115,7 @@ class OrderControllerTest {
 
         OrderExchangeDto dto = new OrderExchangeDto(orderItemId, productName, count, price);
 
-        Mockito.doNothing().when(orderDetailService).returnProduct(orderId,dto);
+        Mockito.doNothing().when(orderDetailService).returnProduct(orderId,dto,1L);
 
         mvc.perform(post("/order/exchange/%d".formatted(orderId))
                         .with(csrf())
@@ -123,7 +123,7 @@ class OrderControllerTest {
                 .andExpect(handler().handlerType(OrderController.class))
                 .andExpect(handler().methodName("exchangePost"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/order/orderInfo"))
+                .andExpect(redirectedUrlPattern("/order/orderInfo**"))
                 .andDo(print());
     }
 }

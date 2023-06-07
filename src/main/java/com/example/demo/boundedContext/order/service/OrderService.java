@@ -7,7 +7,9 @@ import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
+import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
+import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.event.ProductDecreaseEvent;
 import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final ApplicationEventPublisher publisher;
 
 
@@ -87,5 +90,21 @@ public class OrderService {
 
     public List<Order> findAllByMember(Member member) {
         return orderRepository.findByMember(member);
+    }
+
+
+    public void orderProduct(Member member, Product product, String productName, int count) {
+
+        Order order = Order.builder()
+                .orderName(productName)
+                .member(member)
+                .build();
+        orderRepository.save(order);
+
+        OrderDetail orderDetail = OrderDetail.builder()
+                .count(count)
+                .build();
+        orderDetail.addOrder(order,product);
+        orderDetailRepository.save(orderDetail);
     }
 }
