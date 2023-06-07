@@ -62,12 +62,12 @@ public class MbtiTestController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + chatGptkey);
 
-        ArrayList<MbtiTestController.Message> list = new ArrayList<>();
-        list.add(new MbtiTestController.Message("user", message));
+        ArrayList<Message> list = new ArrayList<>();
+        list.add(new Message("user", message));
 
-        MbtiTestController.Body param = new MbtiTestController.Body("gpt-3.5-turbo", list);
+        Body param = new Body("gpt-3.5-turbo", list);
 
-        RequestEntity<MbtiTestController.Body> httpEntity = new RequestEntity<>(param, httpHeaders, HttpMethod.POST, uri);
+        RequestEntity<Body> httpEntity = new RequestEntity<>(param, httpHeaders, HttpMethod.POST, uri);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(httpEntity, String.class);
 
@@ -110,7 +110,7 @@ public class MbtiTestController {
     @Data
     static class Body {
         String model;
-        List<MbtiTestController.Message> messages;
+        List<Message> messages;
     }
 
     @AllArgsConstructor
