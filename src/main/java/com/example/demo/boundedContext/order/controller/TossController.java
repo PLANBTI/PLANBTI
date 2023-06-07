@@ -35,7 +35,7 @@ public class TossController {
             orderService.verifyRequest(orderRequest,rq.getMemberId());
             tossPaymentService.requestPermitToss(orderRequest);
 
-            return rq.redirectWithMsg("redirect:/order/result","결제가 완료되었습니다.");
+            return rq.redirectWithMsg("/order/result","결제가 완료되었습니다.");
 
         } catch (OrderException e1) {
             return rq.historyBack("결제에 실패하였습니다.");
