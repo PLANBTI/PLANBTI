@@ -139,13 +139,7 @@ public class CustomInitData {
                                 .build()
                 );
 
-                Comment comment = Comment.builder()
-                        .faq(faq1)
-                        .content("test comment").build();
-                commentRepository.save(comment);
-                Faq modifiedFaq1 = faq1.toBuilder()
-                        .comment(comment).build();
-                faqRepository.save(modifiedFaq1);
+
 
             }
         };
