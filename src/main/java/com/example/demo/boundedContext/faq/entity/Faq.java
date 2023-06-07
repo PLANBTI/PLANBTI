@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Objects;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,11 +32,15 @@ public class Faq extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private Comment comment;
 
-    public String getCategoryToString() {
-        if(this.category.equals(FaqCategory.PRODUCT)) return "상품 관련 문의";
-        else if(this.category.equals(FaqCategory.SHIPPING)) return "배송 관련 문의";
-        else if(this.category.equals(FaqCategory.EXCHANGE)) return "교환 관련 문의";
-        else if(this.category.equals(FaqCategory.RETURN)) return "반품 관련 문의";
-        else return "기타 문의";
+    public String getCategory() {
+        return category.getCategory();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Faq faq = (Faq) o;
+        return Objects.equals(title, faq.title) && Objects.equals(content, faq.content) && Objects.equals(email, faq.email);
     }
 }

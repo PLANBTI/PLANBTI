@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.faq.Service;
 
 import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.boundedContext.faq.Controller.FaqController;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
@@ -45,11 +46,14 @@ public class FaqService {
         return faq;
     }
 
-    public Faq modify(Faq faq, String title, String content, String email) {
+    public Faq modify(Faq faq, FaqController.FaqForm form) {
         Faq modifiedFaq = faq.toBuilder()
-                .title(title)
-                .content(content)
-                .email(email).build();
+                .title(form.getTitle())
+                .content(form.getContent())
+                .email(form.getEmail()).build();
+
+        if(faq.equals(modifiedFaq)) return null;
+
         faqRepository.save(modifiedFaq);
         return modifiedFaq;
     }

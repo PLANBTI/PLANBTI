@@ -69,13 +69,12 @@ public class AddressController {
     public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
+        Address modifiedAddress = addressService.modify(member, address, form, isDefault);
 
-        if(address.getName().equals(form.getName()) && address.getAddr().equals(form.getAddr()) && address.getAddrDetail().equals(form.getAddrDetail()) &&
-                address.getZipCode().equals(form.getZipCode()) && address.getPhoneNumber().equals(form.getPhoneNumber())) {
+        if(modifiedAddress == null) {
             rq.historyBack("수정된 내용이 없습니다.");
         }
 
-        addressService.modify(member, address, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
         return "redirect:/member/profile";
     }
 

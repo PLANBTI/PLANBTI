@@ -4,6 +4,7 @@ import com.example.demo.base.event.EventAfterCreateAddress;
 import com.example.demo.base.event.EventAfterDeleteAddress;
 import com.example.demo.base.event.EventAfterModifyAddress;
 import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.boundedContext.member.controller.AddressController;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
@@ -61,19 +62,23 @@ public class AddressService {
         return address;
     }
 
-    public Address modify(Member member, Address address, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
+    public Address modify(Member member, Address address, AddressController.AddressForm form, boolean isDefault) {
         if(!address.getMember().equals(member)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
         }
 
         Address modifiedAddress = address.toBuilder()
-                .name(name)
-                .addr(addr)
-                .addrDetail(addrDetail)
-                .zipCode(zipCode)
-                .phoneNumber(phoneNumber)
+                .name(form.getName())
+                .addr(form.getAddr())
+                .addrDetail(form.getAddrDetail())
+                .zipCode(form.getZipCode())
+                .phoneNumber(form.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
+
+        if(address.equals(modifiedAddress)) {
+            return null;
+        }
 
         publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
         addressRepository.save(modifiedAddress);

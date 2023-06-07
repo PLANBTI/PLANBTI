@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import static com.example.demo.boundedContext.faq.entity.FaqCategory.*;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/faq")
@@ -39,7 +41,7 @@ public class FaqController {
     private final Rq rq;
 
     @GetMapping("")
-//    @PreAuthorize("hasAuthority(ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showFaq(Model model) {
         List<Faq> faqList = faqService.findAll();
         model.addAttribute("faqList", faqList);
@@ -86,15 +88,22 @@ public class FaqController {
     public String create(@Valid FaqForm form) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        Enum category;
-        if(form.getCategory().toString().equals("PRODUCT")) category = FaqCategory.PRODUCT;
-        else if(form.getCategory().toString().equals("SHIPPING")) category = FaqCategory.SHIPPING;
-        else if(form.getCategory().toString().equals("EXCHANGE")) category = FaqCategory.EXCHANGE;
-        else if(form.getCategory().toString().equals("RETURN")) category = FaqCategory.RETURN;
-        else category = FaqCategory.ETC;
+        Enum category = getCategory(form.getCategory().toString());
 
         Faq faq = faqService.create(member, category, form.getTitle(), form.getContent(), form.getEmail());
         return "redirect:/faq/detail/%s".formatted(faq.getId());
+    }
+
+    private Enum getCategory(String rawCategory) {
+        Enum category;
+        category = switch (rawCategory) {
+            case "PRODUCT" -> PRODUCT;
+            case "SHIPPING" -> SHIPPING;
+            case "EXCHANGE" -> EXCHANGE;
+            case "RETURN" -> RETURN;
+            default -> ETC;
+        };
+        return category;
     }
 
     @GetMapping("/modify/{id}")
@@ -107,12 +116,10 @@ public class FaqController {
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable Long id, FaqForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+        Faq modifiedFaq = faqService.modify(faq, form);
 
-        if(faq.getTitle().equals(form.getTitle()) && faq.getContent().equals(form.getContent()) && faq.getEmail().equals(form.getEmail())) {
-            rq.historyBack("수정된 내용이 없습니다.");
-        }
+        if(modifiedFaq == null) rq.historyBack("수정된 내용이 없습니다.");
 
-        faqService.modify(faq, form.getTitle(), form.getContent(), form.getEmail());
         return "redirect:/faq/detail/%s".formatted(id);
     }
 

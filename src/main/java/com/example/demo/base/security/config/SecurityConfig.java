@@ -24,7 +24,8 @@ public class SecurityConfig {
 
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/adm/**").hasRole("ADMIN")
+                .requestMatchers("/comment/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
