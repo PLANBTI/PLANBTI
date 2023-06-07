@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-@PreAuthorize("hasAuthority(ADMIN)")
+//@PreAuthorize("hasRole('ADMIN')") 로컬 서버 테스트를 위해 주석 처리
 @RequestMapping("/comment")
 public class CommentController {
 
@@ -43,15 +43,15 @@ public class CommentController {
     }
 
     @PostMapping("/create/{id}")
-    public String create(@PathVariable Long faqId, @Valid CommentForm form) {
-        Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
+    public String create(@PathVariable Long id, @Valid CommentForm form) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         commentService.create(faq, form.getContent());
-        return "redirect:/faq/detail/%s".formatted(faqId);
+        return "redirect:/faq/detail/%s".formatted(id);
     }
 
     @GetMapping("/modify/{id}")
-    public String modify(@PathVariable Long faqId, Model model) {
-        Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
+    public String modify(@PathVariable Long id, Model model) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         Comment comment = commentService.findByFaq(faq);
         model.addAttribute("faq", faq);
         model.addAttribute("comment", comment);
@@ -59,19 +59,19 @@ public class CommentController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long faqId, @Valid CommentForm form) {
-        Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
+    public String modify(@PathVariable Long id, @Valid CommentForm form) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         Comment comment = commentService.findByFaq(faq);
-        commentService.modify(comment, form.getContent());
-        return "redirect:/faq/detail/%s".formatted(faqId);
+        commentService.modify(faq, comment, form.getContent());
+        return "redirect:/faq/detail/%s".formatted(id);
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         Comment comment = commentService.findByIdAndDeleteDateIsNull(id);
-        Long faqId = comment.getFaq().getId();
-        commentService.delete(comment);
-        return "redirect:/faq/detail/%s".formatted(faqId);
+        Faq faq = comment.getFaq();
+        commentService.delete(faq, comment);
+        return "redirect:/faq/detail/%s".formatted(id);
     }
 
 }

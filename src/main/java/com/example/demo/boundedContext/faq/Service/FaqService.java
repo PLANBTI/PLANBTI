@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.faq.Service;
 
 import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.faq.repository.FaqRepository;
@@ -64,5 +65,23 @@ public class FaqService {
     // hard-delete
     public void deleteHard(Faq faq) {
         faqRepository.delete(faq);
+    }
+
+    public void whenAfterCreateComment(Faq faq, Comment comment) {
+        Faq faq1 = faq.toBuilder()
+                .comment(comment).build();
+        faqRepository.save(faq1);
+    }
+
+    public void whenAfterModifyComment(Faq faq, Comment modifiedComment) {
+        Faq faq1 = faq.toBuilder()
+                .comment(modifiedComment).build();
+        faqRepository.save(faq1);
+    }
+
+    public void whenBeforeDeleteComment(Faq faq) {
+        Faq faq1 = faq.toBuilder()
+                .comment(null).build();
+        faqRepository.save(faq1);
     }
 }

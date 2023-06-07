@@ -39,7 +39,7 @@ public class FaqController {
     private final Rq rq;
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority(ADMIN)")
+//    @PreAuthorize("hasAuthority(ADMIN)")
     public String showFaq(Model model) {
         List<Faq> faqList = faqService.findAll();
         model.addAttribute("faqList", faqList);
@@ -85,9 +85,16 @@ public class FaqController {
     @PostMapping("/create")
     public String create(@Valid FaqForm form) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        Faq faq = faqService.create(member, form.getCategory(), form.getTitle(), form.getContent(), form.getEmail());
-        Long faqId = faq.getId();
-        return "redirect:/faq/detail/%s".formatted(faqId);
+
+        Enum category;
+        if(form.getCategory().toString().equals("PRODUCT")) category = FaqCategory.PRODUCT;
+        else if(form.getCategory().toString().equals("SHIPPING")) category = FaqCategory.SHIPPING;
+        else if(form.getCategory().toString().equals("EXCHANGE")) category = FaqCategory.EXCHANGE;
+        else if(form.getCategory().toString().equals("RETURN")) category = FaqCategory.RETURN;
+        else category = FaqCategory.ETC;
+
+        Faq faq = faqService.create(member, category, form.getTitle(), form.getContent(), form.getEmail());
+        return "redirect:/faq/detail/%s".formatted(faq.getId());
     }
 
     @GetMapping("/modify/{id}")
@@ -118,7 +125,7 @@ public class FaqController {
     }
 
     // 관리자가 FAQ를 완전 삭제
-    @PreAuthorize("hasAuthority(ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/deleteAdm/{id}")
     public String deleteHard(@PathVariable Long id) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);

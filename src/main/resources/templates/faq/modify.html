@@ -6,25 +6,25 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
+<main layout:fragment="main" class="flex flex-col container mx-auto min-h-screen max-w-2xl">
 
     <script>
         function Validation__modifyFaq(form) {
 
             if(form.title.value.trim().length == 0) {
-                toastWarning("제목을 작성해주세요.");
+                alert("제목을 작성해주세요.");
                 form.title.focus();
                 return;
             }
 
             if(form.content.value.trim().length == 0) {
-                toastWarning("내용을 작성해주세요.");
+                alert("내용을 작성해주세요.");
                 form.content.focus();
                 return;
             }
 
             if(form.email.value.trim().length == 0) {
-                toastWarning("이메일 주소를 작성해주세요.")
+                alert("이메일 주소를 작성해주세요.")
                 form.email.focus();
                 return;
             }
@@ -32,7 +32,7 @@
             form.submit();
         }
     </script>
-
+<div class="w-full">
     <h1 class="text-2xl mt-8 font-black">FAQ</h1>
     <form class="w-full" th:action="@{/faq/modify/{id}(id=${faq.getId()})}" th:object="${FaqForm}" method="POST"
           onsubmit="Validation__modifyFaq(this); return false;">
@@ -40,11 +40,12 @@
             <input type="text" name="title" placeholder="제목" th:value="${faq.getTitle()}" class="input input-bordered w-full mt-12" />
         </div>
         <div>
-            <textarea name="content" class="textarea textarea-bordered w-full mt-4" placeholder="내용을 작성해주세요." th:value="${faq.getContent()}"></textarea>
+            <textarea name="content" class="textarea textarea-bordered w-full h-96 mt-4" placeholder="내용을 작성해주세요." th:value="${faq.getContent()}"></textarea>
             <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12" th:value="${faq.getEmail()}" />
-            <input type="submit" value="저장하기" class="btn btn-outline w-full h-96 mt-12">
+            <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
         </div>
     </form>
+</div>
 </main>
 
 </body>

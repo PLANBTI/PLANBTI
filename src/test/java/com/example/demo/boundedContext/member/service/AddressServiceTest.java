@@ -5,7 +5,6 @@ import com.example.demo.boundedContext.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
 @SpringBootTest
 public class AddressServiceTest {
 
@@ -36,11 +34,14 @@ public class AddressServiceTest {
     @DisplayName("modify")
     void t002() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Address address = user1.getAddresses().get(0);
 
-        Address testAddress = addressService.modify(user1,1L, "테스트 1", "대구시", "수성구", "55555", "01012345678", false);
+        Address testAddress = addressService.modify(user1, address, "테스트 1", "대구시", "수성구", "55555", "01012345678", false);
 
         assertThat(user1.getAddresses().size()).isEqualTo(1);
-        assertThat(testAddress.equals(user1.getAddresses().get(0))).isTrue();
+        assertThat(testAddress.getName()).isEqualTo(user1.getAddresses().get(0).getName());
+        assertThat(testAddress.getAddr()).isEqualTo(user1.getAddresses().get(0).getAddr());
+        assertThat(testAddress.getAddrDetail()).isEqualTo(user1.getAddresses().get(0).getAddrDetail());
     }
 
     @Test

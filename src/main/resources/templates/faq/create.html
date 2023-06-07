@@ -6,32 +6,32 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
+<main layout:fragment="main" class="w-screen min-h-screen">
 
     <script>
+
         function Validation__createFaq(form) {
+            form.category = document.getElementById("category").value;
 
-            const category = document.getElementById("category").value;
-
-            if(category === "카테고리를 선택해주세요.") {
-                toastWarning("카테고리를 선택해주세요.");
+            if (form.category.value === "none") {
+                alert("카테고리를 선택해주세요.");
                 return;
             }
 
-            if(form.title.value.trim().length == 0) {
-                toastWarning("제목을 작성해주세요.");
+            if (form.title.value.trim().length == 0) {
+                alert("제목을 작성해주세요.");
                 form.title.focus();
                 return;
             }
 
-            if(form.content.value.trim().length == 0) {
-                toastWarning("내용을 작성해주세요.");
+            if (form.content.value.trim().length == 0) {
+                alert("내용을 작성해주세요.");
                 form.content.focus();
                 return;
             }
 
-            if(form.email.value.trim().length == 0) {
-                toastWarning("이메일 주소를 작성해주세요.");
+            if (form.email.value.trim().length == 0) {
+                alert("이메일 주소를 작성해주세요.");
                 form.email.focus();
                 return;
             }
@@ -40,26 +40,31 @@
         }
     </script>
 
-    <h1 class="text-2xl mt-8 font-black">FAQ</h1>
-    <form class="w-full" th:action="@{/faq/create}" th:object="${FaqForm}" method="POST"
-          onsubmit="Validation__createFaq(this); return false;">
-        <div>
-            <select id="category" class="select select-bordered w-full mt-12">
-                <option value="none" disabled selected>카테고리를 선택해주세요.</option>
-                <option value="PRODUCt">상품 관련 문의</option>
-                <option value="SHIPPING">배송 관련 문의</option>
-                <option value="EXCHANGE">교환 관련 문의</option>
-                <option value="RETURN">반품 관련 문의</option>
-                <option value="ETC">기타 문의</option>
-            </select>
-            <input type="text" name="title" placeholder="제목" class="input input-bordered w-full mt-12" />
+    <div class="flex justify-center">
+        <div class="w-8/12">
+            <h1 class="text-2xl mt-8 font-black">FAQ</h1>
+            <form class="w-full" th:action="@{/faq/create}" th:object="${FaqForm}" method="POST"
+                  onsubmit="Validation__createFaq(this); return false;">
+                <div>
+                    <select id="category" name="category" class="select select-bordered w-full mt-12" onchange="changeCategory(this)">
+                        <option value="none" disabled selected>카테고리를 선택해주세요.</option>
+                        <option value="PRODUCT">상품 관련 문의</option>
+                        <option value="SHIPPING">배송 관련 문의</option>
+                        <option value="EXCHANGE">교환 관련 문의</option>
+                        <option value="RETURN">반품 관련 문의</option>
+                        <option value="ETC">기타 문의</option>
+                    </select>
+                    <input type="text" name="title" placeholder="제목" class="input input-bordered w-full mt-12"/>
+                </div>
+                <div>
+                    <textarea name="content" class="textarea textarea-bordered w-full h-96 mt-4"
+                              placeholder="내용을 작성해주세요."></textarea>
+                    <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12"/>
+                    <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
+                </div>
+            </form>
         </div>
-        <div>
-            <textarea name="content" class="textarea textarea-bordered w-full mt-4" placeholder="내용을 작성해주세요."></textarea>
-            <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12" />
-            <input type="submit" value="저장하기" class="btn btn-outline w-full h-96 mt-12">
-        </div>
-    </form>
+    </div>
 </main>
 
 </body>
