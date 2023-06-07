@@ -1,6 +1,8 @@
 package com.example.demo.boundedContext.faq.Controller;
 
+import com.example.demo.boundedContext.faq.Service.CommentService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
+import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.member.entity.Member;
@@ -32,6 +34,7 @@ import java.util.List;
 public class FaqController {
 
     private final FaqService faqService;
+    private final CommentService commentService;
     private final MemberService memberService;
     private final Rq rq;
 
@@ -54,7 +57,9 @@ public class FaqController {
     @GetMapping("/detail/{id}")
     public String showFaqDetail(@PathVariable Long id, Model model) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+        Comment comment = commentService.findByFaq(faq);
         model.addAttribute("faq", faq);
+        model.addAttribute("comment", comment);
         return "faq/faq";
     }
 
@@ -95,6 +100,11 @@ public class FaqController {
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable Long id, FaqForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+
+        if(faq.getTitle().equals(form.getTitle()) && faq.getContent().equals(form.getContent()) && faq.getEmail().equals(form.getEmail())) {
+            rq.historyBack("수정된 내용이 없습니다.");
+        }
+
         faqService.modify(faq, form.getTitle(), form.getContent(), form.getEmail());
         return "redirect:/faq/detail/%s".formatted(id);
     }

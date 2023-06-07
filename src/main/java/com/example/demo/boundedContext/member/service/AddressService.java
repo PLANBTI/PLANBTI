@@ -61,11 +61,9 @@ public class AddressService {
         return address;
     }
 
-    public Address modify(Member member, Long id, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
-        Address address = findByIdAndDeleteDateIsNull(id);
-
+    public Address modify(Member member, Address address, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
         if(!address.getMember().equals(member)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot access");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
         }
 
         Address modifiedAddress = address.toBuilder()
@@ -77,10 +75,6 @@ public class AddressService {
                 .isDefault(isDefault)
                 .build();
 
-        if (address.equals(modifiedAddress)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "already exists");
-        }
-
         publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
         addressRepository.save(modifiedAddress);
         return modifiedAddress;
@@ -89,7 +83,7 @@ public class AddressService {
     // soft-delete
     public void delete(Member member, Address address) {
         if(!address.getMember().equals(member)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot access");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
         }
 
         Address deletedAddress = address.toBuilder()

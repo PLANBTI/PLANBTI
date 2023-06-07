@@ -68,8 +68,14 @@ public class AddressController {
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        addressService.modify(member, id, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
+        Address address = addressService.findByIdAndDeleteDateIsNull(id);
 
+        if(address.getName().equals(form.getName()) && address.getAddr().equals(form.getAddr()) && address.getAddrDetail().equals(form.getAddrDetail()) &&
+                address.getZipCode().equals(form.getZipCode()) && address.getPhoneNumber().equals(form.getPhoneNumber())) {
+            rq.historyBack("수정된 내용이 없습니다.");
+        }
+
+        addressService.modify(member, address, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
         return "redirect:/member/profile";
     }
 

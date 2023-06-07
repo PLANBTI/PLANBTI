@@ -25,10 +25,4 @@ public class Address extends BaseEntity {
     private String phoneNumber;
     private boolean isDefault;
 
-    @Override
-    public boolean equals(Object o) {
-        Address address = (Address) o;
-        return this.getName().equals(address.getName()) && this.getAddr().equals(address.getAddr()) && this.getAddrDetail().equals(address.getAddrDetail()) &&
-                this.getZipCode().equals(address.getZipCode()) && this.getPhoneNumber().equals(address.getPhoneNumber()) && this.isDefault == address.isDefault;
-    }
 }

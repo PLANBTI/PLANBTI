@@ -35,8 +35,10 @@ public class CommentController {
         private String content;
     }
 
-    @GetMapping("/create")
-    public String create() {
+    @GetMapping("/create/{id}")
+    public String create(Model model, @PathVariable Long id) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+        model.addAttribute("faq", faq);
         return "comment/create";
     }
 
@@ -44,21 +46,24 @@ public class CommentController {
     public String create(@PathVariable Long faqId, @Valid CommentForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
         commentService.create(faq, form.getContent());
-        return "redirect:/faq/faqList";
+        return "redirect:/faq/detail/%s".formatted(faqId);
     }
 
     @GetMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, Model model) {
-        Comment comment = commentService.findByIdAndDeleteDateIsNull(id);
+    public String modify(@PathVariable Long faqId, Model model) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
+        Comment comment = commentService.findByFaq(faq);
+        model.addAttribute("faq", faq);
         model.addAttribute("comment", comment);
         return "comment/modify";
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, @Valid CommentForm form) {
-        Comment comment = commentService.findByIdAndDeleteDateIsNull(id);
+    public String modify(@PathVariable Long faqId, @Valid CommentForm form) {
+        Faq faq = faqService.findByIdAndDeleteDateIsNull(faqId);
+        Comment comment = commentService.findByFaq(faq);
         commentService.modify(comment, form.getContent());
-        return "redirect:/faq/faqList";
+        return "redirect:/faq/detail/%s".formatted(faqId);
     }
 
     @GetMapping("/delete/{id}")
