@@ -10,8 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 @EnableScheduling
 @EnableCaching
-@EnableAsync
-@EnableScheduling
 @EnableJpaAuditing
 @SpringBootApplication
 public class ProjectShopApplication {
