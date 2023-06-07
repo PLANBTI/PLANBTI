@@ -27,7 +27,7 @@
             <li><a>ENTJ</a></li>
         </ul>
         <div th:if="${!paging.isEmpty()}" class="flex flex-wrap xl:min-w-full">
-            <a href="#" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
+            <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
                 <img src="" class="h-44 bg-green-500"> <!-- 식물 이미지 -->
                 <div class="w-60 h-20 p-4">
                     <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>

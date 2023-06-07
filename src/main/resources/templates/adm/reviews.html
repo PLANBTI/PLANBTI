@@ -1,4 +1,4 @@
-<html layout:decorate="~{common/layout.html}">
+<html layout:decorate="~{adm/admLayout.html}">
 
 <head>
     <title>Admin Main | PLANBTI</title>
@@ -6,8 +6,30 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
-    리뷰 내역
+<main layout:fragment="main" class="container min-h-screen m-16">
+    <div class="flex">
+        <table class="grow table table-zebra">
+            <p class="text-2xl" th:if="${#lists.isEmpty(reviews)}">
+                상품평이 없습니다.
+            </p>
+            <thead th:if="${!#lists.isEmpty(reviews)}">
+            <tr>
+                <th>Review</th>
+                <th>Username</th>
+                <th>Product</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${reviews}">
+                <th th:text="${review.getId()}" class="w-20"></th>
+                <td th:text="${review.getMember().username}" class="w-40"></td>
+                <td th:text="${review.getProduct().name}" class="w-40"></td>
+                <td th:text="${review.getTitle()}" ><a th:href="@{/product/detail/{id}(id=${product.getId()})}"></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 </body>

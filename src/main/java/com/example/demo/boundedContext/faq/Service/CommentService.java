@@ -23,6 +23,10 @@ public class CommentService {
         return commentRepository.findByIdAndDeleteDateIsNull(id).orElseThrow(() -> new DataNotFoundException("comment not found"));
     }
 
+    public Comment findByFaq(Faq faq) {
+        return commentRepository.findByFaq(faq).orElseThrow(() -> new DataNotFoundException("comment not found"));
+    }
+
     public List<Comment> findAll() {
         return commentRepository.findAll();
     }

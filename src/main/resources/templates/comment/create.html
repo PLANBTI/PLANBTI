@@ -7,7 +7,33 @@
 <body>
 
 <main layout:fragment="main" class="container min-h-screen max-w-2xl">
-    코멘트 생성
+
+    <script>
+        function Validation__createComment(form) {
+            if(form.comment.value.trim().length == 0) {
+                toastWarning("코멘트를 입력해주세요.");
+                form.comment.focus();
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+
+    <h1 class="text-2xl mt-8" th:text="${faq.getCategory()}"></h1>
+    <h2 class="text-lg mt-2" th:text="|게시자 : ${faq.getMember().username}|"></h2>
+    <div class="divider"></div>
+    <h1 class="text-xl font-black" th:text="${faq.getTitle()}"></h1>
+    <div class="divider"></div>
+    <p class="h-96" th:text="${faq.getContent()}"></p>
+    <div class="divider"></div>
+
+    <form th:action="@{/comment/create/{id}(id=${faq.getId()})}" th:object="${CommentForm}" method="POST"
+          onsubmit="Validation__createComment(this); return false;">
+        <textarea name="comment" class="textarea textarea-bordered w-full" placeholder="코멘트를 입력해주세요."></textarea>
+        <a th:href="@{/comment/create/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12">저장하기</a>
+    </form>
+
 </main>
 
 </body>

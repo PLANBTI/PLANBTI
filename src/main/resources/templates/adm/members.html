@@ -1,4 +1,4 @@
-<html layout:decorate="~{common/layout.html}">
+<html layout:decorate="~{adm/admLayout.html}">
 
 <head>
     <title>Members | PLANBTI</title>
@@ -6,12 +6,12 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
+<main layout:fragment="main" class="container min-h-screen m-16 max-w-2xl">
     <div class="flex">
         <div class="overflow-x-auto">
-            <div class="alert shadow-lg w-96" th:if="${#lists.isEmpty(members)}">
-                <span>회원이 없습니다.</span>
-            </div>
+            <p class="text-2xl" th:if="${#lists.isEmpty(members)}">
+                회원이 없습니다.
+            </p>
             <table class="table w-full" th:if="${!#lists.isEmpty(members)}">
                 <thead>
                 <tr>

@@ -7,7 +7,22 @@
 <body>
 
 <main layout:fragment="main" class="container min-h-screen max-w-2xl">
-    문의글, 코멘트
+    <h1 class="text-2xl mt-8" th:text="${faq.getCategory()}"></h1>
+    <h2 class="text-lg mt-2" th:text="|게시자 : ${faq.getMember().username}|"></h2>
+    <div class="divider"></div>
+    <h1 class="text-xl font-black" th:text="${faq.getTitle()}"></h1>
+    <div class="divider"></div>
+    <p class="h-96" th:text="${faq.getContent()}"></p>
+    <div class="divider"></div>
+    <a th:unless="${comment != null}" th:if="${@rq.isAdmin()}" th:href="@{/comment/create/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12">코멘트 남기기</a>
+    <div th:if="${comment != null}">
+        <h1 class="font-black">관리자</h1>
+        <p class="mt-4">코멘트</p>
+        <div class="flex flex-row">
+            <a th:if="${@rq.isAdmin()}" th:href="@{/comment/modify/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12 mr-4 btn-sm">코멘트 수정하기</a>
+            <a th:if="${@rq.isAdmin()}" th:href="@{/comment/delete/{id}(id=${comment.getId()})}" class="btn btn-outline mt-12 btn-sm">코멘트 삭제하기</a>
+        </div>
+    </div>
 </main>
 
 </body>
