@@ -48,6 +48,9 @@ class ProductControllerTest {
     @DisplayName("product get요청")
     @Test
     void t1() throws Exception {
+
+        Mockito.when(productService.findById(1L)).thenReturn(Product.builder().name("product").count(100).build());
+
         mvc.perform(get("/product/detail/%d".formatted(1L)))
                 .andExpect(handler().handlerType(ProductController.class))
                 .andExpect(handler().methodName("viewDetailProduct"))
