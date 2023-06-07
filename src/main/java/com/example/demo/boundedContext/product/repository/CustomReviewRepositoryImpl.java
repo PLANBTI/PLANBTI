@@ -16,7 +16,7 @@ import static com.example.demo.boundedContext.product.entity.QReview.review;
 @RequiredArgsConstructor
 public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 
-    private final Long reviewCount = 10L;
+    private final static Long REVIEW_MAX_COUNT = 10L;
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
@@ -35,7 +35,7 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                 .where(product.id.eq(productId))
                 .orderBy(review.id.desc())
                 .offset(offset)
-                .limit(reviewCount)
+                .limit(REVIEW_MAX_COUNT)
                 .fetch();
     }
 
