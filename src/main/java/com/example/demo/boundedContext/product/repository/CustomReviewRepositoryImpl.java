@@ -33,6 +33,7 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                 .join(review.product, product)
                 .leftJoin(review.member, member)
                 .where(product.id.eq(productId))
+                .orderBy(review.id.desc())
                 .offset(offset)
                 .limit(reviewCount)
                 .fetch();

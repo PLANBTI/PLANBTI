@@ -39,7 +39,10 @@ public class ProductController {
 
     @ResponseBody
     @PostMapping("/more/{id}")
-    public List<ReviewDto> moreReview( @PathVariable(name = "id") Long productId,Long offset) {
+    public List<ReviewDto> moreReview( @PathVariable(name = "id") Long productId, Long offset) {
+
+        if (offset > 50L)
+            return null;
 
         return reviewService.findByProductId(productId,offset);
     }
