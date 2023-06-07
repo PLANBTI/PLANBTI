@@ -1,13 +1,37 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>Admin Main | PLANBTI</title>
+    <title>Members | PLANBTI</title>
 </head>
 
 <body>
 
 <main layout:fragment="main" class="container min-h-screen max-w-2xl">
-    회원 목록
+    <div class="flex">
+        <div class="overflow-x-auto">
+            <div class="alert shadow-lg w-96" th:if="${#lists.isEmpty(members)}">
+                <span>회원이 없습니다.</span>
+            </div>
+            <table class="table w-full" th:if="${!#lists.isEmpty(members)}">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+                </thead>
+                <tbody th:each="member: ${members}">
+                <tr>
+                    <td th:text="${member.getId()}"></td>
+                    <td th:text="${member.getUsername()}"></td>
+                    <td th:text="${member.getEmail()}"></td>
+                    <td th:text="${member.getPhoneNumber()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </main>
 
 </body>
