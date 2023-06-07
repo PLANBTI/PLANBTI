@@ -8,28 +8,39 @@
 
 <main layout:fragment="main" class="container min-h-screen m-16 w-full">
     <div class="flex">
-            <p class="text-2xl" th:if="${#lists.isEmpty(members)}">
-                회원이 없습니다.
-            </p>
-            <table class="table w-full" th:if="${!#lists.isEmpty(members)}">
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                </tr>
-                </thead>
-                <tbody th:each="member: ${members}">
-                <tr>
-                    <td th:text="${member.getId()}" class="w-20"></td>
-                    <td th:text="${member.getUsername()}" class="w-60"></td>
-                    <td th:text="${member.getEmail()}" class="w-60"></td>
-                    <td th:text="${member.getPhoneNumber()}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <p class="text-2xl" th:if="${#lists.isEmpty(members)}">
+            회원이 없습니다.
+        </p>
+        <table class="table w-full" th:if="${!#lists.isEmpty(members)}">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>가입 일시</th>
+                <th></th>
+                <th>탈퇴 일시</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody th:each="member: ${members}">
+            <tr>
+                <td th:text="${member.getId()}" class="w-20"></td>
+                <td th:text="${member.getUsername()}" class="w-60"></td>
+                <td th:text="${member.getEmail()}" class="w-60"></td>
+                <td th:text="${member.getPhoneNumber()}"></td>
+                <td th:text="${member.getCreateDate()}"></td>
+                <td th:if="${member.getDeleteDate() != null}">탈퇴한 회원</td>
+                <td th:if="${member.getDeleteDate() != null}" th:text="${member.getDeleteDate()}"></td>
+                <td th:unless="${member.getDeleteDate() != null}"></td>
+                <td th:unless="${member.getDeleteDate() != null}"></td>
+                <td><a class="btn btn-outline" th:href="@{/adm/deleteMember/{id}(id=${member.getId()})}">삭제</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+
 </main>
 
 </body>
