@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-//@PreAuthorize("hasRole('ADMIN')") 로컬 서버 테스트를 위해 주석 처리
 @RequestMapping("/comment")
 public class CommentController {
 

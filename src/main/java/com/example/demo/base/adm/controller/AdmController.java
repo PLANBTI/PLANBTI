@@ -16,9 +16,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-//@PreAuthorize("hasRole('ADMIN')") 로컬 서버에서의 테스트를 위해 주석 처리
 @RequestMapping("/adm")
-public class admController {
+public class AdmController {
 
     private final MemberService memberService;
     private final FaqService faqService;
