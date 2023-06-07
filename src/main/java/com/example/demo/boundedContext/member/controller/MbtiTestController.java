@@ -30,7 +30,7 @@ public class MbtiTestController {
 
     @GetMapping("/test")
     public String mbtiTestPage() {
-        return "mbtiTest/mbtiTest.html";
+        return "member/mbtiTest.html";
     }
     @GetMapping("/redirect")
     public String redirectToPage(Model model) {
@@ -43,7 +43,7 @@ public class MbtiTestController {
     @Value("${chatGpt.api-key}")
     private String chatGptkey;
 
-    @Cacheable(value = "mbtiTestCache", key = "#message")
+//    @Cacheable(value = "mbtiTestCache", key = "#message")
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response) {
         RestTemplate restTemplate = new RestTemplate();
