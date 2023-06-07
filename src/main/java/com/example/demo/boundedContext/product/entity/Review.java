@@ -15,10 +15,10 @@ import org.hibernate.annotations.SQLDelete;
 @Entity
 public class Review extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     private String title;
@@ -28,5 +28,11 @@ public class Review extends BaseEntity {
     @Column(length = 1000)
     private String image;
     private int rate;
+
+    public void addProduct(Product product) {
+        this.product = product;
+    }
+
+
 
 }
