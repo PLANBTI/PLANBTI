@@ -1,5 +1,10 @@
 package com.example.demo.base.initdata;
 import com.example.demo.base.Role;
+import com.example.demo.boundedContext.faq.entity.Comment;
+import com.example.demo.boundedContext.faq.entity.Faq;
+import com.example.demo.boundedContext.faq.entity.FaqCategory;
+import com.example.demo.boundedContext.faq.repository.CommentRepository;
+import com.example.demo.boundedContext.faq.repository.FaqRepository;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.boundedContext.category.repository.CategoryRepository;
@@ -30,6 +35,7 @@ public class CustomInitData {
     @Bean
     CommandLineRunner initData(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository, ProductRepository productRepository,
+                               FaqRepository faqRepository, CommentRepository commentRepository,
 
                                OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
 
@@ -91,6 +97,22 @@ public class CustomInitData {
                         .addresses(list).build();
                 memberRepository.save(modifiedUser);
 
+                Faq faq1 = Faq.builder()
+                        .member(user)
+                        .category(FaqCategory.PRODUCT)
+                        .title("test1")
+                        .content("test content1")
+                        .email(user.getEmail()).build();
+                faqRepository.save(faq1);
+
+                Faq faq2 = Faq.builder()
+                        .member(user)
+                        .category(FaqCategory.EXCHANGE)
+                        .title("test2")
+                        .content("test content2")
+                        .email(user.getEmail()).build();
+                faqRepository.save(faq2);
+
                 Member admin = Member.builder()
                         .username("admin")
                         .password(encode)
@@ -118,7 +140,13 @@ public class CustomInitData {
                                 .build()
                 );
 
-
+                Comment comment = Comment.builder()
+                        .faq(faq1)
+                        .content("test comment").build();
+                commentRepository.save(comment);
+                Faq modifiedFaq1 = faq1.toBuilder()
+                        .comment(comment).build();
+                faqRepository.save(modifiedFaq1);
             }
         };
     }

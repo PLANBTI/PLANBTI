@@ -1,8 +1,12 @@
-package com.example.demo.boundedContext.member.controller;
+package com.example.demo.boundedContext.faq.controller;
 
-import com.example.demo.boundedContext.member.entity.Address;
+import com.example.demo.boundedContext.faq.Controller.CommentController;
+import com.example.demo.boundedContext.faq.Controller.FaqController;
+import com.example.demo.boundedContext.faq.Service.CommentService;
+import com.example.demo.boundedContext.faq.Service.FaqService;
+import com.example.demo.boundedContext.faq.entity.Faq;
+import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.member.service.AddressService;
 import com.example.demo.boundedContext.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,81 +33,70 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class AddressControllerTest {
+public class CommentControllerTest {
 
-    @Autowired MockMvc mvc;
-    @Autowired AddressService addressService;
-    @Autowired MemberService memberService;
+    @Autowired
+    MockMvc mvc;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    FaqService faqService;
+    @Autowired
+    MemberService memberService;
 
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails("admin")
     @DisplayName("create")
     void t001() throws Exception {
+        Faq faq = faqService.findById(2L);
         ResultActions resultActions = mvc
-                .perform(post("/address/create")
+                .perform(post("/comment/create/2")
                         .with(csrf())
-                        .param("name", "테스트2")
-                        .param("addr", "서울시")
-                        .param("addrDetail", "동작구")
-                        .param("zipCode", "11111")
-                        .param("phoneNumber", "01012345678"))
+                        .param("content", "test content"))
                 .andDo(print());
 
         resultActions
-                .andExpect(handler().handlerType(AddressController.class))
+                .andExpect(handler().handlerType(CommentController.class))
                 .andExpect(handler().methodName("create"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Address> list = addressService.findByMember(member);
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(faq.getComment()).isNotNull();
+        assertThat(commentService.findAll().size()).isEqualTo(2);
     }
 
-
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails("admin")
     @DisplayName("modify")
     void t002() throws Exception {
+        Faq faq = faqService.findById(1L);
         ResultActions resultActions = mvc
-                .perform(post("/address/modify/1")
+                .perform(post("/comment/modify/1")
                         .with(csrf())
-                        .param("name", "테스트1 수정")
-                        .param("addr", "대구시")
-                        .param("addrDetail", "수성구")
-                        .param("zipCode", "22222")
-                        .param("phoneNumber", "01012345678")
-                )
+                        .param("content", "modify test content"))
                 .andDo(print());
 
         resultActions
-                .andExpect(handler().handlerType(AddressController.class))
+                .andExpect(handler().handlerType(CommentController.class))
                 .andExpect(handler().methodName("modify"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Address> list = addressService.findByMember(member);
-
-        assertThat(list.size()).isEqualTo(1);
-        assertThat(list.get(0).getAddr()).isEqualTo("대구시");
-        assertThat(list.get(0).getAddrDetail()).isEqualTo("수성구");
-        assertThat(list.get(0).getZipCode()).isEqualTo("22222");
+        assertThat(faq.getComment().getContent()).isEqualTo("modify test content");
     }
 
     @Test
-    @WithUserDetails("user1")
+    @WithUserDetails("admin")
     @DisplayName("delete")
-    void t003() throws Exception {
+    void t0023() throws Exception {
         ResultActions resultActions = mvc
-                .perform(get("/address/delete/1"))
+                .perform(get("/comment/delete/1"))
                 .andDo(print());
 
         resultActions
-                .andExpect(handler().handlerType(AddressController.class))
+                .andExpect(handler().handlerType(CommentController.class))
                 .andExpect(handler().methodName("delete"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Address> list = addressService.findByMember(member);
-        assertThat(list.size()).isEqualTo(0);
+        assertThat(commentService.findAll().size()).isEqualTo(0);
     }
+
 }
