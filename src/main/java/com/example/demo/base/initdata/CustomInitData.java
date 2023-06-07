@@ -55,7 +55,7 @@ public class CustomInitData {
                         .price(10000)
                         .name("product2").build());
 
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 20; i++) {
                     Review review = Review.builder()
                             .content("content!!!!"+i)
                             .title("title"+i)

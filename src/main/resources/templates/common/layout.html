@@ -52,6 +52,9 @@
         <a sec:authorize="isAnonymous()" href="/member/login" class="btn btn-active btn-sm">
             Sign in
         </a>
+        <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-active btn-sm">
+            Logout
+        </a>
     </div>
 </nav>
 
