@@ -6,8 +6,29 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
-    문의 내역
+<main layout:fragment="main" class="flex justify-center min-h-screen">
+    <div th:if="${#lists.isEmpty(faqList)}">
+        <p class="flex items-center text-2xl">문의 내역이 존재하지 않습니다.</p>
+    </div>
+    <div>
+        <table class="flex justify-center table table-zebra mt-16">
+            <p class="text-2xl font-black mt-16">My FAQ</p>
+            <thead th:if="${!#lists.isEmpty(faqList)}">
+            <tr>
+                <th>FAQ</th>
+                <th>Category</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="faq : ${faqList}">
+                <th th:text="${faq.getId()}" class="w-20"></th>
+                <td th:text="${faq.getCategoryToString()}" class="w-60"></td>
+                <td class="w-96"><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 </body>
