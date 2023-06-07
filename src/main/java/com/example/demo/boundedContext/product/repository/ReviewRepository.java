@@ -1,6 +1,5 @@
 package com.example.demo.boundedContext.product.repository;
 
-<<<<<<< HEAD
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
