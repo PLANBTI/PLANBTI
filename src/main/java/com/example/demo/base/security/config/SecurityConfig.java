@@ -32,8 +32,7 @@ public class SecurityConfig {
                         "/image/**", "/js/**", "/test/**", "/send","/").permitAll()
                 .anyRequest().authenticated());
 
-        http.csrf(c -> c.ignoringRequestMatchers("/send"));
-        http.csrf(c -> c.ignoringRequestMatchers("/test"));
+        http.csrf(c -> c.ignoringRequestMatchers("/send","/test"));
 
         return http.build();
     }
