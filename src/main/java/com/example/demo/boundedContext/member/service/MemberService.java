@@ -81,6 +81,11 @@ public class MemberService {
         memberRepository.save(deletedMember);
     }
 
+    // hard-delete
+    public void deleteHard(Long id) {
+        memberRepository.deleteHardById(id);
+    }
+
     public void whenAfterCreateAddress(Member member, Address address) {
         List<Address> list = member.getAddresses();
         list.add(address);

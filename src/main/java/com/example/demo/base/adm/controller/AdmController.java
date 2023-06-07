@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -33,6 +34,12 @@ public class AdmController {
         List<Member> members = memberService.findAll();
         model.addAttribute("members", members);
         return "adm/members";
+    }
+
+    @GetMapping("/deleteMember/{id}")
+    public String deleteMember(@PathVariable Long id) {
+        memberService.deleteHard(id);
+        return "redirect:/adm/members";
     }
 
     @GetMapping("/faq")
