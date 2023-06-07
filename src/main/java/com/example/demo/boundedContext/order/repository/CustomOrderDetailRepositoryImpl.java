@@ -34,6 +34,7 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
                 .from(order)
                 .join(order.orderDetailList, orderDetail)
                 .join(orderDetail.product, product)
+                .join(order.member,member)
                 .where(equalOrderId(orderId)
                         .and(equalMember(memberId))
                         .and(equalOrderItemId(orderItemId))
@@ -49,7 +50,7 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
         OrderDetail orderDetail1 = jpaQueryFactory.selectFrom(orderDetail)
                 .join(orderDetail.order, order)
                 .join(order.member, member)
-                .where(equalOrderId(orderItemId).and(equalMember(memberId)))
+                .where(equalOrderItemId(orderItemId).and(equalMember(memberId)))
                 .fetchOne();
 
         return Optional.ofNullable(orderDetail1);
@@ -68,6 +69,6 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
     }
 
     private BooleanExpression equalMember(Long memberId) {
-        return memberId != null ? order.member.id.eq(memberId) : null;
+        return memberId != null ? member.id.eq(memberId) : null;
     }
 }
