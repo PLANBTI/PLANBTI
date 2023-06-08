@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>꽃집 위치 찾기</title>
+    <title>꽃집 위치 찾기 | PLANBTI</title>
     <style>
         @font-face {
             font-family: 'SUITE-Regular';
@@ -204,7 +204,14 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/87140d707c.js" crossorigin="anonymous"></script>
-    <script src="/resource/common/common.css"></script>
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+    <script src="/resource/common/common.js"></script>
+    <link href="/resource/common/common.css" rel="stylesheet">
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d4cb97907ef54ce155227cdfd2b08889&libraries=services,clusterer"></script>
 </head>
@@ -217,10 +224,10 @@
                 <i class="fa-solid fa-bars"></i>
             </label>
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a href="/test">MBTI Test</a></li>
-                <li th:if="${@rq.isLogin()}"><a href="/member/mypage">My Page</a></li>
-                <li><a href="#">About</a></li>
-                <li th:if="${@rq.isLogin()}"><a href="/logout">Logout</a></li>
+                <li><a href="/test"><i class="fa-solid fa-file-lines"></i>MBTI Test</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/member/mypage"><i class="fa-solid fa-user"></i>My Page</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="#"><i class="fa-solid fa-clipboard-question"></i>FAQ</a></li>
+                <li><a href="#"><i class="fa-solid fa-tree"></i>About</a></li>
             </ul>
         </div>
     </div>
@@ -234,20 +241,23 @@
         <a href="/map" class="btn btn-ghost btn-circle">
             <i class="fa-regular fa-map"></i>
         </a>
-        <a href="#" class="btn btn-ghost btn-circle">
+        <a sec:authorize="isAuthenticated()" href="#" class="btn btn-ghost btn-circle">
             <i class="fa-regular fa-heart"></i>
         </a>
-        <a href="/member/shoppingbasket" class="btn btn-ghost btn-circle">
+        <a sec:authorize="isAuthenticated()" href="/member/shoppingbasket" class="btn btn-ghost btn-circle">
             <i class="fa-solid fa-cart-shopping"></i>
         </a>
-        <a href="/member/login" th:if="${!@rq.isLogin()}" class="btn btn-active btn-sm">
+        <a sec:authorize="isAnonymous()" href="/member/login" class="btn btn-active btn-sm">
             Sign in
+        </a>
+        <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-active btn-sm">
+            Logout
         </a>
     </div>
 </nav>
 
 <main class="w-full h-full p-40">
-    <h1 class="text-xl mb-10"><b>꽃집 위치 찾기</b></h1>
+    <h1 class="text-xl my-10"><i class="fa-brands fa-pagelines mr-2"></i><b>꽃집 위치 찾기</b></h1>
     <div class="map_wrap">
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 
