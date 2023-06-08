@@ -28,6 +28,22 @@ function requestOrder() {
     form.submit();
 }
 
+function requestBasket() {
+    const check = confirm("장바구니에 넣으시겠습니까?");
+    if (check) {
+        fetch(`/shopping/add?productId=${productId}`)
+            .then(res => res.text())
+            .then( data => {
+                console.log(data);
+                    alert(data);
+            })
+            .catch( data => {
+                    alert("장바구니에 넣는 데에 실패하였습니다.");
+            })
+    }
+
+}
+
 function moreReview() {
     const formData = new FormData();
     formData.append("offset", offset);
