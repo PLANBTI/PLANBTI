@@ -1,4 +1,4 @@
-package com.example.demo.base.exception;
+package com.example.demo.base.exception.handler;
 
 public class NotSupportUserLoginException extends RuntimeException {
     public NotSupportUserLoginException() {

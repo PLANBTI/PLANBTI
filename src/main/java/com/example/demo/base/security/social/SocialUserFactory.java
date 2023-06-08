@@ -1,6 +1,6 @@
 package com.example.demo.base.security.social;
 
-import com.example.demo.base.exception.NotSupportUserLoginException;
+import com.example.demo.base.exception.handler.NotSupportUserLoginException;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import com.example.demo.base.security.social.user.GoogleUser;
 import com.example.demo.base.security.social.user.KakaoUser;

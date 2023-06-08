@@ -1,7 +1,7 @@
 package com.example.demo.boundedContext.order.entity;
 
 import com.example.demo.base.entity.BaseEntity;
-import com.example.demo.base.exception.OrderException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;

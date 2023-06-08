@@ -1,7 +1,6 @@
 package com.example.demo.boundedContext.member.controller;
 
-import com.example.demo.base.exception.DataNotFoundException;
-import com.example.demo.base.security.CustomOAuth2User;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
@@ -14,7 +13,6 @@ import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.faq.service;
 
-import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.faq.Controller.FaqController;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
