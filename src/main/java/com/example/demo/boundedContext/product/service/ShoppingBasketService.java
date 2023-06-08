@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.product.service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.base.exception.handler.NotOwnerException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.product.entity.Product;
@@ -66,5 +67,13 @@ public class ShoppingBasketService {
                 .statusCode(SUCCESS)
                 .msg("장바구니에 상품을 담았습니다.")
                 .build();
+    }
+
+
+    @Transactional
+    public void checkOwner(Long shoppingId,Long memberId) {
+        ShoppingBasket basket = findById(shoppingId);
+        if (!basket.isOwner(memberId))
+            throw new NotOwnerException("당신은 이 장바구니의 소유자가 아닙니다.");
     }
 }

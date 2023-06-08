@@ -33,12 +33,12 @@ function requestBasket() {
     if (check) {
         fetch(`/shopping/add?productId=${productId}`)
             .then(res => res.text())
-            .then( data => {
+            .then(data => {
                 console.log(data);
-                    toastNotice(data);
+                toastNotice(data);
             })
-            .catch( data => {
-                    toastWarning("장바구니에 넣는 데에 실패하였습니다.");
+            .catch(data => {
+                toastWarning("장바구니에 넣는 데에 실패하였습니다.");
             })
     }
 
@@ -47,8 +47,6 @@ function requestBasket() {
 function moreReview() {
     const formData = new FormData();
     formData.append("offset", offset);
-
-
 
     fetch(`/product/more/${productId}`, {
         method: 'POST',
