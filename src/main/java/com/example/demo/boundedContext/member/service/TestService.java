@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.member.service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.MbtiTest;
+import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MbtiTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,16 @@ public class TestService {
         return test.get();
     }
 
-    public MbtiTest create(char result, String content) {
+    public boolean isTestExist(String result, String title, String content) {
+        return mbtiTestRepository.findByResultAndTitleAndContent(result, title, content).isPresent();
+    }
+
+    public MbtiTest create(Member member, String result, String title, String content) {
         MbtiTest test = MbtiTest
                 .builder()
+                .memberUsername(member.getUsername()) // 중요하지 않음
                 .result(result)
+                .title(title)
                 .content(content)
                 .build();
 
