@@ -7,24 +7,11 @@
 <body>
 
 <main layout:fragment="main" class="container mx-12 py-8 min-h-screen">
-    <div class="flex flex-row mt-24">
+    <div class="flex flex-col mt-24">
         <ul class="menu bg-base-100 w-60 flex-none">
-            <li><a>ISTJ</a></li>
-            <li><a>ISFJ</a></li>
-            <li><a>INFJ</a></li>
-            <li><a>INTJ</a></li>
-            <li><a>ISTP</a></li>
-            <li><a>ISFP</a></li>
-            <li><a>INFP</a></li>
-            <li><a>INTP</a></li>
-            <li><a>ESTP</a></li>
-            <li><a>ESFP</a></li>
-            <li><a>ENFP</a></li>
-            <li><a>ENTP</a></li>
-            <li><a>ESTJ</a></li>
-            <li><a>ESFJ</a></li>
-            <li><a>ENFJ</a></li>
-            <li><a>ENTJ</a></li>
+            <th:block th:each="category : ${categories}">
+                <li><a  th:href="@{/shop/(name=${category.name})}" th:text="${category.name}"></a></li>
+            </th:block>
         </ul>
         <div th:if="${!paging.isEmpty()}" class="flex flex-wrap xl:min-w-full">
             <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
