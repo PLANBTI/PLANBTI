@@ -3,6 +3,7 @@ package com.example.demo.base.exception.advice;
 import com.example.demo.base.exception.handler.NotOwnerException;
 import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.util.rq.Rq;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class CustomControllerAdvice {
     @ExceptionHandler(OrderException.class)
     public String badOrderRequest( Exception e) {
         return rq.historyBack(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OptimisticLockException.class)
+    public String optimisticLockException( Exception e) {
+        return rq.historyBack("죄송합니다 잠시후에 다시 이용해주세요.");
     }
 
 

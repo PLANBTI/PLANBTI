@@ -31,18 +31,9 @@ public class TossController {
     @GetMapping("/success")
     public String orderByToss(OrderRequest orderRequest) throws Exception {
 
-        try {
-            orderService.verifyRequest(orderRequest,rq.getMemberId());
-            tossPaymentService.requestPermitToss(orderRequest);
-
-            return rq.redirectWithMsg("/order/result","결제가 완료되었습니다.");
-
-        } catch (OrderException e1) {
-            return rq.historyBack("결제에 실패하였습니다.");
-
-        } catch (OptimisticLockException e2) {
-            return rq.historyBack("죄송합니다 잠시후에 다시 이용해주세요.");
-        }
+        orderService.verifyRequest(orderRequest,rq.getMemberId());
+        tossPaymentService.requestPermitToss(orderRequest);
+        return rq.redirectWithMsg("/order/result","결제가 완료되었습니다.");
     }
 
     @GetMapping(value = "fail")
