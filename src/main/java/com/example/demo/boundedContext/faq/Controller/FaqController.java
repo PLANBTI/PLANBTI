@@ -2,20 +2,14 @@ package com.example.demo.boundedContext.faq.Controller;
 
 import com.example.demo.boundedContext.faq.Service.CommentService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
+import com.example.demo.boundedContext.faq.dto.FaqDto;
+import com.example.demo.boundedContext.faq.dto.FaqModifyDto;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
-import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.util.rq.Rq;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-
-import static com.example.demo.boundedContext.faq.entity.FaqCategory.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -70,40 +62,11 @@ public class FaqController {
         return "faq/create";
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class FaqForm {
-        @NotBlank
-        private String title;
-        @Enumerated(EnumType.STRING)
-        private FaqCategory category;
-        @NotBlank
-        private String content;
-        @Email
-        private String email;
-    }
-
     @PostMapping("/create")
-    public String create(@Valid FaqForm form) {
+    public String create(@Valid FaqDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-
-        Enum category = getCategory(form.getCategory().toString());
-
-        Faq faq = faqService.create(member, category, form.getTitle(), form.getContent(), form.getEmail());
+        Faq faq = faqService.create(member, dto);
         return "redirect:/faq/detail/%s".formatted(faq.getId());
-    }
-
-    private Enum getCategory(String rawCategory) {
-        Enum category;
-        category = switch (rawCategory) {
-            case "PRODUCT" -> PRODUCT;
-            case "SHIPPING" -> SHIPPING;
-            case "EXCHANGE" -> EXCHANGE;
-            case "RETURN" -> RETURN;
-            default -> ETC;
-        };
-        return category;
     }
 
     @GetMapping("/modify/{id}")
@@ -114,12 +77,12 @@ public class FaqController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, FaqForm form) {
+    public String modify(@PathVariable Long id, FaqModifyDto dto) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
-        Faq modifiedFaq = faqService.modify(faq, form);
 
-        if(modifiedFaq == null) rq.historyBack("수정된 내용이 없습니다.");
+        if(dto.equals(faq)) rq.historyBack("수정된 내용이 없습니다.");
 
+        faqService.modify(faq, dto);
         return "redirect:/faq/detail/%s".formatted(id);
     }
 

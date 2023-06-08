@@ -4,7 +4,7 @@ import com.example.demo.base.event.EventAfterCreateAddress;
 import com.example.demo.base.event.EventAfterDeleteAddress;
 import com.example.demo.base.event.EventAfterModifyAddress;
 import com.example.demo.base.exception.handler.DataNotFoundException;
-import com.example.demo.boundedContext.member.controller.AddressController;
+import com.example.demo.boundedContext.member.dto.AddressDto;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,62 +25,49 @@ public class AddressService {
     private final ApplicationEventPublisher publisher;
 
     public Address findById(Long id) {
-        Optional<Address> address = addressRepository.findById(id);
-        if (address.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 주소입니다.");
-        }
-        return address.get();
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 주소지입니다."));
     }
 
     public Address findByIdAndDeleteDateIsNull(Long id) {
-        Optional<Address> address = addressRepository.findByIdAndDeleteDateIsNull(id);
-        if (address.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 주소입니다.");
-        }
-        return address.get();
+        return addressRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 주소지입니다."));
     }
 
     public List<Address> findByMember(Member member) {
         return addressRepository.findByMember(member);
     }
 
-    public Address create(Member member, String name, String addr, String addrDetail, String zipCode, String phoneNumber, boolean isDefault) {
+    public Address create(Member member, AddressDto dto, boolean isDefault) {
         Address address = Address.builder()
                 .member(member)
-                .name(name)
-                .addr(addr)
-                .addrDetail(addrDetail)
-                .zipCode(zipCode)
-                .phoneNumber(phoneNumber)
+                .name(dto.getName())
+                .addr(dto.getAddr())
+                .addrDetail(dto.getAddrDetail())
+                .zipCode(dto.getZipCode())
+                .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
         addressRepository.save(address);
-
         publisher.publishEvent(new EventAfterCreateAddress(this, member, address));
-
         return address;
     }
 
-    public Address modify(Member member, Address address, AddressController.AddressForm form, boolean isDefault) {
+    public Address modify(Member member, Address address, AddressDto dto, boolean isDefault) {
         if(!address.getMember().equals(member)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
         }
 
         Address modifiedAddress = address.toBuilder()
-                .name(form.getName())
-                .addr(form.getAddr())
-                .addrDetail(form.getAddrDetail())
-                .zipCode(form.getZipCode())
-                .phoneNumber(form.getPhoneNumber())
+                .name(dto.getName())
+                .addr(dto.getAddr())
+                .addrDetail(dto.getAddrDetail())
+                .zipCode(dto.getZipCode())
+                .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
-
-        if(address.equals(modifiedAddress)) {
-            return null;
-        }
-
-        publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
         addressRepository.save(modifiedAddress);
+        publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
         return modifiedAddress;
     }
 
@@ -97,5 +83,10 @@ public class AddressService {
 
         publisher.publishEvent(new EventAfterDeleteAddress(this, member, address));
         addressRepository.save(deletedAddress);
+    }
+
+    // hard-delete
+    public void deleteHard(Address address) {
+        addressRepository.delete(address);
     }
 }

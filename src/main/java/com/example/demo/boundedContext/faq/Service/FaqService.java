@@ -2,6 +2,8 @@ package com.example.demo.boundedContext.faq.Service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.faq.Controller.FaqController;
+import com.example.demo.boundedContext.faq.dto.FaqDto;
+import com.example.demo.boundedContext.faq.dto.FaqModifyDto;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
@@ -20,11 +22,13 @@ public class FaqService {
     private final FaqRepository faqRepository;
 
     public Faq findById(Long id) {
-        return faqRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Faq not found"));
+        return faqRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의입니다."));
     }
 
     public Faq findByIdAndDeleteDateIsNull(Long id) {
-        return faqRepository.findByIdAndDeleteDateIsNull(id).orElseThrow(() -> new DataNotFoundException("Faq not found"));
+        return faqRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의입니다."));
     }
 
     public List<Faq> findAll() {
@@ -35,25 +39,22 @@ public class FaqService {
         return faqRepository.findByMember(member);
     }
 
-    public Faq create(Member member, Enum category, String title, String content, String email) {
+    public Faq create(Member member, FaqDto dto) {
         Faq faq = Faq.builder()
                 .member(member)
-                .category((FaqCategory) category)
-                .title(title)
-                .content(content)
-                .email(email).build();
+                .category(dto.getCategory())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .email(dto.getEmail()).build();
         faqRepository.save(faq);
         return faq;
     }
 
-    public Faq modify(Faq faq, FaqController.FaqForm form) {
+    public Faq modify(Faq faq, FaqModifyDto dto) {
         Faq modifiedFaq = faq.toBuilder()
-                .title(form.getTitle())
-                .content(form.getContent())
-                .email(form.getEmail()).build();
-
-        if(faq.equals(modifiedFaq)) return null;
-
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .email(dto.getEmail()).build();
         faqRepository.save(modifiedFaq);
         return modifiedFaq;
     }
