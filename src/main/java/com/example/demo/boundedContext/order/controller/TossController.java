@@ -1,11 +1,9 @@
 package com.example.demo.boundedContext.order.controller;
 
-import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
 import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.util.rq.Rq;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -31,9 +29,9 @@ public class TossController {
     @GetMapping("/success")
     public String orderByToss(OrderRequest orderRequest) throws Exception {
 
-        orderService.verifyRequest(orderRequest,rq.getMemberId());
+        orderService.verifyRequest(orderRequest, rq.getMemberId());
         tossPaymentService.requestPermitToss(orderRequest);
-        return rq.redirectWithMsg("/order/result","결제가 완료되었습니다.");
+        return rq.redirectWithMsg("/order/result", "결제가 완료되었습니다.");
     }
 
     @GetMapping(value = "fail")
@@ -45,6 +43,6 @@ public class TossController {
         model.addAttribute("code", code);
         model.addAttribute("message", message);
 
-        return "redirect:/order/orderPage";
+        return rq.redirectWithMsg("/order/orderPage", "결제 실패");
     }
 }

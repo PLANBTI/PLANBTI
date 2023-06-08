@@ -35,10 +35,10 @@ function requestBasket() {
             .then(res => res.text())
             .then( data => {
                 console.log(data);
-                    alert(data);
+                    toastNotice(data);
             })
             .catch( data => {
-                    alert("장바구니에 넣는 데에 실패하였습니다.");
+                    toastWarning("장바구니에 넣는 데에 실패하였습니다.");
             })
     }
 
@@ -61,6 +61,7 @@ function moreReview() {
             });
         })
         .catch(error => {
+            toastWarning("리뷰를 더 불러올 수 없습니다.")
             console.error(error);
         });
 }
