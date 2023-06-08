@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.member.service;
 
-import com.example.demo.boundedContext.member.controller.AddressController;
+import com.example.demo.boundedContext.member.dto.AddressDto;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +24,9 @@ public class AddressServiceTest {
     @DisplayName("create")
     void t001() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        AddressDto dto = new AddressDto("테스트 1", "대구시", "수성구", "55555", "01012345678");
 
-        Address testAddress = addressService.create(user1, "테스트 1", "대구시", "수성구", "55555", "01012345678", false);
+        Address testAddress = addressService.create(user1, dto, false);
 
         assertThat(user1.getAddresses().size()).isEqualTo(2);
         assertThat(testAddress.equals(user1.getAddresses().get(1))).isTrue();
@@ -36,14 +37,9 @@ public class AddressServiceTest {
     void t002() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
         Address address = user1.getAddresses().get(0);
-        AddressController.AddressForm form = new AddressController.AddressForm();
-        form.setName("테스트 1");
-        form.setAddr("대구시");
-        form.setAddrDetail("수성구");
-        form.setZipCode("55555");
-        form.setPhoneNumber("01012345678");
+        AddressDto dto = new AddressDto("테스트 1", "대구시", "수성구", "55555", "01012345678");
 
-        Address testAddress = addressService.modify(user1, address, form, false);
+        Address testAddress = addressService.modify(user1, address, dto, false);
 
         assertThat(user1.getAddresses().size()).isEqualTo(1);
         assertThat(testAddress.getName()).isEqualTo(user1.getAddresses().get(0).getName());

@@ -1,16 +1,12 @@
 package com.example.demo.boundedContext.member.controller;
 
-import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.boundedContext.member.dto.AddressDto;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.AddressService;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,52 +23,34 @@ public class AddressController {
     private final MemberService memberService;
     private final Rq rq;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AddressForm {
-        private String name;
-        private String addr;
-        private String addrDetail;
-        @Size(min = 5, max = 7)
-        private String zipCode;
-        private String phoneNumber;
-    }
-
     @GetMapping("/create")
     public String create() {
         return "address/create";
     }
 
     @PostMapping("/create")
-    public String create(@Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+    public String create(@Valid AddressDto dto, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        addressService.create(member, form.getName(), form.getAddr(), form.getAddrDetail(), form.getZipCode(), form.getPhoneNumber(), isDefault);
+        addressService.create(member, dto, isDefault);
         return "redirect:/member/profile";
     }
 
     @GetMapping("/modify/{id}")
     public String modify(@PathVariable Long id, Model model) {
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
-
-        if (address == null) {
-            throw new DataNotFoundException("address not found");
-        }
-
         model.addAttribute("address", address);
         return "address/modify";
     }
 
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable Long id, @Valid AddressForm form, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
+    public String modify(@PathVariable Long id, @Valid AddressDto dto,
+                         @RequestParam(name = "isDefault", required = false) boolean isDefault) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
-        Address modifiedAddress = addressService.modify(member, address, form, isDefault);
 
-        if(modifiedAddress == null) {
-            rq.historyBack("수정된 내용이 없습니다.");
-        }
+        if(dto.equals(address)) rq.historyBack("수정된 내용이 없습니다.");
 
+        addressService.modify(member, address, dto, isDefault);
         return "redirect:/member/profile";
     }
 

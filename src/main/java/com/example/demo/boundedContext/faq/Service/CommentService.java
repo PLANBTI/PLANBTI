@@ -1,9 +1,9 @@
 package com.example.demo.boundedContext.faq.Service;
 
 import com.example.demo.base.event.EventAfterCreateComment;
-import com.example.demo.base.event.EventBeforeDeleteComment;
 import com.example.demo.base.event.EventAfterModifyComment;
 import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.base.event.EventBeforeDeleteComment;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.repository.CommentRepository;
@@ -21,15 +21,13 @@ public class CommentService {
     private final ApplicationEventPublisher publisher;
 
     public Comment findById(Long id) {
-        return commentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("comment not found"));
-    }
-
-    public Comment findByIdAndDeleteDateIsNull(Long id) {
-        return commentRepository.findByIdAndDeleteDateIsNull(id).orElseThrow(() -> new DataNotFoundException("comment not found"));
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 코멘트입니다."));
     }
 
     public Comment findByFaq(Faq faq) {
-        return commentRepository.findByFaq(faq).orElse(null);
+        return commentRepository.findByFaq(faq)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 코멘트입니다."));
     }
 
     public List<Comment> findAll() {

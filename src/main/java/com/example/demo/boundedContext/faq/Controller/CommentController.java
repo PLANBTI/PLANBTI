@@ -4,13 +4,13 @@ import com.example.demo.boundedContext.faq.Service.CommentService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
+import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +25,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final FaqService faqService;
+    private final Rq rq;
 
     @Data
     @NoArgsConstructor
@@ -61,13 +62,17 @@ public class CommentController {
     public String modify(@PathVariable Long id, @Valid CommentForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         Comment comment = commentService.findByFaq(faq);
-        commentService.modify(faq, comment, form.getContent());
+        String newContent = form.getContent();
+
+        if(comment.getContent().equals(newContent)) rq.historyBack("수정된 내용이 없습니다.");
+
+        commentService.modify(faq, comment, newContent);
         return "redirect:/faq/detail/%s".formatted(id);
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        Comment comment = commentService.findByIdAndDeleteDateIsNull(id);
+        Comment comment = commentService.findById(id);
         Faq faq = comment.getFaq();
         commentService.delete(faq, comment);
         return "redirect:/faq/detail/%s".formatted(id);

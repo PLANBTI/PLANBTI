@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.member.service;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,17 +43,16 @@ public class MemberServiceTest {
         memberRepository.save(test1);
     }
 
-
     @Test
     @DisplayName("modify")
     void t001() {
         Member member = memberService.findByUsernameAndDeleteDateIsNull("test1");
-        Member modifyMember = memberService.modify(member, "modify1@test.com", "01000000000");
+        MemberModifyDto dto = new MemberModifyDto("modify1@test.com", "01000000000");
 
-        Member afterModifyMember = memberService.findByUsernameAndDeleteDateIsNull("test1");
+        memberService.modify(member, dto);
 
-        assertThat(afterModifyMember.getEmail()).isEqualTo("modify1@test.com");
-        assertThat(afterModifyMember.getPhoneNumber()).isEqualTo("01000000000");
+        assertThat(member.getEmail()).isEqualTo("modify1@test.com");
+        assertThat(member.getPhoneNumber()).isEqualTo("01000000000");
     }
 
     @Test

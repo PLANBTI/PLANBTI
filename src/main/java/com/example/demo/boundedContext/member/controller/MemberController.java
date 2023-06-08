@@ -1,8 +1,8 @@
 package com.example.demo.boundedContext.member.controller;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.member.form.MemberModifyForm;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,6 @@ public class MemberController {
     @GetMapping("/mypage")
     public String showMyPage(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-
         model.addAttribute("member", member);
         return "member/myPage";
     }
@@ -46,7 +44,6 @@ public class MemberController {
     @GetMapping("/profile")
     public String showProfile(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-
         model.addAttribute("member", member);
         return "member/profile";
     }
@@ -54,17 +51,17 @@ public class MemberController {
     @GetMapping("/modify")
     public String modify(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-
         model.addAttribute("member", member);
         return "member/modify";
     }
 
     @PostMapping("/modify")
-    public String modify(@Valid MemberModifyForm form, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "member/modify";
-
+    public String modify(@Valid MemberModifyDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        memberService.modify(member, form.getEmail(), form.getPhoneNumber());
+
+        if(dto.equals(member)) rq.historyBack("수정된 내용이 없습니다.");
+
+        memberService.modify(member, dto);
         return "redirect:/member/profile";
     }
 
@@ -84,7 +81,6 @@ public class MemberController {
     @GetMapping("/testresult")
     public String showTestResult(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-
         model.addAttribute("testresults", member.getTests());
         return "member/testResult";
     }
@@ -93,7 +89,6 @@ public class MemberController {
     public String showOrderlist(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         List<Order> orderList = orderService.findAllByMember(member);
-
         model.addAttribute("orderList", orderList);
         return "member/orderlist";
     }

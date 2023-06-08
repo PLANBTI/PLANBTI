@@ -34,4 +34,9 @@ public class Address extends BaseEntity {
         Address address = (Address) o;
         return Objects.equals(name, address.name) && Objects.equals(addr, address.addr) && Objects.equals(addrDetail, address.addrDetail) && Objects.equals(zipCode, address.zipCode) && Objects.equals(phoneNumber, address.phoneNumber);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, addr, addrDetail, zipCode, phoneNumber);
+    }
 }

@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.member.entity;
 import com.example.demo.base.Role;
 import com.example.demo.base.convert.CustomConverter;
 import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -13,10 +14,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,4 +48,5 @@ public class Member extends BaseEntity {
     public void addRole(Role role) {
         this.authorities.add(role);
     }
+
 }

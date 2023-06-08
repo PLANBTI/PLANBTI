@@ -5,6 +5,7 @@ import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,31 +44,34 @@ public class MemberService {
     }
 
     public Member findById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByUsername(String username) {
-        return memberRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByIdAndDeleteDateIsNull(Long id) {
-        return memberRepository.findByIdAndDeleteDateIsNull(id).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
+        return memberRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public Member findByUsernameAndDeleteDateIsNull(String username) {
-        return memberRepository.findByUsernameAndDeleteDateIsNull(username).orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
+        return memberRepository.findByUsernameAndDeleteDateIsNull(username)
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
 
-    public Member modify(Member member, String email, String phoneNumber) {
+    public Member modify(Member member, MemberModifyDto dto) {
         Member modifiedMember = member.toBuilder()
-                .email(email)
-                .phoneNumber(phoneNumber)
+                .email(dto.getEmail())
+                .phoneNumber(dto.getPhoneNumber())
                 .build();
-
         memberRepository.save(modifiedMember);
         return modifiedMember;
     }
@@ -77,7 +81,6 @@ public class MemberService {
         Member deletedMember = member.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();
-
         memberRepository.save(deletedMember);
     }
 

@@ -71,7 +71,6 @@ public class FaqControllerTest {
                 .perform(post("/faq/modify/1")
                         .with(csrf())
                         .param("title", "문의 제목 수정")
-                        .param("category", String.valueOf(FaqCategory.PRODUCT))
                         .param("content", "문의 내용 수정")
                         .param("email", "test2@test.com"))
                 .andDo(print());
