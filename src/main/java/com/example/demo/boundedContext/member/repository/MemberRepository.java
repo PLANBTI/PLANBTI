@@ -14,7 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> ,CustomMem
 
     Optional<Member> findByUsernameAndDeleteDateIsNull(String username);
 
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "DELETE FROM member WHERE id = ?1", nativeQuery = true)
     void deleteHardById(Long id);
 }
