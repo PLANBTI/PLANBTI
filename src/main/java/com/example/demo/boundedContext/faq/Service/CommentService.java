@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +27,7 @@ public class CommentService {
     }
 
     public Comment findByFaq(Faq faq) {
-        return commentRepository.findByFaq(faq)
-                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 코멘트입니다."));
+        return commentRepository.findByFaq(faq).orElse(null);
     }
 
     public List<Comment> findAll() {
