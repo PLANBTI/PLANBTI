@@ -6,15 +6,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
 @Entity
 public class Category extends BaseEntity {
-
-    @Column(nullable = false)
-    @Id
-    private Long id;
     private String name;
-
 }
