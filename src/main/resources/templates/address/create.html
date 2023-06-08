@@ -11,31 +11,31 @@
         function Validation__createAddr(form) {
 
             if (form.name.value.trim().length == 0) {
-                alert("이름을 정확히 입력해주세요.");
+                toastWarning("이름을 정확히 입력해주세요.");
                 form.name.focus();
                 return;
             }
 
             if (form.addr.value.trim().length == 0) {
-                alert("주소를 정확히 입력해주세요.");
+                toastWarning("주소를 정확히 입력해주세요.");
                 form.addr.focus();
                 return;
             }
 
             if (form.addrDetail.value.trim().length == 0) {
-                alert("상세 주소를 정확히 입력해주세요.");
+                toastWarning("상세 주소를 정확히 입력해주세요.");
                 form.addrDetail.focus();
                 return;
             }
 
             if (form.zipCode.value.trim().length < 5 || form.zipCode.value.trim().length > 7) {
-                alert("우편번호를 정확히 입력해주세요.");
+                toastWarning("우편번호를 정확히 입력해주세요.");
                 form.zipCode.focus();
                 return;
             }
 
             if (form.phoneNumber.value.trim().length == 0) {
-                alert("연락처를 정확히 입력해주세요.");
+                toastWarning("연락처를 정확히 입력해주세요.");
                 form.phoneNumber.focus();
                 return;
             }
