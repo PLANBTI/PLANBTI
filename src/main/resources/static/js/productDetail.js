@@ -48,20 +48,25 @@ function moreReview() {
     const formData = new FormData();
     formData.append("offset", offset);
 
+
+
     fetch(`/product/more/${productId}`, {
         method: 'POST',
         body: formData
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            if (data.length === 0) {
+                toastWarning("리뷰를 더 불러올 수 없습니다.")
+                button.classList.add("hidden");
+                return;
+            }
             data.forEach(review => {
                 appendReviews(review);
                 offset += 1;
             });
         })
         .catch(error => {
-            toastWarning("리뷰를 더 불러올 수 없습니다.")
             console.error(error);
         });
 }
