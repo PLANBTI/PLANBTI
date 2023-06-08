@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,14 +33,18 @@ public class TestService {
         return test.get();
     }
 
-    public boolean isTestExist(String result, String title, String content) {
-        return mbtiTestRepository.findByResultAndTitleAndContent(result, title, content).isPresent();
+    public boolean isTestExist(String memberUsername, String result, String title, String content) {
+        return mbtiTestRepository.findByMemberUsernameAndResultAndTitleAndContent(memberUsername, result, title, content).isPresent();
+    }
+
+    public List<MbtiTest> findAllTestsByMember(Member member) {
+        return mbtiTestRepository.findAllByMemberUsername(member.getUsername());
     }
 
     public MbtiTest create(Member member, String result, String title, String content) {
         MbtiTest test = MbtiTest
                 .builder()
-                .memberUsername(member.getUsername()) // 중요하지 않음
+                .memberUsername(member.getUsername())
                 .result(result)
                 .title(title)
                 .content(content)
