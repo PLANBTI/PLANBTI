@@ -46,11 +46,11 @@ public class CustomControllerAdvice {
 
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(NotOwnerException.class)
     public String notOwnerException(HttpServletRequest request, Exception e) {
         log.error("NotOwnerException 발생", e);
         log.info("NotOwnerException 발생 | [사용자 IP] ={}", request.getRemoteAddr());
-        return rq.historyBack(e.getMessage());
+        return rq.redirectWithMsg("/",e.getMessage());
     }
 }

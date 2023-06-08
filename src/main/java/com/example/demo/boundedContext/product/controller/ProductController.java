@@ -6,6 +6,7 @@ import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
+import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +25,14 @@ public class ProductController {
     private final Rq rq;
     private final ReviewService reviewService;
     private final ProductService productService;
+    private final ShoppingBasketService shoppingBasketService;
     private final ProductFacade productFacade;
 
     @GetMapping("/detail/{id}")
     public String viewDetailProduct(Model model, @PathVariable(name = "id") Long productId) {
 
         Product product = productService.findById(productId);
-        List<ReviewDto> reviewList = reviewService.findByProductId(productId,0L);
+        List<ReviewDto> reviewList = reviewService.findByProductId(productId, 0L);
         model.addAttribute("product", product);
         model.addAttribute("reviewList", reviewList);
 
@@ -39,12 +41,12 @@ public class ProductController {
 
     @ResponseBody
     @PostMapping("/more/{id}")
-    public List<ReviewDto> moreReview( @PathVariable(name = "id") Long productId, Long offset) {
+    public List<ReviewDto> moreReview(@PathVariable(name = "id") Long productId, Long offset) {
 
         if (offset > 50L)
             return null;
 
-        return reviewService.findByProductId(productId,offset);
+        return reviewService.findByProductId(productId, offset);
     }
 
     @PostMapping("/order")
@@ -61,7 +63,20 @@ public class ProductController {
 
         productFacade.createOrderOne(dto, rq.getMemberId());
 
-        return rq.redirectWithMsg("/order/orderPage","주문하러 가기");
+        return rq.redirectWithMsg("/order/orderPage", "주문하러 가기");
+    }
+
+    @PostMapping("/basketOrder")
+    public String basketOrder(@RequestParam("selectedProducts") List<Long> selectedProducts,
+                              Long shoppingId) {
+
+        shoppingBasketService.checkOwner(shoppingId, rq.getMemberId());
+
+        for (Long productId : selectedProducts) {
+            productFacade.createOrderOne(new ProductOrderDto(productId, 1), rq.getMemberId());
+        }
+
+        return rq.redirectWithMsg("/order/orderPage", "주문하러 가기");
     }
 
 

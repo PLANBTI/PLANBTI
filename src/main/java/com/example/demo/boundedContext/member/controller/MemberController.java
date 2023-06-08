@@ -1,6 +1,5 @@
 package com.example.demo.boundedContext.member.controller;
 
-import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
@@ -19,13 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@PreAuthorize("isAuthenticated()")
 public class MemberController {
 
     private final MemberService memberService;
@@ -59,7 +56,7 @@ public class MemberController {
     public String modify(@Valid MemberModifyDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        if(dto.isSame(member)) rq.historyBack("수정된 내용이 없습니다.");
+        if (dto.isSame(member)) rq.historyBack("수정된 내용이 없습니다.");
 
         memberService.modify(member, dto);
         return "redirect:/member/profile";
@@ -68,13 +65,12 @@ public class MemberController {
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        try {
-            ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member.getId());
-            List<Product> products = shoppingBasket.getProducts();
-            model.addAttribute("products", products);
-        } catch (DataNotFoundException e) {
-            model.addAttribute("products", new ArrayList<Product>());
-        }
+
+        ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member.getId());
+        List<Product> products = shoppingBasket.getProducts();
+        model.addAttribute("shoppingId",shoppingBasket.getId());
+        model.addAttribute("products", products);
+
         return "member/shoppingbasket";
     }
 

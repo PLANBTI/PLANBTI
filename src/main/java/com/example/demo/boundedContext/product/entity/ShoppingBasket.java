@@ -2,10 +2,7 @@ package com.example.demo.boundedContext.product.entity;
 
 import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.boundedContext.member.entity.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -20,7 +17,7 @@ import java.util.Optional;
 @Entity
 public class ShoppingBasket extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @Builder.Default
@@ -44,6 +41,10 @@ public class ShoppingBasket extends BaseEntity {
 
     public void addCount(int count) {
         this.count += count;
+    }
+
+    public boolean isOwner(Long memberId) {
+        return member.getId().equals(memberId);
     }
 
 }
