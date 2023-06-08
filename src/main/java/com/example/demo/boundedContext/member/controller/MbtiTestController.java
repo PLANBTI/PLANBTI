@@ -49,10 +49,10 @@ public class MbtiTestController {
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response) {
         RestTemplate restTemplate = new RestTemplate();
-//        if (!checkMessage(message)) {
-//            // 요청 값이 유효하지 않을 경우 에러 처리
-//            return ResponseEntity.badRequest().body("Invalid request");
-//        }
+        if (!isValidMBTI(message)) {
+            // 요청 값이 유효하지 않을 경우 에러 처리
+            return ResponseEntity.badRequest().body("Invalid request");
+        }
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://api.openai.com/v1/chat/completions")
@@ -64,7 +64,6 @@ public class MbtiTestController {
         httpHeaders.add("Authorization", "Bearer " + chatGptkey);
 
         ArrayList<MbtiTestController.Message> list = new ArrayList<>();
-//        list.add(new MbtiTestController.Message("user", message));
         list.add(new MbtiTestController.Message("user", "(이름)" + "(설명)" + "양식으로" + message + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로, \"(설명)\"은 p 태그로 보여줘(\n은 제외시켜줘)"));
 
 
@@ -75,62 +74,25 @@ public class MbtiTestController {
         ResponseEntity<String> responseEntity = restTemplate.exchange(httpEntity, String.class);
 
         String responseBody = responseEntity.getBody();
-//        String plantName = "";
-//        String plantDescription = "";
-        // JSON에서 식물 이름만 추출
-//        String originalString = responseBody;
-//        String originalString1 = responseBody;
-//        String originalString2 = responseBody;
-//        String patternString1 = "<h1>(.*?)</h1>;
-//        String patternString2 = "<p>(.*?)</p>";
-////        String patternString = "\"content\":\"(.*?)\"";
-//        Pattern pattern = Pattern.compile(patternString);
-//        Matcher matcher = pattern.matcher(originalString);
-//
-//        String patternString2 = "<p>(.*?)</p>";
-//        Pattern pattern2 = Pattern.compile(patternString2);
-//        Matcher matcher2 = pattern2.matcher(originalString2);
-//
-//
-//        if (matcher.find()) {
-////            String mbtiTestResult = matcher.group(1);
-//            String plantName = matcher.group(1);
-//            String plantDescription = matcher.group(2);
-////            String mbtiTestResult = matcher.group(1);
-//            // 쿠키 결과 추가
-//            setCookie(response, "mbti", message);
-//            setCookie(response, "plantName", plantName);
-////            setCookie(response, "plantName", plantName);
-//            setCookie(response, "plantDescription", plantDescription);
-//        }
-//        if(matcher2.find()){
-//            String plantDescription = matcher2.group(1);
-//            setCookie(response, "plantDescription", plantDescription);
-//        }
-//        String responseBody = responseEntity.getBody();
 
         setCookie(response, "mbti", message);
 
-        // Extract plant name from <h1> tag and set cookie
+        // <h1> 태그에서 plantName 추출 후 쿠키 설정
         extractContentAndSetCookie(responseBody, response, "<h1>(.*?)</h1>", "plantName");
 
-        // Extract plant description from <p> tag and set cookie
+        // <p> 태그에서 plantDescription 추출 후 쿠키 설정
         extractContentAndSetCookie(responseBody, response, "<p>(.*?)</p>", "plantDescription");
 
         return responseEntity;
     }
-    // 유효성 검증 체크 메소드
-    private boolean checkMessage(String message) {
-        String pattern = "([IE][SN][TF][PJ])";
-        Pattern mbtiPattern = Pattern.compile(pattern);
-        Matcher matcher = mbtiPattern.matcher(message);
 
-        String compare = "";
-        if (matcher.find()) {
-            String mbti = matcher.group(1).replace("\\n", ""); ;
-            compare = "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로, \"(설명)\"은 p 태그로 보여줘";
-        }
-        return message.equals(compare);
+    // MBTI 유형 검증 메소드
+    private boolean isValidMBTI(String mbti) {
+        String pattern = "^([IE][SN][TF][PJ])$";
+        Pattern mbtiPattern = Pattern.compile(pattern);
+        Matcher matcher = mbtiPattern.matcher(mbti);
+
+        return matcher.matches();
     }
 
     private void extractContentAndSetCookie(String responseBody, HttpServletResponse response, String patternString, String cookieName) {
@@ -139,7 +101,7 @@ public class MbtiTestController {
 
         if (matcher.find()) {
             String content = matcher.group(1);
-            // Add content to cookie
+            // 쿠키 추가
             setCookie(response, cookieName, content);
         }
     }
@@ -154,8 +116,6 @@ public class MbtiTestController {
             response.addCookie(cookie);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-//        Cookie cookie = new Cookie(name, value);
-//        response.addCookie(cookie);
         }
     }
 

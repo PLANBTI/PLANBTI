@@ -9,8 +9,7 @@ import java.util.Optional;
 
 public interface MbtiTestRepository extends JpaRepository<MbtiTest, Long> {
     Optional<MbtiTest> findByIdAndDeleteDateIsNull(Long id);
-    Optional<MbtiTest> findByMemberUsernameAndResultAndTitleAndContent(String memberUsername, String result, String title, String content);
-
+    Optional<MbtiTest> findByMemberUsernameAndResultAndTitle(String memberUsername, String result, String title);
     List<MbtiTest> findAllByMemberUsername(String memberUsername);
 
 }
