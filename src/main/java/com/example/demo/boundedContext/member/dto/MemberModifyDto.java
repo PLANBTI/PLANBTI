@@ -20,14 +20,7 @@ public class MemberModifyDto {
     @NotBlank
     private String phoneNumber;
 
-    @Override
-    public boolean equals(Object o) {
-        Member member = (Member) o;
-        return Objects.equals(email, member.getEmail()) && Objects.equals(phoneNumber, member.getPhoneNumber());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, phoneNumber);
+    public boolean isSame(Member member) {
+        return email.equals(member.getEmail()) && phoneNumber.equals(member.getPhoneNumber());
     }
 }

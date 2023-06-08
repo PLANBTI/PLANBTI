@@ -29,15 +29,8 @@ public class AddressDto {
     @NotBlank
     private String phoneNumber;
 
-    @Override
-    public boolean equals(Object o) {
-        Address address = (Address) o;
-        return Objects.equals(name, address.getName()) && Objects.equals(addr, address.getAddr()) && Objects.equals(addrDetail, address.getAddrDetail())
-                && Objects.equals(zipCode, address.getZipCode()) && Objects.equals(phoneNumber, address.getPhoneNumber());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, addr, addrDetail, zipCode, phoneNumber);
+    public boolean isSame(Address address) {
+        return name.equals(address.getName()) && addr.equals(address.getAddr()) && addrDetail.equals(address.getAddrDetail())
+                && zipCode.equals(address.getZipCode()) && phoneNumber.equals(address.getPhoneNumber());
     }
 }

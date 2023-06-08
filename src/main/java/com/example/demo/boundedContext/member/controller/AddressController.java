@@ -48,7 +48,7 @@ public class AddressController {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
 
-        if(dto.equals(address)) rq.historyBack("수정된 내용이 없습니다.");
+        if(dto.isSame(address)) rq.historyBack("수정된 내용이 없습니다.");
 
         addressService.modify(member, address, dto, isDefault);
         return "redirect:/member/profile";
