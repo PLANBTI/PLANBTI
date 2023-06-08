@@ -106,9 +106,6 @@ public class CustomInitData {
                     reviewRepository.save(review);
                 }
 
-
-
-
                 String encode = passwordEncoder.encode("1111");
                 Member user = Member.builder()
                         .username("user1")
