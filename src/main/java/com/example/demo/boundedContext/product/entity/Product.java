@@ -1,7 +1,7 @@
 package com.example.demo.boundedContext.product.entity;
 
 import com.example.demo.base.entity.BaseEntity;
-import com.example.demo.base.exception.OrderException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.*;

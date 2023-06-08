@@ -1,11 +1,7 @@
 package com.example.demo.boundedContext.order.infra;
 
 import com.example.demo.base.AppEnv;
-import com.example.demo.base.exception.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
-import com.example.demo.boundedContext.order.service.OrderService;
-import com.example.demo.util.rq.Rq;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

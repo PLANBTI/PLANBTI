@@ -1,4 +1,4 @@
-package com.example.demo.base.exception;
+package com.example.demo.base.exception.handler;
 
 public class OrderException extends RuntimeException {
     public OrderException() {

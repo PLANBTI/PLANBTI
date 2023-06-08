@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.order.service;
 
-import com.example.demo.base.exception.OrderException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.dto.OrderRequest;

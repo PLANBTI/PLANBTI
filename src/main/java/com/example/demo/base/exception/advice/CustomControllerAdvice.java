@@ -1,5 +1,7 @@
-package com.example.demo.base.exception;
+package com.example.demo.base.exception.advice;
 
+import com.example.demo.base.exception.handler.NotOwnerException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.util.rq.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

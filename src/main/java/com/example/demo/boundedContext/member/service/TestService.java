@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.member.service;
 
-import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.MbtiTest;
 import com.example.demo.boundedContext.member.repository.MbtiTestRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.product.service;
 
-import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

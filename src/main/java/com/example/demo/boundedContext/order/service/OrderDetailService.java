@@ -1,7 +1,7 @@
 package com.example.demo.boundedContext.order.service;
 
-import com.example.demo.base.exception.DataNotFoundException;
-import com.example.demo.base.exception.NotOwnerException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.base.exception.handler.NotOwnerException;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
