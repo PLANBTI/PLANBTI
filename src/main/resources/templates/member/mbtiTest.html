@@ -158,12 +158,12 @@
                 ($("#TF").val() < 2) ? mbti += "F" : mbti += "T";
                 ($("#JP").val() < 2) ? mbti += "P" : mbti += "J";
               
-                message += "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
+                // message += "(이름)" + "(설명)" + "양식으로" + mbti + "에 어울리는 흔한 식물 하나만 추천해줘 \"(이름)\"은 h1 태그로 보여줘";
 
                 $.ajax({
                     url: "/send",
                     type: "POST",
-                    data: {message: message},
+                    data: {message: mbti},
                     success: function (response) {
                         var chatContainer = $("#chat-container");
                         var assistantMessage = response.choices[0].message.content;
