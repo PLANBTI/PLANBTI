@@ -3,10 +3,7 @@ package com.example.demo.boundedContext.member.entity;
 import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -16,7 +13,9 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class MbtiTest extends BaseEntity {
 
-    private char result;
+    private String memberUsername;
+    private String result;
+    private String title;
     private String content;
 
     @ManyToOne
