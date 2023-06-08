@@ -6,15 +6,17 @@
 
 <body>
 
-<main layout:fragment="main" class="container mx-auto py-40 max-w-2xl">
-    <div id="image" style="width: 200px; height: 200px; background-color: green; margin-top: 50px;"></div> <!-- jdenticon 사용 -->
-    <div th:text="|${member.username} 님|" class="pt-4 font-extrabold text-xl"></div>
-    <div class="flex flex-col mt-8">
-        <a href="/member/profile" class="btn btn-outline mt-12">회원 정보</a>
-        <a href="/member/shoppingbasket" class="btn btn-outline mt-12">장바구니</a>
-        <a href="/member/testresult" class="btn btn-outline mt-12">테스트 결과 조회</a>
-        <a href="/member/orderlist" class="btn btn-outline mt-12">주문 내역</a>
-        <a href="/faq/myFaq" class="btn btn-outline mt-12">문의 내역</a>
+<main layout:fragment="main" class="w-screen h-screen">
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <div id="image" style="width: 200px; height: 200px; background-color: green; margin-top: 50px;"></div> <!-- jdenticon 사용 -->
+        <div th:text="|${member.username} 님|" class="pt-4 font-extrabold text-xl"></div>
+        <div class="flex flex-col w-6/12">
+            <a href="/member/profile" class="btn btn-outline mt-12">회원 정보</a>
+            <a href="/member/shoppingbasket" class="btn btn-outline mt-12">장바구니</a>
+            <a href="/member/testresult" class="btn btn-outline mt-12">테스트 결과 조회</a>
+            <a href="/member/orderlist" class="btn btn-outline mt-12">주문 내역</a>
+            <a href="/faq/myFaq" class="btn btn-outline mt-12">문의 내역</a>
+        </div>
     </div>
 </main>
 

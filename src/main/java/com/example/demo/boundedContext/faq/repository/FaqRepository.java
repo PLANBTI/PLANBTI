@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface FaqRepository extends JpaRepository<Faq, Long> {
     Optional<Faq> findByIdAndDeleteDateIsNull(Long id);
-    List<Faq> findByMember(Member member);
+    List<Faq> findByMemberAndDeleteDateIsNull(Member member);
 }

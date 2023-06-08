@@ -209,8 +209,8 @@
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d4cb97907ef54ce155227cdfd2b08889&libraries=services,clusterer"></script>
 </head>
 
-<body class="flex flex-col">
-<nav class="navbar bg-base-100 flex drop-shadow-md">
+<body class="flex flex-col w-screen h-screen">
+<nav class="navbar bg-base-100 flex grow-0 drop-shadow-md">
     <div class="navbar-start">
         <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -246,7 +246,7 @@
     </div>
 </nav>
 
-<main class="container mx-auto pt-20 pb-40 min-h-screen">
+<main class="w-full h-full p-40">
     <h1 class="text-xl mb-10"><b>꽃집 위치 찾기</b></h1>
     <div class="map_wrap">
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>

@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main" class="w-screen min-h-screen">
+<main layout:fragment="main" class="w-screen h-screen">
 
     <script>
 
@@ -40,10 +40,10 @@
         }
     </script>
 
-    <div class="flex justify-center">
-        <div class="w-8/12">
-            <h1 class="text-2xl mt-8 font-black">FAQ</h1>
-            <form class="w-full" th:action="@{/faq/create}" th:object="${FaqForm}" method="POST"
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <h1 class="text-2xl font-black">FAQ</h1>
+        <div class="w-6/12">
+            <form th:action="@{/faq/create}" th:object="${FaqForm}" method="POST"
                   onsubmit="Validation__createFaq(this); return false;">
                 <div>
                     <select id="category" name="category" class="select select-bordered w-full mt-12" onchange="changeCategory(this)">

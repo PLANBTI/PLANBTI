@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main" class="flex flex-col container mx-auto min-h-screen max-w-2xl">
+<main layout:fragment="main" class="w-screen h-screen">
 
     <script>
         function Validation__modifyFaq(form) {
@@ -32,9 +32,9 @@
             form.submit();
         }
     </script>
-<div class="w-full">
-    <h1 class="text-2xl mt-8 font-black">FAQ</h1>
-    <form class="w-full" th:action="@{/faq/modify/{id}(id=${faq.getId()})}" th:object="${FaqForm}" method="POST"
+<div class="w-full h-full flex flex-col justify-center items-center">
+    <h1 class="text-2xl font-black">FAQ</h1>
+    <form class="w-6/12" th:action="@{/faq/modify/{id}(id=${faq.getId()})}" th:object="${FaqForm}" method="POST"
           onsubmit="Validation__modifyFaq(this); return false;">
         <div>
             <input type="text" name="title" placeholder="제목" th:value="${faq.getTitle()}" class="input input-bordered w-full mt-12" />
