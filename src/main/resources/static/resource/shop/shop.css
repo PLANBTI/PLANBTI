@@ -1,0 +1,133 @@
+@font-face {
+    font-family: "TTWanjudaedunsancheB";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2")
+    format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: "SUITE-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2")
+    format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+#title {
+    font-family: "TTWanjudaedunsancheB";
+    font-size: 1.5rem;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "SUITE-Regular";
+}
+ul{padding:0; margin:0}
+
+.nav a, .nav label {
+    display: block;
+    width:150px;
+    height:50px;line-height:50px;
+    text-align:center;
+    color:#000000;
+    background-color: #E6FFE6	;
+    -webkit-transition: all .25s ease-in;
+    transition: all .25s ease-in;
+    border:1px solid #d7d7d7;
+}
+.nav a:focus, .nav a:hover, .nav label:focus, .nav label:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: #BEF5BE	;
+}
+
+.nav label{
+    display:block;
+    cursor:pointer;
+    -webkit-transition: all .25s ease-in;
+    transition: all .25s ease-in;
+}
+
+.group-list{
+    height: 100%;
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: max-height .5s ease-in-out;
+    transition: max-height .5s ease-in-out;
+}
+
+
+.navlist input[type=checkbox]:checked + label + ul {
+    max-height: 1000px; }
+
+#title {
+    font-family: "TTWanjudaedunsancheB";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2")
+    format("woff2");
+    font-size: 1.5rem;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+ul{padding:0; margin:0}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 992px;
+}
+
+.hero_header{
+    height: 450px;
+    width: 100%;
+}
+
+body h1{
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    font-size: 24px;
+    font-style: bold;
+    color: #545454;
+}
+
+.products {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    width: 740px;
+    text-align: center;
+}
+
+.products img{
+    width: 225px;
+    height: 225px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.products a{
+    text-decoration: none;
+    color: black;
+    float: left;
+    font-size: 16px;
+}
+
+.price{
+    margin-top: 4px;
+    margin-bottom: 80px;
+}
+
+.clearfix{
+    clear: both;
+}
