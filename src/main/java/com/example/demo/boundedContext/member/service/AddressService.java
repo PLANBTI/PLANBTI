@@ -3,7 +3,7 @@ package com.example.demo.boundedContext.member.service;
 import com.example.demo.base.event.EventAfterCreateAddress;
 import com.example.demo.base.event.EventAfterDeleteAddress;
 import com.example.demo.base.event.EventAfterModifyAddress;
-import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.controller.AddressController;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;

@@ -3,7 +3,7 @@ package com.example.demo.boundedContext.faq.Service;
 import com.example.demo.base.event.EventAfterCreateComment;
 import com.example.demo.base.event.EventBeforeDeleteComment;
 import com.example.demo.base.event.EventAfterModifyComment;
-import com.example.demo.base.exception.DataNotFoundException;
+import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.repository.CommentRepository;

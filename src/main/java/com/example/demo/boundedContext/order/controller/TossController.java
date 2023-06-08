@@ -1,6 +1,6 @@
 package com.example.demo.boundedContext.order.controller;
 
-import com.example.demo.base.exception.OrderException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
 import com.example.demo.boundedContext.order.service.OrderService;
