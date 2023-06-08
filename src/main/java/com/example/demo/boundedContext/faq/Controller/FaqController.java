@@ -81,7 +81,7 @@ public class FaqController {
     public String modify(@PathVariable Long id, FaqModifyDto dto) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
 
-        if(dto.equals(faq)) rq.historyBack("수정된 내용이 없습니다.");
+        if(dto.isSame(faq)) rq.historyBack("수정된 내용이 없습니다.");
 
         faqService.modify(faq, dto);
         return "redirect:/faq/detail/%s".formatted(id);

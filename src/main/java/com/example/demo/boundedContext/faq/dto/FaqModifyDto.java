@@ -23,14 +23,7 @@ public class FaqModifyDto {
     @Email
     private String email;
 
-    @Override
-    public boolean equals(Object o) {
-        Faq faq = (Faq) o;
-        return Objects.equals(title, faq.getTitle()) && Objects.equals(content, faq.getContent()) && Objects.equals(email, faq.getEmail());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, content, email);
+    public boolean isSame(Faq faq) {
+        return title.equals(faq.getTitle()) && content.equals(faq.getContent()) && email.equals(faq.getEmail());
     }
 }
