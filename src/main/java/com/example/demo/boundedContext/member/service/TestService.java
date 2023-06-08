@@ -33,8 +33,8 @@ public class TestService {
         return test.get();
     }
 
-    public boolean isTestExist(String memberUsername, String result, String title, String content) {
-        return mbtiTestRepository.findByMemberUsernameAndResultAndTitleAndContent(memberUsername, result, title, content).isPresent();
+    public boolean isTestExist(String memberUsername, String result, String title) {
+        return mbtiTestRepository.findByMemberUsernameAndResultAndTitle(memberUsername, result, title).isPresent();
     }
 
     public List<MbtiTest> findAllTestsByMember(Member member) {

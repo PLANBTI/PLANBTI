@@ -118,13 +118,16 @@ public class MemberController {
         // 로그인된 사용자 정보를 가져옵니다
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
+        // 디코딩
         try {
             String decodedPlantName = URLDecoder.decode(plantName, "UTF-8");
             String decodedPlantDescription = URLDecoder.decode(plantDescription, "UTF-8");
 
-            if (!testService.isTestExist(member.getUsername(), mbti, decodedPlantName, decodedPlantDescription)){
+            // 동일한 값 create 방지
+            if (!testService.isTestExist(member.getUsername(), mbti, decodedPlantName)){
                 testService.create(member, mbti, decodedPlantName, decodedPlantDescription);
             }
+            // memberUsername 동일한 유저의 테스크 결과 가져오기
             List<MbtiTest> tests = testService.findAllTestsByMember(member);
             model.addAttribute("tests", tests);
 
