@@ -39,8 +39,6 @@ public class CustomInitData {
                                OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
 
 
-
-
         return new CommandLineRunner() {
 
             @Override
