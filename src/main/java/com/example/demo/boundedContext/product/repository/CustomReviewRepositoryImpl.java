@@ -2,6 +2,9 @@ package com.example.demo.boundedContext.product.repository;
 
 import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +24,8 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 
     @Override
     public List<ReviewDto> findReviewByProductId(Long productId, Long offset) {
+
+
         return jpaQueryFactory.select(Projections.constructor(ReviewDto.class,
                         member.username,
                         review.title,
@@ -30,13 +35,12 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                         review.createDate
                 ))
                 .from(review)
-                .join(review.product, product)
                 .leftJoin(review.member, member)
                 .where(product.id.eq(productId))
-                .orderBy(review.id.desc())
                 .offset(offset)
                 .limit(REVIEW_MAX_COUNT)
                 .fetch();
+
     }
 
 
