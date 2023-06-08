@@ -93,8 +93,8 @@ public class MemberController {
     @GetMapping("/testresult")
     public String showTestResult(Model model, HttpServletRequest request) {
         String mbti = null;
-        String plantName = null;  // 두 번째 쿠키의 이름을 적어주세요.
-        String plantDescription = null;  // 세 번째 쿠키의 이름을 적어주세요.
+        String plantName = null;
+        String plantDescription = null;
 
         // 쿠키 읽기
         Cookie[] cookies = request.getCookies();
@@ -122,17 +122,12 @@ public class MemberController {
             String decodedPlantName = URLDecoder.decode(plantName, "UTF-8");
             String decodedPlantDescription = URLDecoder.decode(plantDescription, "UTF-8");
 
-                // 이제 decodedValue 변수에는 원래의 쿠키 값이 저장되어 있습니다.
-                // 쿠키로부터 얻은 값을 가지고 새로운 MbtiTest를 생성하고 저장합니다
-//                MbtiTest mbtiTest = MbtiTest.builder()
-//                        .member(member)
-//                        .title(decodedPlantName)
-//                        .content(decodedPlantDescription)
-//                        .build();
-            if (!testService.isTestExist(mbti, decodedPlantName, decodedPlantDescription)){
-                MbtiTest mbtiTest = testService.create(member, mbti, decodedPlantName, decodedPlantDescription);
-                model.addAttribute("testresults", mbtiTest);
+            if (!testService.isTestExist(member.getUsername(), mbti, decodedPlantName, decodedPlantDescription)){
+                testService.create(member, mbti, decodedPlantName, decodedPlantDescription);
             }
+            List<MbtiTest> tests = testService.findAllTestsByMember(member);
+            model.addAttribute("tests", tests);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

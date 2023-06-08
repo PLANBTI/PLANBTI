@@ -6,17 +6,18 @@
 
 <body>
 
-    <main layout:fragment="main" class="w-screen h-full">
-        <div th:if="${#lists.isEmpty(testresults)}" class="w-full h-full flex justify-center items-center">
-            <p class="text-2xl">테스트 결과 내역이 존재하지 않습니다.</p>
+    <main layout:fragment="main" class="flex items-center justify-center container mx-auto min-h-screen max-w-2xl">
+        <div th:if="${#lists.isEmpty(tests)}">
+            <p>테스트 결과 내역이 존재하지 않습니다.</p>
         </div>
-        <div th:if="${!#lists.isEmpty(testresults)}" class="w-full h-full flex flex-col justify-center items-center">
+        <div th:unless="${#lists.isEmpty(tests)}">
+            <div th:each="test : ${tests}">
+                <h2 class="text-2xl text-center py-12" th:text="${test.title}"></h2>
+                <p class="mb-2" th:text="${test.content}"></p>
+            </div>
+        </div>
 
-        </div>
-        <div th:unless="${#lists.isEmpty(testresults)}">
-           <h1 class="text-2xl text-center" th:text="${testresults.title}"></h1>
-            <p class="mb-6" th:text="${testresults.content}"></p>
-        </div>
+
     </main>
 
 </body>
