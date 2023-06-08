@@ -3,14 +3,18 @@ package com.example.demo.boundedContext.member.controller;
 import com.example.demo.base.redis.MemberDtoRepository;
 import com.example.demo.boundedContext.member.dto.MemberChangeDto;
 import com.example.demo.boundedContext.member.dto.MemberModifyDto;
+import com.example.demo.boundedContext.member.entity.MbtiTest;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.member.service.TestService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.Rq;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,6 +24,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -27,6 +35,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
 
+    private  final TestService testService;
     private final MemberService memberService;
     private final OrderService orderService;
     private final ShoppingBasketService shoppingBasketService;
@@ -82,9 +91,51 @@ public class MemberController {
     }
 
     @GetMapping("/testresult")
-    public String showTestResult(Model model) {
+    public String showTestResult(Model model, HttpServletRequest request) {
+        String mbti = null;
+        String plantName = null;  // 두 번째 쿠키의 이름을 적어주세요.
+        String plantDescription = null;  // 세 번째 쿠키의 이름을 적어주세요.
+
+        // 쿠키 읽기
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("mbti")) {
+                    mbti = cookie.getValue();
+                } else if (cookie.getName().equals("plantName")) {
+                    plantName = cookie.getValue();
+                } else if (cookie.getName().equals("plantDescription")) {
+                    plantDescription = cookie.getValue();
+                }
+            }
+        }
+
+        // 쿠키가 없거나 찾지 못한 경우 에러 처리
+        if(mbti == null || plantName == null || plantDescription == null) {
+            return "redirect:/error";
+        }
+
+        // 로그인된 사용자 정보를 가져옵니다
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        model.addAttribute("testresults", member.getTests());
+
+        try {
+            String decodedPlantName = URLDecoder.decode(plantName, "UTF-8");
+            String decodedPlantDescription = URLDecoder.decode(plantDescription, "UTF-8");
+
+                // 이제 decodedValue 변수에는 원래의 쿠키 값이 저장되어 있습니다.
+                // 쿠키로부터 얻은 값을 가지고 새로운 MbtiTest를 생성하고 저장합니다
+//                MbtiTest mbtiTest = MbtiTest.builder()
+//                        .member(member)
+//                        .title(decodedPlantName)
+//                        .content(decodedPlantDescription)
+//                        .build();
+            if (!testService.isTestExist(mbti, decodedPlantName, decodedPlantDescription)){
+                MbtiTest mbtiTest = testService.create(member, mbti, decodedPlantName, decodedPlantDescription);
+                model.addAttribute("testresults", mbtiTest);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return "member/testResult";
     }
 
