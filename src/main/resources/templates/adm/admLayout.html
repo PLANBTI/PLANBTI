@@ -21,8 +21,8 @@
     </script>
 </head>
 
-<body class="flex flex-col">
-<nav class="navbar bg-base-100 flex drop-shadow-md">
+<body class="min-h-screen min-w-fit flex flex-col">
+<nav class="w-full navbar bg-base-100 flex drop-shadow-md">
     <div class="navbar-start">
         <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -57,8 +57,8 @@
     </div>
 </nav>
 
-<div class="flex">
-    <ul class="menu bg-base-100 w-56 m-10 flex flex-none justify-start">
+<div class="min-h-fit min-w-fit grow flex flex-row">
+    <ul class="menu bg-base-100 w-60 pt-32 p-12 flex flex-none justify-start">
         <li class="font-black text-lg m-4">회원 관리</li>
         <li><a href="/adm/members">회원 목록</a></li>
         <li><a href="/adm/faq">문의 내역</a></li>
@@ -74,7 +74,7 @@
         <li><a href="#">결제 내역</a></li>
         <li><a href="#">품목별 매출 현황</a></li>
     </ul>
-<main layout:fragment="main"></main>
+    <main layout:fragment="main"></main>
 </div>
 
 <script th:inline="javascript">
@@ -102,7 +102,7 @@
         }
     });
 </script>
-<footer class="bg-green-100 py-8">
+<footer class="w-full flex content-end bg-green-100 py-8">
     <div class="container mx-auto text-center">
         <p><i class="fa-regular fa-copyright"></i> 2023 <b>PLANBTI</b>. All rights reserved.</p>
     </div>

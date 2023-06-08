@@ -22,7 +22,7 @@
     </script>
 </head>
 
-<body class="flex flex-col">
+<body class="min-h-screen w-screen flex flex-col">
 <nav class="navbar bg-base-100 flex drop-shadow-md">
     <div class="navbar-start">
         <div class="dropdown">
@@ -61,7 +61,9 @@
     </div>
 </nav>
 
-<main layout:fragment="main"></main>
+<div class="min-h-fit grow">
+    <main layout:fragment="main"></main>
+</div>
 <script th:inline="javascript">
     if (params.msg) {
         toastNotice(params.msg[0]);
@@ -87,7 +89,7 @@
         }
     });
 </script>
-<footer class="bg-green-100 py-8">
+<footer class="flex content-end bg-green-100 py-8">
     <div class="container mx-auto text-center">
         <p><i class="fa-regular fa-copyright"></i> 2023 <b>PLANBTI</b>. All rights reserved.</p>
     </div>

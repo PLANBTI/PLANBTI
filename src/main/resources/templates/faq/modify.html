@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main" class="w-screen h-screen">
+<main layout:fragment="main" class="w-screen h-full">
 
     <script>
         function Validation__modifyFaq(form) {
@@ -42,7 +42,7 @@
         <div>
             <textarea name="content" class="textarea textarea-bordered w-full h-96 mt-4" placeholder="내용을 작성해주세요." th:value="${faq.getContent()}"></textarea>
             <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12" th:value="${faq.getEmail()}" />
-            <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
+            <input type="submit" value="저장하기" class="btn btn-outline w-full my-12">
         </div>
     </form>
 </div>
