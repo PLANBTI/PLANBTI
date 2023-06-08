@@ -4,6 +4,8 @@ import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,10 @@ public class ProductService {
     public Product findByName(String name) {
         return productRepository.findByName(name)
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
+    }
+
+    public Page<Product> findAllByCategoryName(String categoryName, Pageable pageable) {
+        return productRepository.findAllByCategoryName(categoryName, null, pageable);
     }
 
 
