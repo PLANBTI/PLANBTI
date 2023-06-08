@@ -7,15 +7,19 @@ import lombok.Getter;
 @Builder
 public class ResponseData<T> {
 
-    private String statusCode;
+    private Status statusCode;
     private String msg;
     private T content;
 
-    public static <T> ResponseData<T> of(String statusCode, String msg, T data) {
+    public static <T> ResponseData<T> of(Status statusCode, String msg, T data) {
         return new ResponseData<>(statusCode, msg, data);
     }
 
     public boolean isSuccess() {
-        return statusCode.startsWith("s");
+        return statusCode.equals(Status.SUCCESS);
+    }
+
+    public enum Status {
+        SUCCESS, FAIL
     }
 }

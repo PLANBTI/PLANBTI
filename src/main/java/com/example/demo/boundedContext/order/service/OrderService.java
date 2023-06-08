@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.demo.util.rq.ResponseData.Status.*;
+
 @Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -83,8 +85,8 @@ public class OrderService {
         Optional<Order> lastOrder = orderRepository.findCompleteOrderOneByStatus(id, status);
 
         return lastOrder
-                .map(order -> ResponseData.of("success", "성공", new OrderRequestDto(order)))
-                .orElseGet(() -> ResponseData.of("fail", "실패", new OrderRequestDto()));
+                .map(order -> ResponseData.of(SUCCESS, "성공", new OrderRequestDto(order)))
+                .orElseGet(() -> ResponseData.of(FAIL, "실패", new OrderRequestDto()));
 
     }
 
