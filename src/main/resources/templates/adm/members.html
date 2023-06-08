@@ -7,17 +7,17 @@
 <body>
 
 <main layout:fragment="main" class="min-h-screen my-16 min-w-screen w-full">
-    <div class="flex mr-12">
+    <div class="mr-12">
         <p class="text-2xl" th:if="${#lists.isEmpty(members)}">
             회원이 없습니다.
         </p>
-        <table class="table w-fit" th:if="${!#lists.isEmpty(members)}">
+        <table class="table" th:if="${!#lists.isEmpty(members)}">
             <thead>
             <tr>
                 <th>Id</th>
                 <th>Username</th>
                 <th>Email</th>
-                <th>Phone Number</th>
+                <th>연락처</th>
                 <th>가입 일시</th>
                 <th></th>
                 <th></th>
@@ -32,7 +32,16 @@
                 <td th:text="${member.getCreateDate()}"></td>
                 <td th:if="${member.getDeleteDate() != null}">탈퇴한 회원</td>
                 <td th:unless="${member.getDeleteDate() != null}"></td>
-                <td><a class="btn btn-outline" th:href="@{/adm/deleteMember/{id}(id=${member.getId()})}">삭제</a></td>
+                <td><a href="#modal-1" class="btn btn-outline">삭제</a></td>
+                <div class="modal" id="modal-1">
+                    <div class="modal-box">
+                        <h3 class="font-bold text-lg">정말로 삭제하시겠습니까?</h3>
+                        <div class="modal-action">
+                            <a href="/adm/members" class="btn btn-success">취소</a>
+                            <a th:href="@{/adm/deleteMember/{id}(id=${member.getId()})}" class="btn btn-active btn-ghost">삭제</a>
+                        </div>
+                    </div>
+                </div>
             </tr>
             </tbody>
         </table>

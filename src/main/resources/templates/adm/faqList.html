@@ -29,7 +29,16 @@
                 <td th:text="${faq.getMember().username}" class="w-60"></td>
                 <td><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
                 <td th:text="${faq.getCreateDate()}"></td>
-                <td><a th:href="@{/faq/deleteAdm/{id}(id=${faq.getId()})}" class="btn btn-outline btn-sm">삭제</a></td>
+                <td><a href="#modal-1" class="btn btn-outline btn-sm">삭제</a></td>
+                <div class="modal" id="modal-1">
+                    <div class="modal-box">
+                        <h3 class="font-bold text-lg">정말로 삭제하시겠습니까?</h3>
+                        <div class="modal-action">
+                            <a href="/adm/faq" class="btn btn-success">취소</a>
+                            <a th:href="@{/faq/deleteAdm/{id}(id=${faq.getId()})}" class="btn btn-active btn-ghost">삭제</a>
+                        </div>
+                    </div>
+                </div>
             </tr>
             </tbody>
         </table>
