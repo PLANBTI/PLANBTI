@@ -6,12 +6,12 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen m-16 w-full">
-    <div class="flex">
+<main layout:fragment="main" class="min-h-screen m-16 w-full">
+    <div class="mr-12">
         <p class="text-2xl" th:if="${#lists.isEmpty(faqList)}">
             문의 내역이 없습니다.
         </p>
-        <table class="grow table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
+        <table class="table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
             <thead>
             <tr>
                 <th>FAQ</th>
@@ -19,7 +19,6 @@
                 <th>회원</th>
                 <th>제목</th>
                 <th>작성 일시</th>
-                <th>삭제 일시</th>
                 <th></th>
             </tr>
             </thead>
@@ -30,7 +29,6 @@
                 <td th:text="${faq.getMember().username}" class="w-60"></td>
                 <td><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
                 <td th:text="${faq.getCreateDate()}"></td>
-                <td th:text="${faq.getDeleteDate()}"></td>
                 <td><a th:href="@{/faq/deleteAdm/{id}(id=${faq.getId()})}" class="btn btn-outline btn-sm">삭제</a></td>
             </tr>
             </tbody>
