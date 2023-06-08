@@ -58,4 +58,5 @@ Temporary Items
 
 ./db
 /src/main/resources/schema.sql
+mydocker/
 

@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
-                        "/image/**", "/js/**", "/test/**", "/send","/").permitAll()
+                        "/image/**", "/js/**", "/test/**", "/send","/","/actuator/**").permitAll()
                 .anyRequest().authenticated());
 
         http.csrf(c -> c.ignoringRequestMatchers("/send","/test","/product/more/**"));
