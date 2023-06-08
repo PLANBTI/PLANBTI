@@ -10,7 +10,7 @@
     <div class="flex flex-col mt-24">
         <ul class="menu bg-base-100 w-60 flex-none">
             <th:block th:each="category : ${categories}">
-                <li><a  th:href="@{/shop/(name=${category.name})}" th:text="${category.name}"></a></li>
+                <li><a  th:href="@{/shop/{category}(category=${category})}" th:text="${category.name}"></a></li>
             </th:block>
         </ul>
         <div th:if="${!paging.isEmpty()}" class="flex flex-wrap xl:min-w-full">
