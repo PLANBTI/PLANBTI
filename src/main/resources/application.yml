@@ -52,3 +52,15 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
