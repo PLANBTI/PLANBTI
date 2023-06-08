@@ -122,20 +122,45 @@ public class CustomInitData {
                 admin.addRole(Role.ADMIN);
                 memberRepository.save(admin);
 
-                Category istj = categoryRepository.save(
-                        Category.builder()
-                                .id(1L)
-                                .name("istj")
-                                .build()
-                );
+                List<Category> categories = new ArrayList<>();
+
+                categories.add(Category.builder().id(1L).name("istj").build());
+                categories.add(Category.builder().id(2L).name("isfj").build());
+                categories.add(Category.builder().id(3L).name("infj").build());
+                categories.add(Category.builder().id(4L).name("intj").build());
+                categories.add(Category.builder().id(5L).name("istp").build());
+                categories.add(Category.builder().id(6L).name("isfp").build());
+                categories.add(Category.builder().id(7L).name("infp").build());
+                categories.add(Category.builder().id(8L).name("intp").build());
+                categories.add(Category.builder().id(9L).name("estp").build());
+                categories.add(Category.builder().id(10L).name("esfp").build());
+                categories.add(Category.builder().id(11L).name("enfp").build());
+                categories.add(Category.builder().id(12L).name("entp").build());
+                categories.add(Category.builder().id(13L).name("estj").build());
+                categories.add(Category.builder().id(14L).name("esfj").build());
+                categories.add(Category.builder().id(15L).name("enfj").build());
+                categories.add(Category.builder().id(16L).name("entj").build());
+
+                categoryRepository.saveAll(categories);
+
 
                 Product save = productRepository.save(
                         Product.builder()
-                                .category(istj)
+                                .category(categories.get(0))
                                 .name("뱅갈고무나무")
                                 .price(39000)
                                 .count(3)
                                 .salePrice(25000)
+                                .build()
+                );
+
+                Product save2 = productRepository.save(
+                        Product.builder()
+                                .category(categories.get(1))
+                                .name("산세베리아")
+                                .price(39000)
+                                .count(1)
+                                .salePrice(21000)
                                 .build()
                 );
 
