@@ -9,12 +9,14 @@ import com.example.demo.boundedContext.product.repository.ShoppingBasketReposito
 import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static com.example.demo.util.rq.ResponseData.Status.SUCCESS;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ShoppingBasketService {
 
@@ -32,6 +34,7 @@ public class ShoppingBasketService {
         return shoppingBasket.get();
     }
 
+    @Transactional
     public ShoppingBasket findByMember(Long memberId) {
         Optional<ShoppingBasket> shoppingBasket = shoppingBasketRepository.findByMemberId(memberId);
 
@@ -51,7 +54,7 @@ public class ShoppingBasketService {
 
 
 
-
+    @Transactional
     public ResponseData<String> addProduct(Long memberId, Long productId) {
 
         Product product = productService.findById(productId);
