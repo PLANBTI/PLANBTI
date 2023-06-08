@@ -30,8 +30,7 @@ public class ShoppingBasket extends BaseEntity {
 
     private int count;
 
-    public void addProduct(Member member, Product product) {
-        this.member = member;
+    public void addProduct(Product product) {
         Optional<Product> optionalProduct = findProduct(product.getId());
         if (optionalProduct.isEmpty()) {
             addCount(1);

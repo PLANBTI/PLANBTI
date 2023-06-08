@@ -69,7 +69,7 @@ public class MemberController {
     public String showShoppingBasket(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         try {
-            ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member);
+            ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member.getId());
             List<Product> products = shoppingBasket.getProducts();
             model.addAttribute("products", products);
         } catch (DataNotFoundException e) {

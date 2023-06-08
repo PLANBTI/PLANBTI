@@ -36,13 +36,13 @@ public class Rq {
     private final HttpSession session;
     private final MessageSource messageSource;
     private final ObjectMapper objectMapper;
-    private final RedisTemplate<String,Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberDtoRepository memberDtoRepository;
 
     public Rq(MemberService memberService,
               MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req,
-              HttpServletResponse resp, HttpSession session,RedisTemplate<String,Object> redisTemplate,
-               ObjectMapper objectMapper,MemberDtoRepository memberDtoRepository) throws JsonProcessingException {
+              HttpServletResponse resp, HttpSession session, RedisTemplate<String, Object> redisTemplate,
+              ObjectMapper objectMapper, MemberDtoRepository memberDtoRepository) throws JsonProcessingException {
         this.memberService = memberService;
         this.messageSource = messageSource;
         this.localeResolver = localeResolver;
@@ -50,8 +50,8 @@ public class Rq {
         this.resp = resp;
         this.session = session;
         this.objectMapper = objectMapper;
-        this.redisTemplate =redisTemplate;
-this.memberDtoRepository=memberDtoRepository;
+        this.redisTemplate = redisTemplate;
+        this.memberDtoRepository = memberDtoRepository;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

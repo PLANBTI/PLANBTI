@@ -32,29 +32,32 @@ public class ShoppingBasketService {
         return shoppingBasket.get();
     }
 
-    public ShoppingBasket findByMember(Member member) {
-        Optional<ShoppingBasket> shoppingBasket = shoppingBasketRepository.findByMember(member);
+    public ShoppingBasket findByMember(Long memberId) {
+        Optional<ShoppingBasket> shoppingBasket = shoppingBasketRepository.findByMemberId(memberId);
 
         if(shoppingBasket.isEmpty()) {
-            throw new DataNotFoundException("존재하지 않는 장바구니입니다.");
+            Member member = memberService.findById(memberId);
+
+
+            ShoppingBasket basket = ShoppingBasket.builder()
+                    .member(member)
+                    .build();
+            shoppingBasketRepository.save(basket);
+            return basket;
         }
 
         return shoppingBasket.get();
     }
 
 
-    //TODO 파사드
+
+
     public ResponseData<String> addProduct(Long memberId, Long productId) {
 
-        Member member = memberService.findById(memberId);
         Product product = productService.findById(productId);
-        ShoppingBasket shoppingBasket = ShoppingBasket
-                .builder()
-                .build();
-        shoppingBasket.addProduct(member,product);
 
-        shoppingBasketRepository.save(shoppingBasket);
-
+        ShoppingBasket basket = findByMember(memberId);
+        basket.addProduct(product);
 
         return ResponseData.<String>builder()
                 .statusCode(SUCCESS)
