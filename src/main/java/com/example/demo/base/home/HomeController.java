@@ -1,5 +1,6 @@
 package com.example.demo.base.home;
 
+import com.example.demo.base.redis.MemberDtoRepository;
 import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.util.rq.Rq;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
     private final Rq rq;
+    private final MemberDtoRepository memberDtoRepository;
     @GetMapping("/")
     public String home() {
 
@@ -44,6 +46,7 @@ public class HomeController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
 
+        memberDtoRepository.deleteById(rq.getMemberId());
         new SecurityContextLogoutHandler()
                 .logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 

@@ -1,14 +1,17 @@
 package com.example.demo.util.rq;
 
+import com.example.demo.base.redis.MemberDtoRepository;
 import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.dto.MemberDto;
-import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.util.ut.Ut;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.MessageSource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -32,22 +35,30 @@ public class Rq {
     private final HttpServletResponse resp;
     private final HttpSession session;
     private final MessageSource messageSource;
+    private final ObjectMapper objectMapper;
+    private final RedisTemplate<String,Object> redisTemplate;
+    private final MemberDtoRepository memberDtoRepository;
 
-    public Rq(MemberService memberService,  MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(MemberService memberService,
+              MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req,
+              HttpServletResponse resp, HttpSession session,RedisTemplate<String,Object> redisTemplate,
+               ObjectMapper objectMapper,MemberDtoRepository memberDtoRepository) throws JsonProcessingException {
         this.memberService = memberService;
         this.messageSource = messageSource;
         this.localeResolver = localeResolver;
         this.req = req;
         this.resp = resp;
         this.session = session;
+        this.objectMapper = objectMapper;
+        this.redisTemplate =redisTemplate;
+this.memberDtoRepository=memberDtoRepository;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.getPrincipal() instanceof CustomOAuth2User) {
             this.customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
             String username = customOAuth2User.getUsername();
-            Member findMember = memberService.findByUsername(username);
-            member = new MemberDto(findMember.getId(), findMember.getUsername(), findMember.getEmail());
+            member = memberDtoRepository.findByUsername(username);
         }
     }
 
