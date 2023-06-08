@@ -25,9 +25,8 @@ public class ProductService {
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
     }
 
-    public Page<Product> findAllByCategoryName(String categoryName, Pageable pageable) {
-        return productRepository.findAllByCategoryName(categoryName, null, pageable);
+    public Page<Product> findAllByCategoryNameAndKeyword(String categoryName, String keyword, Pageable pageable) {
+        return productRepository.findAllByCategoryNameAndKeyword(categoryName, keyword, pageable);
     }
-
 
 }

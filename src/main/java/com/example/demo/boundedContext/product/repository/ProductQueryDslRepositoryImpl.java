@@ -27,9 +27,40 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Product> findAllByCategoryName(String categoryName, String keyword, Pageable pageable) {
+    public Page<Product> findAllByCategoryNameAndKeyword(String categoryName, String keyword, Pageable pageable) {
 
-        OrderSpecifier[] orderBy = pageable.getSort().stream()
+        JPAQuery<Product> contentQuery = jpaQueryFactory
+                .select(product)
+                .from(product)
+                .where(
+                        eqCategoryName(categoryName),
+                        eqName(keyword)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(getOrderSpecifiers(pageable.getSort()));
+
+        List<Product> content = contentQuery.fetch();
+
+        JPAQuery<Long> countQuery = jpaQueryFactory
+                .select(product.count())
+                .from(product)
+                .where(
+                        eqCategoryName(categoryName),
+                        eqName(keyword)
+                );
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression eqCategoryName(String categoryName) {
+        if (categoryName == null) return null;
+        return product.category.name.eq(categoryName);
+    }
+
+
+    private OrderSpecifier[] getOrderSpecifiers(Sort sort) {
+        OrderSpecifier[] orderSpecifiers = sort.stream()
                 .map(o -> {
                     Order order = o.getDirection().equals(Sort.Direction.ASC) ? Order.ASC : Order.DESC;
                     String property = o.getProperty();
@@ -43,29 +74,13 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
                 })
                 .toArray(OrderSpecifier[]::new);
 
-        JPAQuery<Product> contentQuery = jpaQueryFactory
-                .select(product)
-                .from(product)
-                .where(
-                        product.category.name.eq(categoryName),
-                        eqName(keyword)
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(orderBy);
-
-        List<Product> content = contentQuery.fetch();
-
-        JPAQuery<Integer> countQuery = jpaQueryFactory
-                .select(product.count)
-                .from(product)
-                .where(product.category.name.eq(categoryName));
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        return  orderSpecifiers;
     }
+
 
     private BooleanExpression eqName(String keyword) {
         if (keyword == null) return null;
+        if (keyword.trim().isBlank()) return null;
 
         return product.name.contains(keyword);
     }
