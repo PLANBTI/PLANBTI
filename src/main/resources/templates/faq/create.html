@@ -14,24 +14,24 @@
             form.category = document.getElementById("category").value;
 
             if (form.category.value === "none") {
-                alert("카테고리를 선택해주세요.");
+                toastWarning("카테고리를 선택해주세요.");
                 return;
             }
 
             if (form.title.value.trim().length == 0) {
-                alert("제목을 작성해주세요.");
+                toastWarning("제목을 작성해주세요.");
                 form.title.focus();
                 return;
             }
 
             if (form.content.value.trim().length == 0) {
-                alert("내용을 작성해주세요.");
+                toastWarning("내용을 작성해주세요.");
                 form.content.focus();
                 return;
             }
 
             if (form.email.value.trim().length == 0) {
-                alert("이메일 주소를 작성해주세요.");
+                toastWarning("이메일 주소를 작성해주세요.");
                 form.email.focus();
                 return;
             }

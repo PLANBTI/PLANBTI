@@ -12,13 +12,13 @@
 
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!regex.test(form.email.value.trim())) {
-                alert("이메일 주소를 정확히 입력해주세요.");
+                toastWarning("이메일 주소를 정확히 입력해주세요.");
                 form.email.focus();
                 return;
             }
 
             if (form.phoneNumber.value.trim().length === 0) {
-                alert("휴대폰 번호를 정확히 입력해주세요.");
+                toastWarning("휴대폰 번호를 정확히 입력해주세요.");
                 form.phoneNumber.focus();
                 return;
             }
