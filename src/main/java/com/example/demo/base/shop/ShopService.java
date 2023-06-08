@@ -20,7 +20,7 @@ public class ShopService {
     private final CategoryRepository categoryRepository;
 
     public Page<Product> getList(String categoryName, Pageable pageable) {
-        return productService.findAllByCategoryName(categoryName, pageable);
+        return productService.findAllByCategoryNameAndKeyword(categoryName, null, pageable);
     }
 
     public Optional<Category> categoryView(Long id){
