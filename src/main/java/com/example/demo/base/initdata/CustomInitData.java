@@ -1,5 +1,6 @@
 package com.example.demo.base.initdata;
 import com.example.demo.base.Role;
+<<<<<<< HEAD
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
@@ -8,6 +9,14 @@ import com.example.demo.boundedContext.faq.repository.FaqRepository;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.boundedContext.category.repository.CategoryRepository;
+=======
+<<<<<<< HEAD
+import com.example.demo.boundedContext.member.entity.Address;
+=======
+import com.example.demo.boundedContext.category.entity.Category;
+import com.example.demo.boundedContext.category.repository.CategoryRepository;
+>>>>>>> 8de36f0 (feat : category, product initdata 추가)
+>>>>>>> df606d2 (feat : category, product initdata 추가)
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
@@ -36,8 +45,10 @@ public class CustomInitData {
     CommandLineRunner initData(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository, ProductRepository productRepository,
                                FaqRepository faqRepository, CommentRepository commentRepository,
-
                                OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
+
+
+
 
         return new CommandLineRunner() {
 
@@ -147,7 +158,9 @@ public class CustomInitData {
                 Faq modifiedFaq1 = faq1.toBuilder()
                         .comment(comment).build();
                 faqRepository.save(modifiedFaq1);
+
             }
         };
+      }
     }
 }
