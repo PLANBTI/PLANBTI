@@ -6,9 +6,12 @@
 
 <body>
 
-<main layout:fragment="main" class="flex items-center justify-center min-h-screen">
-    <div th:if="${#lists.isEmpty(products)}">
+<main layout:fragment="main" class="w-screen h-screen">
+    <div th:if="${#lists.isEmpty(products)}" class="w-full h-full flex justify-center items-center">
         <p class="text-2xl">장바구니에 담긴 상품이 없습니다.</p>
+    </div>
+    <div th:if="${!#lists.isEmpty(products)}" class="w-full h-full flex flex-com justify-center items-center">
+
     </div>
 </main>
 

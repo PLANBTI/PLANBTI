@@ -6,14 +6,14 @@
 
 <body>
 
-<main layout:fragment="main" class="flex justify-center min-h-screen">
-    <div th:if="${#lists.isEmpty(faqList)}">
-        <p class="flex items-center text-2xl">문의 내역이 존재하지 않습니다.</p>
+<main layout:fragment="main" class="w-screen h-screen">
+    <div th:if="${#lists.isEmpty(faqList)}" class="w-full h-full flex justify-center items-center">
+        <p class="text-2xl text-center">문의 내역이 존재하지 않습니다.</p>
     </div>
-    <div>
-        <table class="flex justify-center table table-zebra mt-16">
-            <p class="text-2xl font-black mt-16">My FAQ</p>
-            <thead th:if="${!#lists.isEmpty(faqList)}">
+    <div th:if="${!#lists.isEmpty(faqList)}" class="w-8/12 w-full h-full flex flex-col justify-center items-center">
+        <table class="table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
+            <p class="text-2xl font-black">My FAQ</p>
+            <thead>
             <tr>
                 <th>FAQ</th>
                 <th>Category</th>
@@ -23,7 +23,7 @@
             <tbody>
             <tr th:each="faq : ${faqList}">
                 <th th:text="${faq.getId()}" class="w-20"></th>
-                <td th:text="${faq.getCategoryToString()}" class="w-60"></td>
+                <td th:text="${faq.getCategory()}" class="w-60"></td>
                 <td class="w-96"><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
             </tr>
             </tbody>

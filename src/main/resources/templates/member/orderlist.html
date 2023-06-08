@@ -6,17 +6,17 @@
 
 <body>
 
-<main layout:fragment="main" class="flex items-center justify-center min-h-screen">
-    <div th:if="${orderList.isEmpty()}">
+<main layout:fragment="main" class="w-screen h-screen">
+    <div th:if="${#lists.isEmpty(orderList)}" class="w-full h-full flex justify-center items-center">
         <p class="text-2xl">주문 내역이 존재하지 않습니다.</p>
     </div>
-    <section th:if="!${orderList.isEmpty()}">
-        <div th:each="order: ${orderList}" class="card bg-base-100 shadow-xl w-full mt-8 mb-8">
+    <section th:if="${!#lists.isEmpty(orderList)}" class="w-full h-full flex flex-col justify-center items-center">
+        <div th:each="order: ${orderList}" class="card bg-base-100 shadow-lg w-6/12 mt-8 mb-8">
             <figure>
                 <div style="width:100vh; height:20vh; background-color:green;"></div>
             </figure>
             <div class="card-body">
-                <h1>2023.05.25.18:20</h1>
+                <h1 th:text="${order.getCreateDate()}"></h1>
                 <h2 class="card-title" th:text="${order.getPrice()}"></h2>
                 <p>산세베리아 외 3종</p>
                 <div class="card-actions justify-end">

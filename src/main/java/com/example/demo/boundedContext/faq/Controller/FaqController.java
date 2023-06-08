@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class FaqController {
     @GetMapping("/myFaq")
     public String showMyFaq(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        List<Faq> faqList = faqService.findByMember(member);
+        List<Faq> faqList = faqService.findByMemberAndDeleteDateIsNull(member);
         model.addAttribute(faqList);
         return "member/faqList";
     }

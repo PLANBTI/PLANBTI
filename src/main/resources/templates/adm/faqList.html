@@ -11,21 +11,27 @@
         <p class="text-2xl" th:if="${#lists.isEmpty(faqList)}">
             문의 내역이 없습니다.
         </p>
-        <table class="grow table table-zebra">
-            <thead th:if="${!#lists.isEmpty(faqList)}">
+        <table class="grow table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
+            <thead>
             <tr>
                 <th>FAQ</th>
-                <th>Category</th>
-                <th>Username</th>
-                <th>Title</th>
+                <th>카테고리</th>
+                <th>회원</th>
+                <th>제목</th>
+                <th>작성 일시</th>
+                <th>삭제 일시</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="faq : ${faqList}">
                 <th th:text="${faq.getId()}" class="w-20"></th>
-                <td th:text="${faq.getCategoryToString()}" class="w-60"></td>
+                <td th:text="${faq.getCategory()}" class="w-60"></td>
                 <td th:text="${faq.getMember().username}" class="w-60"></td>
                 <td><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
+                <td th:text="${faq.getCreateDate()}"></td>
+                <td th:text="${faq.getDeleteDate()}"></td>
+                <td><a th:href="@{/faq/deleteAdm/{id}(id=${faq.getId()})}" class="btn btn-outline btn-sm">삭제</a></td>
             </tr>
             </tbody>
         </table>

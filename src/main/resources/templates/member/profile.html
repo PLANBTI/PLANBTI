@@ -1,15 +1,16 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>My Profile</title>
+    <title>My Profile | PLANBTI</title>
 </head>
 
 <body>
 
-<main layout:fragment="main"  class="flex flex-col container mx-auto min-h-screen max-w-2xl">
-    <div class="pt-4 font-extrabold text-xl mt-20">회원 정보</div>
-    <div class="w-full">
-        <table class="table w-full mt-12">
+<main layout:fragment="main"  class="w-screen h-screen">
+    <div class="w-full h-full flex flex-col justify-center items-center">
+    <div class="font-extrabold text-xl mt-12">회원 정보</div>
+    <div class="w-6/12 mt-12">
+        <table class="table w-full">
             <tbody>
             <tr>
                 <th>Username</th>
@@ -25,12 +26,12 @@
             </tr>
             </tbody>
         </table>
-        <p class="mt-20"><b>주소지 목록</b></p>
-        <div th:if="${#lists.isEmpty(member.addresses)}">
+        <p class="mt-12"><b>주소지 목록</b></p>
+        <div th:if="${#lists.isEmpty(member.addresses)}" class="mb-20">
             <p>등록된 배송지가 없습니다.</p>
         </div>
         <div th:if="${!#lists.isEmpty(member.addresses)}" th:each="address : ${member.addresses}"
-             class="card w-96 bg-base-100 shadow-lg mb-10">
+             class="card w-full bg-base-100 shadow-lg mb-10">
             <div class="card-body">
                 <h2 th:text="${address.name}" class="font-black"></h2>
                 <p th:text="|주소 : ${address.addr}|"></p>
@@ -39,17 +40,17 @@
                 <p th:text="|연락처 : ${address.phoneNumber}|"></p>
                 <kbd th:if="${address.isDefault()}" class="kbd kbd-sm">기본 배송지</kbd>
                 <div class="card-actions justify-end">
-                    <a th:href="@{/address/modify/{id}(id=${address.getId()})}" class="btn btn-outline btn-success mt-12 grow mr-2">수정</a>
-                    <a th:href="@{/address/delete/{id}(id=${address.getId()})}" class="btn btn-outline grow-0 mt-12">삭제</a>
+                    <a th:href="@{/address/modify/{id}(id=${address.getId()})}" class="btn btn-outline btn-success grow mr-2">수정</a>
+                    <a th:href="@{/address/delete/{id}(id=${address.getId()})}" class="btn btn-outline grow-0">삭제</a>
                 </div>
             </div>
         </div>
         <div>
-            <a href="/address/create" class="btn btn-outline btn-success mt-12 grow">배송지 추가</a>
+            <a href="/address/create" class="btn btn-outline btn-success mb-6">배송지 추가</a>
         </div>
-        <div class="w-full flex mt-20">
-            <a href="/member/modify" class="btn btn-outline btn-success mt-12 grow mr-2">회원 정보 수정</a>
-            <a href="#modal-1" class="btn btn-outline grow-0 mt-12">회원 탈퇴</a>
+        <div class="w-full flex">
+            <a href="/member/modify" class="btn btn-outline btn-success grow mr-2 mb-8">회원 정보 수정</a>
+            <a href="#modal-1" class="btn btn-outline grow-0 mb-8">회원 탈퇴</a>
             <div class="modal" id="modal-1">
                 <div class="modal-box">
                     <h3 class="font-bold text-lg">정말로 회원 탈퇴하시겠습니까?</h3>
@@ -60,6 +61,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </main>
 

@@ -1,12 +1,12 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>배송지 추가</title>
+    <title>배송지 추가 | PLANBTI</title>
 </head>
 
 <body>
 
-<main layout:fragment="main"  class="flex flex-col container mx-auto min-h-screen max-w-2xl">
+<main layout:fragment="main"  class="w-screen h-screen">
     <script>
         function Validation__createAddr(form) {
 
@@ -44,8 +44,9 @@
         }
     </script>
 
-    <h1 class="text-2xl mt-8 font-black">배송지 추가</h1>
-    <form class="w-full" th:action="@{/address/create}" th:object="${AddressForm}" method="POST"
+    <div class="w-full h-full flex flex-col justify-center items-center">
+    <h1 class="text-2xl font-black">배송지 추가</h1>
+    <form class="w-6/12" th:action="@{/address/create}" th:object="${AddressForm}" method="POST"
           onsubmit="Validation__createAddr(this); return false;">
         <div>
             <input type="text" name="name" placeholder="이름" class="input input-bordered w-full mt-12" />
@@ -70,6 +71,7 @@
             <input type="submit" value="저장하기" class="btn btn-outline w-full mt-12">
         </div>
     </form>
+    </div>
 </main>
 
 </body>

@@ -35,8 +35,8 @@ public class FaqService {
         return faqRepository.findAll();
     }
 
-    public List<Faq> findByMember(Member member) {
-        return faqRepository.findByMember(member);
+    public List<Faq> findByMemberAndDeleteDateIsNull(Member member) {
+        return faqRepository.findByMemberAndDeleteDateIsNull(member);
     }
 
     public Faq create(Member member, FaqDto dto) {
