@@ -1,14 +1,14 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>My Page</title>
+    <title>My Page | PLANBTI</title>
 </head>
 
 <body>
 
 <main layout:fragment="main" class="w-screen h-full">
     <div class="w-full h-full flex flex-col justify-center items-center">
-        <div id="image" style="width: 200px; height: 200px; background-color: green; margin-top: 50px;"></div> <!-- jdenticon 사용 -->
+        <svg th:data-jdenticon-value="|${member.username}|" width="200" height="200" class="mt-12"></svg>
         <div th:text="|${member.username} 님|" class="pt-4 font-extrabold text-xl"></div>
         <div class="flex flex-col w-6/12">
             <a href="/member/profile" class="btn btn-outline mt-12"><i class="fa-solid fa-user mr-2"></i>회원 정보</a>
