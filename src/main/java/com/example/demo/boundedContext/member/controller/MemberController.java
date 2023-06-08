@@ -59,7 +59,7 @@ public class MemberController {
     public String modify(@Valid MemberModifyDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        if(dto.equals(member)) rq.historyBack("수정된 내용이 없습니다.");
+        if(dto.isSame(member)) rq.historyBack("수정된 내용이 없습니다.");
 
         memberService.modify(member, dto);
         return "redirect:/member/profile";

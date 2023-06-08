@@ -44,7 +44,7 @@ public class FaqServiceTest {
     @DisplayName("modify")
     void t002() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        Faq faq = faqService.findByMember(user1).get(0);
+        Faq faq = faqService.findByMemberAndDeleteDateIsNull(user1).get(0);
         FaqModifyDto dto = new FaqModifyDto("수정 제목1", "수정 내용1", user1.getEmail());
         Faq modifiedFaq = faqService.modify(faq, dto);
 
@@ -56,7 +56,7 @@ public class FaqServiceTest {
     @DisplayName("soft-delete")
     void t03() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        Faq faq = faqService.findByMember(user1).get(0);
+        Faq faq = faqService.findByMemberAndDeleteDateIsNull(user1).get(0);
         faqService.delete(faq);
 
         assertThatThrownBy(() -> faqService.findByIdAndDeleteDateIsNull(faq.getId())).isInstanceOf(DataNotFoundException.class);
@@ -66,7 +66,7 @@ public class FaqServiceTest {
     @DisplayName("hard-delete")
     void t004() {
         Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        Faq faq = faqService.findByMember(user1).get(0);
+        Faq faq = faqService.findByMemberAndDeleteDateIsNull(user1).get(0);
         faqService.deleteHard(faq);
 
         assertThat(faqService.findAll().size()).isEqualTo(1);

@@ -59,7 +59,7 @@ public class FaqControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Faq> list = faqService.findByMember(member);
+        List<Faq> list = faqService.findByMemberAndDeleteDateIsNull(member);
         assertThat(list.size()).isEqualTo(3);
     }
 
@@ -81,7 +81,7 @@ public class FaqControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Faq> list = faqService.findByMember(member);
+        List<Faq> list = faqService.findByMemberAndDeleteDateIsNull(member);
         assertThat(list.size()).isEqualTo(2);
 
         Faq faq = list.get(0);
