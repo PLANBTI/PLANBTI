@@ -73,6 +73,7 @@ public class CustomInitData {
                                 .price(39000)
                                 .count(3)
                                 .salePrice(25000)
+                                .imageUrl("https://planbti.cdn.ntruss.com/plant3.jpg")
                                 .build()
                 );
 
@@ -83,6 +84,7 @@ public class CustomInitData {
                                 .price(39000)
                                 .count(1)
                                 .salePrice(21000)
+                                .imageUrl("https://planbti.cdn.ntruss.com/plant2.jpg")
                                 .build()
                 );
                 Product product1 = productRepository.save(Product.builder()
