@@ -1,5 +1,7 @@
 package com.example.demo.boundedContext.member.controller;
 
+import com.example.demo.base.redis.MemberDtoRepository;
+import com.example.demo.boundedContext.member.dto.MemberChangeDto;
 import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
@@ -11,7 +13,7 @@ import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,7 @@ public class MemberController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final ShoppingBasketService shoppingBasketService;
+    private final ApplicationEventPublisher publisher;
     private final Rq rq;
 
     @GetMapping("/mypage")
@@ -58,7 +61,11 @@ public class MemberController {
 
         if (dto.isSame(member)) rq.historyBack("수정된 내용이 없습니다.");
 
-        memberService.modify(member, dto);
+        Member modify = memberService.modify(member, dto);
+
+        publisher.publishEvent(new MemberChangeDto(modify.getId(),modify.getUsername(),modify.getEmail()));
+
+
         return "redirect:/member/profile";
     }
 
