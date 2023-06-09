@@ -11,7 +11,7 @@
         <p class="text-2xl">장바구니에 담긴 상품이 없습니다.</p>
     </div>
 
-    <script th:inline="javascrpit">
+    <script th:inline="javascript">
         function submitForm() {
             const form = document.getElementById("orderForm");
             const selectedProducts = Array.from(form.elements["selectedProducts"].selectedOptions)
@@ -27,7 +27,7 @@
     </script>
 
     <form th:action="@{/product/basketOrder}" method="post">
-        <input type="hidden" th:field="${shoppingId}">
+        <input type="hidden" name="shoppingId" th:field="${shoppingId}">
         <div th:if="${!#lists.isEmpty(products)}" class="w-full h-full flex flex-com justify-center items-center">
             <ul role="list" id="reviewList" class="divide-y divide-gray-100 mt-3 flex-auto w-full">
                 <li th:each="product , i : ${products}" class="flex justify-around gap-x-6 py-5">
