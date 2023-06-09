@@ -31,17 +31,6 @@ public class HomeController {
         return "member/login";
     }
 
-    //test용 페이지 입니다.
-    @GetMapping("/every")
-    public String every(@RequestParam(required = false) String test) {
-        if (test != null && test.equals("test"))
-            return rq.redirectWithMsg("/every","안녕하세요");
-        if (test != null && test.equals("back"))
-            return rq.historyBack("안녕하세요");
-
-        return "member/everyOne";
-    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -51,21 +40,5 @@ public class HomeController {
                 .logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 
         return "redirect:/";
-    }
-
-
-    @ResponseBody
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/member")
-    public CustomOAuth2User member(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-
-        return customOAuth2User;
-    }
-
-    @ResponseBody
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin")
-    public String admin() {
-        return "ADMIN";
     }
 }

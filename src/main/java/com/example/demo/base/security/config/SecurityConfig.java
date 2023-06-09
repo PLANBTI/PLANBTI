@@ -24,11 +24,10 @@ public class SecurityConfig {
 
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/adm/**").hasRole("ADMIN")
-                .requestMatchers("/comment/**").hasRole("ADMIN")
+                .requestMatchers("/comment/**","/adm/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/every", "/favicon.ico", "/resource/**", "/error",
+                .requestMatchers("/favicon.ico", "/resource/**", "/error",
                         "/image/**", "/js/**", "/test/**", "/send","/","/actuator/**").permitAll()
                 .anyRequest().authenticated());
 
