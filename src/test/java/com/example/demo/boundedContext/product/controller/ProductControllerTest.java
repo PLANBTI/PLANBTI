@@ -67,10 +67,10 @@ class ProductControllerTest {
                         <input name="count" id="countInput"
                         """.stripIndent().trim())))
                 .andExpect(content().string(containsString("""
-                         <button class="btn btn-outline btn-primary mt-4" type="button">장바구니에 담기</button>
+                         <button class="btn btn-outline btn-primary mt-4" onclick="requestBasket()"
                         """.stripIndent().trim())))
                 .andExpect(content().string(containsString("""
-                         <button class="btn btn-outline btn-accent" onclick="requestOrder(this)">주문하기</button>
+                         <button id="reviewButton" class="btn btn
                         """.stripIndent().trim())))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("product/detail"))
