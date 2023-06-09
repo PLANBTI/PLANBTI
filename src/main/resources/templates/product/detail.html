@@ -28,6 +28,10 @@
                         th:text="|${product.content}|"></td>
                 </tr>
                 <tr>
+                    <td class="text-xl border  py-2 font-bold">제품 사진</td>
+                    <td><img id="imgId" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}" /></td>
+                </tr>
+                <tr>
                     <td class="text-xl border  py-2 font-bold">가격</td>
                     <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate"
                         th:text="${product.price}"></td>
