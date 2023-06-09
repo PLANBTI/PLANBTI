@@ -26,10 +26,9 @@ public class ShopController {
     private final ShopService shopService;
     private final CategoryService categoryService;
 
-    @GetMapping("/shop")
+    @GetMapping("/shop/{category}")
     public String list(@PageableDefault(size = 12, page = 0, direction = DESC, sort = "created") Pageable pageable,
-                       @RequestParam(value = "category", defaultValue = "istj") String category,
-                       Model model) {
+                        Model model, @PathVariable String category) {
         Page<Product> paging = shopService.getList(category, pageable);
 
         List<Category> categories = categoryService.findAll();
@@ -37,6 +36,11 @@ public class ShopController {
         model.addAttribute("paging", paging);
         model.addAttribute("categories", categories);
         return "shop/shopMain";
+    }
+
+    @GetMapping("/shop")
+    public  String shopMain(){
+        return "redirect:/shop/istj";
     }
 }
 
