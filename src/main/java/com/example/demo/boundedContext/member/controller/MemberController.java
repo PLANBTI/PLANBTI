@@ -24,11 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -92,48 +88,32 @@ public class MemberController {
 
     @GetMapping("/testresult")
     public String showTestResult(Model model, HttpServletRequest request) {
-        String mbti = null;
-        String plantName = null;
-        String plantDescription = null;
 
-        // 쿠키 읽기
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("mbti")) {
-                    mbti = cookie.getValue();
-                } else if (cookie.getName().equals("plantName")) {
-                    plantName = cookie.getValue();
-                } else if (cookie.getName().equals("plantDescription")) {
-                    plantDescription = cookie.getValue();
-                }
+        // 쿠키 값들을 보관할 Map 생성
+        Map<String, String> cookieValues = new HashMap<>();
+
+        // 쿠키 값들을 Map에 추출
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                cookieValues.put(cookie.getName(), cookie.getValue());
             }
         }
+        // 이제 필요한 값들을 다음과 같이 가져올 수 있습니다
+        String mbti = cookieValues.get("mbti");
+        String plantName = cookieValues.get("plantName");
+        String plantDescription = cookieValues.get("plantDescription");
 
-        // 쿠키가 없거나 찾지 못한 경우 에러 처리
-        if(mbti == null || plantName == null || plantDescription == null) {
+        // 모든 필요한 값들이 존재하는지 확인
+        if (mbti == null || plantName == null || plantDescription == null) {
             return "redirect:/error";
         }
 
         // 로그인된 사용자 정보를 가져옵니다
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        // 디코딩
-        try {
-            String decodedPlantName = URLDecoder.decode(plantName, "UTF-8");
-            String decodedPlantDescription = URLDecoder.decode(plantDescription, "UTF-8");
-
-            // 동일한 값 create 방지
-            if (!testService.isTestExist(member.getUsername(), mbti, decodedPlantName)){
-                testService.create(member, mbti, decodedPlantName, decodedPlantDescription);
-            }
-            // memberUsername 동일한 유저의 테스크 결과 가져오기
-            List<MbtiTest> tests = testService.findAllTestsByMember(member);
-            model.addAttribute("tests", tests);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        // 새로운 서비스 메소드를 사용하여 테스트 결과 가져오기
+        List<MbtiTest> tests = testService.createTestResult(member, mbti, plantName, plantDescription);
+        model.addAttribute("tests", tests);
         return "member/testResult";
     }
 

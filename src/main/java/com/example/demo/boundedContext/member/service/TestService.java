@@ -7,7 +7,10 @@ import com.example.demo.boundedContext.member.repository.MbtiTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +42,25 @@ public class TestService {
 
     public List<MbtiTest> findAllTestsByMember(Member member) {
         return mbtiTestRepository.findAllByMemberUsername(member.getUsername());
+    }
+
+    public List<MbtiTest> createTestResult(Member member, String mbti, String plantName, String plantDescription) {
+        // plantName과 plantDescription 디코드
+        try {
+            String decodedPlantName = URLDecoder.decode(plantName, "UTF-8");
+            String decodedPlantDescription = URLDecoder.decode(plantDescription, "UTF-8");
+
+            // 중복 항목 생성 방지
+            if (!isTestExist(member.getUsername(), mbti, decodedPlantName)){
+                create(member, mbti, decodedPlantName, decodedPlantDescription);
+            }
+            // 멤버의 테스트를 가져옴
+            return findAllTestsByMember(member);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();  // 예외 발생 시 빈 리스트 반환
     }
 
     public MbtiTest create(Member member, String result, String title, String content) {
