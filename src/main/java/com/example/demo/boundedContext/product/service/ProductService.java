@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -27,6 +29,11 @@ public class ProductService {
 
     public Page<Product> findAllByCategoryNameAndKeyword(String categoryName, String keyword, Pageable pageable) {
         return productRepository.findAllByCategoryNameAndKeyword(categoryName, keyword, pageable);
+    }
+
+
+    public List<Product> findAllById(List<Long> selectedProducts) {
+        return productRepository.findAllById(selectedProducts);
     }
 
 }

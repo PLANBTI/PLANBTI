@@ -2,8 +2,8 @@ package com.example.demo.boundedContext.order.service;
 
 import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
+import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
@@ -21,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.demo.util.rq.ResponseData.Status.*;
+import static com.example.demo.util.rq.ResponseData.Status.FAIL;
+import static com.example.demo.util.rq.ResponseData.Status.SUCCESS;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -67,11 +68,11 @@ public class OrderService {
         List<OrderDetail> orderDetailList = order.getOrderDetailList();
 
         for (OrderDetail orderDetail : orderDetailList) {
-            publisher.publishEvent(new ProductDecreaseEvent(orderDetail.getProduct().getId(),orderDetail.getCount()));
+            publisher.publishEvent(new ProductDecreaseEvent(orderDetail.getProduct().getId(), orderDetail.getCount()));
         }
     }
 
-    public ResponseData<OrderRequestDto> findLastOrderByStatus(Long id,OrderStatus status) {
+    public ResponseData<OrderRequestDto> findLastOrderByStatus(Long id, OrderStatus status) {
 
         Optional<Order> lastOrder = orderRepository.findOrderOneByStatus(id, status);
 
@@ -86,10 +87,10 @@ public class OrderService {
     }
 
 
+    @Transactional
     public void orderProduct(Member member, Product product, String productName, int count) {
 
-        List<Order> lists = orderRepository.findByMemberWhereStatusBefore(member.getId());
-        orderRepository.deleteAll(lists);
+        deleteBeforeStatus(member);
 
         Order order = Order.builder()
                 .orderName(productName)
@@ -100,7 +101,36 @@ public class OrderService {
         OrderDetail orderDetail = OrderDetail.builder()
                 .count(count)
                 .build();
-        orderDetail.addOrder(order,product);
+        orderDetail.addOrder(order, product);
         orderDetailRepository.save(orderDetail);
     }
+
+    @Transactional
+    public void createBulkOrder(List<Product> products, Member member) {
+
+        deleteBeforeStatus(member);
+
+        Order order = Order.builder()
+                .member(member)
+                .build();
+        orderRepository.save(order);
+
+        for (Product product : products) {
+            OrderDetail orderDetail = OrderDetail.builder()
+                    .count(1)
+                    .build();
+            orderDetail.addOrder(order,product);
+            orderDetailRepository.save(orderDetail);
+        }
+
+        orderRepository.save(order);
+
+    }
+
+
+    private void deleteBeforeStatus(Member member) {
+        List<Order> lists = orderRepository.findByMemberWhereStatusBefore(member.getId());
+        orderRepository.deleteAll(lists);
+    }
+
 }
