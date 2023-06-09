@@ -71,6 +71,12 @@ public class AddressService {
         return modifiedAddress;
     }
 
+    public void modifyDefault(Address address) {
+        Address modifiedAddress = address.toBuilder()
+                .isDefault(false).build();
+        addressRepository.save(modifiedAddress);
+    }
+
     // soft-delete
     public void delete(Member member, Address address) {
         if(!address.getMember().equals(member)) {
@@ -89,4 +95,5 @@ public class AddressService {
     public void deleteHard(Address address) {
         addressRepository.delete(address);
     }
+
 }

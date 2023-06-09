@@ -46,7 +46,7 @@ public class CommentController {
     public String create(@PathVariable Long id, @Valid CommentForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         commentService.create(faq, form.getContent());
-        return "redirect:/faq/detail/%s".formatted(id);
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(id), "코멘트를 추가하였습니다.");
     }
 
     @GetMapping("/modify/{id}")
@@ -67,7 +67,7 @@ public class CommentController {
         if(comment.getContent().equals(newContent)) rq.historyBack("수정된 내용이 없습니다.");
 
         commentService.modify(faq, comment, newContent);
-        return "redirect:/faq/detail/%s".formatted(id);
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(id), "코멘트를 수정하였습니다.");
     }
 
     @GetMapping("/delete/{id}")
@@ -75,7 +75,7 @@ public class CommentController {
         Comment comment = commentService.findById(id);
         Faq faq = comment.getFaq();
         commentService.delete(faq, comment);
-        return "redirect:/faq/detail/%s".formatted(id);
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(id), "코멘트를 삭제하였습니다.");
     }
 
 }

@@ -31,8 +31,16 @@ public class AddressController {
     @PostMapping("/create")
     public String create(@Valid AddressDto dto, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Address address = getDefaultAddress(member);
+
+        if(address != null && isDefault) {
+            addressService.modifyDefault(address);
+            addressService.create(member, dto, isDefault);
+            return rq.redirectWithMsg("/member/profile", "기본 배송지를 변경하였습니다.");
+        }
+
         addressService.create(member, dto, isDefault);
-        return "redirect:/member/profile";
+        return rq.redirectWithMsg("/member/profile", "배송지를 추가하였습니다.");
     }
 
     @GetMapping("/modify/{id}")
@@ -50,8 +58,20 @@ public class AddressController {
 
         if(dto.isSame(address)) rq.historyBack("수정된 내용이 없습니다.");
 
+        Address defaultAddress = getDefaultAddress(member);
+
+        if(!defaultAddress.equals(address) && isDefault) {
+            addressService.modifyDefault(defaultAddress);
+            addressService.modify(member, address, dto, isDefault);
+            return rq.redirectWithMsg("/member/profile", "기본 배송지를 변경하였습니다.");
+        }
+
         addressService.modify(member, address, dto, isDefault);
-        return "redirect:/member/profile";
+        return rq.redirectWithMsg("/member/profile", "배송지를 변경하였습니다.");
+    }
+
+    private Address getDefaultAddress(Member member) {
+        return member.getAddresses().stream().filter(address -> address.isDefault()).findFirst().orElse(null);
     }
 
     // soft-delete
@@ -61,6 +81,6 @@ public class AddressController {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
         addressService.delete(member, address);
-        return "redirect:/member/profile";
+        return rq.redirectWithMsg("/member/profile", "배송지를 삭제하였습니다.");
     }
 }

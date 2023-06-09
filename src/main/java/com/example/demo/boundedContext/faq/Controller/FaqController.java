@@ -67,7 +67,7 @@ public class FaqController {
     public String create(@Valid FaqDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
         Faq faq = faqService.create(member, dto);
-        return "redirect:/faq/detail/%s".formatted(faq.getId());
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ가 작성되었습니다.");
     }
 
     @GetMapping("/modify/{id}")
@@ -84,7 +84,7 @@ public class FaqController {
         if(dto.isSame(faq)) rq.historyBack("수정된 내용이 없습니다.");
 
         faqService.modify(faq, dto);
-        return "redirect:/faq/detail/%s".formatted(id);
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ를 수정하였습니다.");
     }
 
     // 회원이 자신의 FAQ를 삭제
@@ -92,7 +92,7 @@ public class FaqController {
     public String delete(@PathVariable Long id) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
         faqService.delete(faq);
-        return "redirect:/faq/myFaq";
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ를 삭제하였습니다.");
     }
 
     // 관리자가 FAQ를 완전 삭제
