@@ -46,12 +46,53 @@ public class CustomInitData {
             @Override
             @Transactional
             public void run(String... args) throws Exception {
+                List<Category> categories = new ArrayList<>();
+                categories.add(Category.builder().name("istj").build());
+                categories.add(Category.builder().name("isfj").build());
+                categories.add(Category.builder().name("infj").build());
+                categories.add(Category.builder().name("intj").build());
+                categories.add(Category.builder().name("istp").build());
+                categories.add(Category.builder().name("isfp").build());
+                categories.add(Category.builder().name("infp").build());
+                categories.add(Category.builder().name("intp").build());
+                categories.add(Category.builder().name("estp").build());
+                categories.add(Category.builder().name("esfp").build());
+                categories.add(Category.builder().name("enfp").build());
+                categories.add(Category.builder().name("entp").build());
+                categories.add(Category.builder().name("estj").build());
+                categories.add(Category.builder().name("esfj").build());
+                categories.add(Category.builder().name("enfj").build());
+                categories.add(Category.builder().name("entj").build());
+
+                categoryRepository.saveAll(categories);
+
+                Product save = productRepository.save(
+                        Product.builder()
+                                .category(categories.get(0))
+                                .name("뱅갈고무나무")
+                                .price(39000)
+                                .count(3)
+                                .salePrice(25000)
+                                .build()
+                );
+
+                Product save2 = productRepository.save(
+                        Product.builder()
+                                .category(categories.get(1))
+                                .name("산세베리아")
+                                .price(39000)
+                                .count(1)
+                                .salePrice(21000)
+                                .build()
+                );
                 Product product1 = productRepository.save(Product.builder()
                                 .count(10)
                         .price(15000)
+                        .category(categories.get(2))
                         .name("product1").build());
                 Product product2 = productRepository.save(Product.builder()
                         .count(100)
+                        .category(categories.get(3))
                         .price(10000)
                         .name("product2").build());
 
@@ -137,54 +178,13 @@ public class CustomInitData {
                 admin.addRole(Role.USER);
                 admin.addRole(Role.ADMIN);
                 memberRepository.save(admin);
-
-                List<Category> categories = new ArrayList<>();
-
-                categories.add(Category.builder().id(1L).name("istj").build());
-                categories.add(Category.builder().id(2L).name("isfj").build());
-                categories.add(Category.builder().id(3L).name("infj").build());
-                categories.add(Category.builder().id(4L).name("intj").build());
-                categories.add(Category.builder().id(5L).name("istp").build());
-                categories.add(Category.builder().id(6L).name("isfp").build());
-                categories.add(Category.builder().id(7L).name("infp").build());
-                categories.add(Category.builder().id(8L).name("intp").build());
-                categories.add(Category.builder().id(9L).name("estp").build());
-                categories.add(Category.builder().id(10L).name("esfp").build());
-                categories.add(Category.builder().id(11L).name("enfp").build());
-                categories.add(Category.builder().id(12L).name("entp").build());
-                categories.add(Category.builder().id(13L).name("estj").build());
-                categories.add(Category.builder().id(14L).name("esfj").build());
-                categories.add(Category.builder().id(15L).name("enfj").build());
-                categories.add(Category.builder().id(16L).name("entj").build());
-
-                categoryRepository.saveAll(categories);
-
-
-                Product save = productRepository.save(
-                        Product.builder()
-                                .category(categories.get(0))
-                                .name("뱅갈고무나무")
-                                .price(39000)
-                                .count(3)
-                                .salePrice(25000)
-                                .build()
-                );
-
-                Product save2 = productRepository.save(
-                        Product.builder()
-                                .category(categories.get(1))
-                                .name("산세베리아")
-                                .price(39000)
-                                .count(1)
-                                .salePrice(21000)
-                                .build()
-                );
-
+                
                 Comment comment = Comment.builder()
                         .faq(faq1).content("test content").build();
                 commentRepository.save(comment);
                 Faq _faq1 = faq1.toBuilder().comment(comment).build();
                 faqRepository.save(_faq1);
+
             }
         };
       }
