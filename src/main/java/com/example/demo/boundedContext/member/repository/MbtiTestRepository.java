@@ -12,4 +12,6 @@ public interface MbtiTestRepository extends JpaRepository<MbtiTest, Long> {
     Optional<MbtiTest> findByMemberUsernameAndResultAndTitle(String memberUsername, String result, String title);
     List<MbtiTest> findAllByMemberUsername(String memberUsername);
 
+    Optional<MbtiTest> findByMemberUsername(String memberUsername);
+
 }

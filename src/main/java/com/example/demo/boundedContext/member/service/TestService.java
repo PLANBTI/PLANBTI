@@ -40,6 +40,10 @@ public class TestService {
         return mbtiTestRepository.findByMemberUsernameAndResultAndTitle(memberUsername, result, title).isPresent();
     }
 
+    public boolean isMemberExist(String memberUsername) {
+        return mbtiTestRepository.findByMemberUsername(memberUsername).isPresent();
+    }
+
     public List<MbtiTest> findAllTestsByMember(Member member) {
         return mbtiTestRepository.findAllByMemberUsername(member.getUsername());
     }
@@ -60,8 +64,9 @@ public class TestService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();  // 예외 발생 시 빈 리스트 반환
+        return new ArrayList<>(); // 예외 발생 시 빈 리스트 반환
     }
+
 
     public MbtiTest create(Member member, String result, String title, String content) {
         MbtiTest test = MbtiTest
