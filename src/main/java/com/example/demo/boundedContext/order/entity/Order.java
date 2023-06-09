@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +58,16 @@ public class Order extends BaseEntity {
         if (!orderDetail.isBeforePaying()) {
             throw new OrderException("주문에 넣을 수 없습니다.");
         }
+
         orderDetailList.add(orderDetail);
         addPrice(orderDetail.getAmount());
         addCount(orderDetail.getCount());
+
+        if (!StringUtils.hasText(orderName)) {
+            orderName = orderDetail.getProduct().getName();
+        } else {
+            orderName = "%s 외 %d".formatted(orderName,itemCount);
+        }
     }
 
     private void addCount(int count) {

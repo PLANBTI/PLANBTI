@@ -28,29 +28,22 @@ public class Rq {
 
     private CustomOAuth2User customOAuth2User;
     private MemberDto member;
-    private final MemberService memberService;
     private final LocaleResolver localeResolver;
     private Locale locale;
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
     private final MessageSource messageSource;
-    private final ObjectMapper objectMapper;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberDtoRepository memberDtoRepository;
 
-    public Rq(MemberService memberService,
-              MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req,
-              HttpServletResponse resp, HttpSession session, RedisTemplate<String, Object> redisTemplate,
-              ObjectMapper objectMapper, MemberDtoRepository memberDtoRepository) throws JsonProcessingException {
-        this.memberService = memberService;
+    public Rq(MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req,
+              HttpServletResponse resp, HttpSession session,
+               MemberDtoRepository memberDtoRepository) throws JsonProcessingException {
         this.messageSource = messageSource;
         this.localeResolver = localeResolver;
         this.req = req;
         this.resp = resp;
         this.session = session;
-        this.objectMapper = objectMapper;
-        this.redisTemplate = redisTemplate;
         this.memberDtoRepository = memberDtoRepository;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

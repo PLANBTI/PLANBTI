@@ -31,6 +31,8 @@ public class OrderController {
     public String orderPage(Model model) {
         ResponseData<OrderRequestDto> responseData = orderService.findLastOrderByStatus(rq.getMemberId(), BEFORE);
         model.addAttribute("order", responseData.getContent());
+        model.addAttribute("username",rq.getUsername());
+        
         return "order/orderPage";
 
     }

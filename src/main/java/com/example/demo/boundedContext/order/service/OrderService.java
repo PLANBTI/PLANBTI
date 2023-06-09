@@ -36,14 +36,6 @@ public class OrderService {
 
     @Transactional
     public void verifyRequest(OrderRequest orderRequest, Long memberId) {
-
-        verify(orderRequest,memberId);
-
-        orderPayComplete(orderRequest);
-    }
-
-    @Transactional
-    public void verify(OrderRequest orderRequest, Long memberId) {
         Order order = findByOrderRequest(orderRequest);
 
         if (!isOrderOwner(memberId, order))
@@ -51,7 +43,6 @@ public class OrderService {
 
         order.canOrder(orderRequest);
     }
-
 
     private Order findByOrderRequest(OrderRequest orderRequest) {
 
@@ -82,7 +73,7 @@ public class OrderService {
 
     public ResponseData<OrderRequestDto> findLastOrderByStatus(Long id,OrderStatus status) {
 
-        Optional<Order> lastOrder = orderRepository.findCompleteOrderOneByStatus(id, status);
+        Optional<Order> lastOrder = orderRepository.findOrderOneByStatus(id, status);
 
         return lastOrder
                 .map(order -> ResponseData.of(SUCCESS, "성공", new OrderRequestDto(order)))

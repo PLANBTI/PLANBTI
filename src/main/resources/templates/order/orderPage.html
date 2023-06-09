@@ -12,6 +12,7 @@
         const orderId = /*[[${order.uuid}]]*/ null;
         const orderName = /*[[${order.orderName}]]*/ null;
         const orderTotalPrice = /*[[${order.totalAmount}]]*/ null;
+        const username = /*[[${username}]]*/ null;
     </script>
     <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
         <div class="text-2xl text-green-700 underline justify-center text-center" th:if="${order.getOrderId()} == null">
@@ -76,8 +77,7 @@
                         orderName: orderName,
                         successUrl: "http://localhost:8080/toss/success",
                         failUrl: "http://localhost:8080/toss/fail",
-                        customerEmail: "customer123@gmail.com",
-                        customerName: "김토스"
+                        customerName: username
                     })
                 })
                 function toggleRowDetails() {
