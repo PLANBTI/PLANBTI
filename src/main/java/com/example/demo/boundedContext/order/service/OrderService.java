@@ -88,6 +88,9 @@ public class OrderService {
 
     public void orderProduct(Member member, Product product, String productName, int count) {
 
+        List<Order> lists = orderRepository.findByMemberWhereStatusBefore(member.getId());
+        orderRepository.deleteAll(lists);
+
         Order order = Order.builder()
                 .orderName(productName)
                 .member(member)
