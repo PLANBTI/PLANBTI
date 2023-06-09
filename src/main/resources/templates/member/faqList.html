@@ -7,24 +7,26 @@
 <body>
 
 <main layout:fragment="main" class="w-screen h-full">
-    <div th:if="${#lists.isEmpty(faqList)}" class="w-full h-full flex justify-center items-center">
+    <div th:if="${#lists.isEmpty(faqList)}" class="w-full h-full flex flex-col justify-center items-center">
         <p class="text-2xl text-center">문의 내역이 존재하지 않습니다.</p>
+        <a href="/faq/create" class="btn btn-outline my-12"><i class="fa-solid fa-clipboard-question mr-2"></i>문의글 작성하기</a>
     </div>
     <div th:if="${!#lists.isEmpty(faqList)}" class="w-8/12 w-full h-full flex flex-col items-center">
         <table class="table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
             <p class="text-2xl font-black my-12">My FAQ</p>
             <thead>
             <tr>
-                <th>FAQ</th>
                 <th>Category</th>
                 <th>Title</th>
+                <th>작성 일자</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="faq : ${faqList}">
-                <th th:text="${faq.getId()}" class="w-20"></th>
-                <td th:text="${faq.getCategory()}" class="w-60"></td>
-                <td class="w-96"><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a></td>
+                <td th:text="${faq.getCategory()}" class="w-32"></td>
+                <td class="w-96"><a th:href="@{/faq/detail/{id}(id=${faq.getId()})}" th:text="${faq.getTitle()}"></a>
+                    <span th:if="${faq.getComment() != null}" class="indicator-item badge badge-primary mr-2">답변 완료</span> </td>
+                <td th:text="${faq.getCreateDate()}" class="w-60"></td>
             </tr>
             </tbody>
         </table>

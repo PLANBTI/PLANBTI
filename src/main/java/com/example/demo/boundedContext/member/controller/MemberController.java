@@ -74,8 +74,8 @@ public class MemberController {
 
         publisher.publishEvent(new MemberChangeDto(modify.getId(),modify.getUsername(),modify.getEmail()));
 
-
-        return "redirect:/member/profile";
+        memberService.modify(member, dto);
+        return rq.redirectWithMsg("/member/profile", "회원 정보를 수정하였습니다.");
     }
 
     @GetMapping("/shoppingbasket")
