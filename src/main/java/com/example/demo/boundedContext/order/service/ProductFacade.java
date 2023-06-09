@@ -1,16 +1,15 @@
 package com.example.demo.boundedContext.order.service;
 
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.boundedContext.product.repository.ProductRepository;
 import com.example.demo.boundedContext.product.service.ProductService;
-import com.example.demo.boundedContext.product.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -28,4 +27,14 @@ public class ProductFacade {
 
         orderService.orderProduct(member, product, product.getName(), dto.getCount());
     }
+
+    public void createBulkOrder(List<Long> selectedProducts, Long memberId) {
+
+        Member member = memberService.findById(memberId);
+
+        List<Product> products = productService.findAllById(selectedProducts);
+
+        orderService.createBulkOrder(products, member);
+    }
+
 }

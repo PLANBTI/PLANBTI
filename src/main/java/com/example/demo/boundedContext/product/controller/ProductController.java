@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.product.controller;
 
+import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.boundedContext.order.service.ProductFacade;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.dto.ReviewDto;
@@ -26,6 +27,7 @@ public class ProductController {
     private final ReviewService reviewService;
     private final ProductService productService;
     private final ShoppingBasketService shoppingBasketService;
+    private final OrderService orderService;
     private final ProductFacade productFacade;
 
     @GetMapping("/detail/{id}")
@@ -72,9 +74,8 @@ public class ProductController {
 
         shoppingBasketService.checkOwner(shoppingId, rq.getMemberId());
 
-        for (Long productId : selectedProducts) {
-            productFacade.createOrderOne(new ProductOrderDto(productId, 1), rq.getMemberId());
-        }
+        productFacade.createBulkOrder(selectedProducts, rq.getMemberId());
+
 
         return rq.redirectWithMsg("/order/orderPage", "주문하러 가기");
     }

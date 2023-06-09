@@ -15,6 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+
 @Transactional
 @ActiveProfiles("test")
 @SpringBootTest
@@ -46,15 +51,42 @@ class ProductFacadeTest {
         int count = 5;
         dto.setCount(count);
 
-        facade.createOrderOne(dto,user.getId());
+        facade.createOrderOne(dto, user.getId());
         Order order = orderRepository.findByMember(user).get(0);
 
-        Assertions.assertThat(order.getItemCount()).isEqualTo(count);
-        Assertions.assertThat(order.getTotalPrice()).isEqualTo((long) product.getPrice() * count);
+        assertThat(order.getItemCount()).isEqualTo(count);
+        assertThat(order.getTotalPrice()).isEqualTo((long) product.getPrice() * count);
 
         Product saveProduct = order.getOrderDetailList().get(0).getProduct();
-        Assertions.assertThat(saveProduct.getId()).isEqualTo(product.getId());
+        assertThat(saveProduct.getId()).isEqualTo(product.getId());
 
     }
+
+    @DisplayName("장바구니 여러개 주문 성공")
+    @Test
+    void t2() {
+        List<Long> list = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            Product product = productRepository.save(Product.builder()
+                    .id((long) i)
+                    .count(10)
+                    .price(1000 * i)
+                    .name("product"+i).build());
+            list.add(product.getId());
+        }
+
+        Member user = Member.builder()
+                .build();
+        memberRepository.save(user);
+
+        facade.createBulkOrder(list, user.getId());
+
+        Order order = orderRepository.findByMember(user).get(0);
+
+        assertThat(order.getItemCount()).isEqualTo(5);
+        assertThat(order.getTotalPrice()).isEqualTo(15000);
+        assertThat(order.getOrderDetailList().size()).isEqualTo(5);
+    }
+
 
 }
