@@ -44,3 +44,6 @@ public class RedisConfig {
         return  redisTemplate;
     }
 }
+
+
+
