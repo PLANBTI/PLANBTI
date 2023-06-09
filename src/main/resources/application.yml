@@ -11,6 +11,12 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: create
+  datasource:
+    url: jdbc:mariadb://localhost:3306/planbti
+    username: testuser
+    password: 5678
+
+
 
 
   security:
@@ -23,12 +29,14 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
 
+
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: POST
+
 
           google:
             scope: profile
@@ -63,6 +71,10 @@ management:
     web:
       exposure:
         include: "*"
-  server:
-    port: 2023
+server:
+  port: 8080
+
+
+
+
 
