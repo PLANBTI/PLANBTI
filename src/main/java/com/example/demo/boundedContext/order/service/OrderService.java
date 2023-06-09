@@ -72,14 +72,22 @@ public class OrderService {
         }
     }
 
-    public ResponseData<OrderRequestDto> findLastOrderByStatus(Long id, OrderStatus status) {
+    public ResponseData<OrderRequestDto> findLastOrderByStatus(Long memberId, OrderStatus status) {
 
-        Optional<Order> lastOrder = orderRepository.findOrderOneByStatus(id, status);
+        Optional<Order> lastOrder = orderRepository.findOrderOneByStatus(memberId, status);
 
         return lastOrder
                 .map(order -> ResponseData.of(SUCCESS, "성공", new OrderRequestDto(order)))
                 .orElseGet(() -> ResponseData.of(FAIL, "실패", new OrderRequestDto()));
+    }
 
+    public ResponseData<OrderRequestDto> findOrderByOrderId(Long memberId,Long orderId) {
+
+        Optional<Order> lastOrder = orderRepository.findOrderByOrderId(memberId,orderId);
+
+        return lastOrder
+                .map(order -> ResponseData.of(SUCCESS, "성공", new OrderRequestDto(order)))
+                .orElseGet(() -> ResponseData.of(FAIL, "실패", new OrderRequestDto()));
     }
 
     public List<Order> findAllByMember(Member member) {

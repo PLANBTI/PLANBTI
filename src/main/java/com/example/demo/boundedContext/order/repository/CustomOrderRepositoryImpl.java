@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
+import static com.example.demo.boundedContext.member.entity.QMember.member;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 import static com.example.demo.boundedContext.order.entity.QOrder.order;
 
 @RequiredArgsConstructor
@@ -21,6 +23,21 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
                 .orderBy(order.id.desc()).limit(1L).fetchOne();
 
         return Optional.ofNullable(order1);
+    }
+
+    @Override
+    public Optional<Order> findOrderByOrderId(Long orderId, Long memberId ) {
+
+        Order findOrder = jpaQueryFactory.selectFrom(order)
+                .join(order.member, member)
+                .where(
+                        order.id.eq(orderId)
+                                .and(order.status.eq(COMPLETE))
+                                .and(member.id.eq(memberId))
+                ).fetchFirst();
+
+
+        return Optional.ofNullable(findOrder);
     }
 
     private static BooleanExpression isEqualStatus(OrderStatus status) {

@@ -20,7 +20,7 @@
                 <h2 class="card-title" th:text="|${order.getTotalPrice()}원|"></h2>
                 <p th:text="${order.orderName}">산세베리아 외 3종</p>
                 <div class="card-actions justify-end">
-                    <a th:href="|@{}|" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
+                    <a th:href="|@{/order/orderInfo/{id}(id=${order.id})}|" class="btn btn-outline w-full mt-12">주문 상세 내역</a>
                 </div>
             </div>
         </div>
