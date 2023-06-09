@@ -1,5 +1,6 @@
 package com.example.demo.base.exception.advice;
 
+import com.example.demo.base.exception.handler.NotEnoughProductCount;
 import com.example.demo.base.exception.handler.NotOwnerException;
 import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.util.rq.Rq;
@@ -27,7 +28,7 @@ public class CustomControllerAdvice {
 
         String referer = request.getHeader("Referer");
         log.error("TaskRejectedException 발생", e);
-        log.info("TaskRejectedException 발생 | [사용자 IP] ={}", request.getRemoteAddr());
+        log.error("TaskRejectedException 발생 | [사용자 IP] ={}", request.getRemoteAddr());
 
         return String.format("redirect:%s",referer);
     }
@@ -50,7 +51,14 @@ public class CustomControllerAdvice {
     @ExceptionHandler(NotOwnerException.class)
     public String notOwnerException(HttpServletRequest request, Exception e) {
         log.error("NotOwnerException 발생", e);
-        log.info("NotOwnerException 발생 | [사용자 IP] ={}", request.getRemoteAddr());
+        log.error("NotOwnerException 발생 | [사용자 IP] ={}", request.getRemoteAddr());
         return rq.redirectWithMsg("/",e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotEnoughProductCount.class)
+    public String notEnoughProductCount(Exception e) {
+
+        return rq.historyBack("재고가 부족합니다.");
     }
 }
