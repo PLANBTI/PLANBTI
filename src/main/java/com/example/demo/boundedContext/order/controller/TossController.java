@@ -6,6 +6,7 @@ import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.util.rq.Rq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,15 @@ public class TossController {
     public String orderByToss(OrderRequest orderRequest) throws Exception {
 
         orderService.verifyRequest(orderRequest, rq.getMemberId());
-        tossPaymentService.requestPermitToss(orderRequest);
-        return rq.redirectWithMsg("/order/result", "결제가 완료되었습니다.");
+
+        ResponseEntity<String> response = tossPaymentService.requestPermitToss(orderRequest);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            orderService.orderPayComplete(orderRequest);
+            return rq.redirectWithMsg("/order/result", "결제가 완료되었습니다.");
+        }
+
+        return rq.redirectWithMsg("/order/orderPage","결제에 실패하였습니다.");
     }
 
     @GetMapping(value = "fail")

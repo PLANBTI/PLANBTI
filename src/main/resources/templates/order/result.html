@@ -20,6 +20,10 @@
                     <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.orderId}|"></td>
                 </tr>
                 <tr>
+                    <td class="text-xl border  py-2 font-bold">주문명</td>
+                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.orderName}|"></td>
+                </tr>
+                <tr>
                     <td class="text-xl border  py-2 font-bold">주문 날짜</td>
                     <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate" th:text="${#temporals.format(order.modifyDate, 'yyyy-MM-dd')}"></td>
                 </tr>

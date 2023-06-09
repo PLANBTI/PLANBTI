@@ -94,7 +94,7 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", order.getUuid(), 8000L);
 
-        orderService.verifyRequest(orderRequest,member.getId());
+        orderService.orderPayComplete(orderRequest);
         assertThat(order.getStatus()).isEqualTo(OrderStatus.COMPLETE);
 
     }
@@ -144,7 +144,7 @@ class OrderServiceTest {
 
         OrderRequest orderRequest = new OrderRequest("1__2__3", save.getUuid(), product.getPrice() * 1200L);
 
-        assertThatThrownBy(() -> orderService.verifyRequest(orderRequest, member.getId()))
+        assertThatThrownBy(() -> orderService.orderPayComplete(orderRequest))
                 .isInstanceOf(OrderException.class).hasMessageContaining("재고가 부족합니다");
     }
 }
