@@ -10,12 +10,13 @@
     <div class="flex flex-row mt-24">
         <ul class="menu bg-base-100 w-60 flex-none">
             <th:block th:each="category : ${categories}">
-                <li><a  th:href="@{/shop/{category}(category=${category})}" th:text="${category.name}"></a></li>
+                <li><a  th:href="@{/shop/{category}(category=${category.name})}" th:text="${category.name}"></a></li>
             </th:block>
         </ul>
         <div th:if="${!paging.isEmpty()}" class="flex flex-wrap xl:min-w-full">
             <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
-                <img src="" class="h-44 bg-green-500"> <!-- 식물 이미지 -->
+                <!--<img src="" class="h-44 bg-green-500">  식물 이미지 -->
+                <img id="imgId" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}" />
                 <div class="w-60 h-20 p-4">
                     <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>
                     <p class="flex justify-end" th:text="|${product.getSalePrice()} 원|"></p>
