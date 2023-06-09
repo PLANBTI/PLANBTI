@@ -108,8 +108,6 @@ public class MbtiTestController {
 
     // 쿠키를 생성하고 값을 설정하는 메서드
     public void setCookie(HttpServletResponse response, String name, String value) {
-        value = value.replace("\\", "");
-        value = value.replace("n", "<br>");
         try {
             String encodedValue = URLEncoder.encode(value, "UTF-8");
             Cookie cookie = new Cookie(name, encodedValue);

@@ -13,6 +13,7 @@ import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.Rq;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -88,7 +89,6 @@ public class MemberController {
 
     @GetMapping("/testresult")
     public String showTestResult(Model model, HttpServletRequest request) {
-
         // 쿠키 값들을 보관할 Map 생성
         Map<String, String> cookieValues = new HashMap<>();
 
@@ -103,16 +103,18 @@ public class MemberController {
         String plantName = cookieValues.get("plantName");
         String plantDescription = cookieValues.get("plantDescription");
 
-        // 모든 필요한 값들이 존재하는지 확인
-        if (mbti == null || plantName == null || plantDescription == null) {
-            return "redirect:/error";
-        }
-
         // 로그인된 사용자 정보를 가져옵니다
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        // 새로운 서비스 메소드를 사용하여 테스트 결과 가져오기
-        List<MbtiTest> tests = testService.createTestResult(member, mbti, plantName, plantDescription);
+        if(!testService.isMemberExist(member.getUsername()) && (StringUtils.isBlank(mbti) || StringUtils.isBlank(plantName) || StringUtils.isBlank(plantDescription))){
+            return rq.historyBack("테스트를 진행해 주세요");
+        }
+        // 모든 필요한 값들이 존재하는지 확인
+        else if (!StringUtils.isBlank(mbti) && !StringUtils.isBlank(plantName) && !StringUtils.isBlank(plantDescription)) {
+            testService.createTestResult(member, mbti, plantName, plantDescription);
+        }
+
+        List<MbtiTest> tests = testService.findAllTestsByMember(member);
         model.addAttribute("tests", tests);
         return "member/testResult";
     }
