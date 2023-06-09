@@ -6,5 +6,5 @@ import com.example.demo.boundedContext.order.entity.OrderStatus;
 import java.util.Optional;
 
 public interface CustomOrderRepository  {
-    Optional<Order> findCompleteOrderOneByStatus(Long id, OrderStatus status);
+    Optional<Order> findOrderOneByStatus(Long id, OrderStatus status);
 }
