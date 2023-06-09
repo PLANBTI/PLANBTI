@@ -14,7 +14,7 @@ import static com.example.demo.boundedContext.order.entity.QOrder.order;
 public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-    public Optional<Order> findCompleteOrderOneByStatus(Long id, OrderStatus status) {
+    public Optional<Order> findOrderOneByStatus(Long id, OrderStatus status) {
         Order order1 = jpaQueryFactory.selectFrom(order)
                 .where(isEqualMember(id), isEqualStatus(status))
                 .orderBy(order.id.desc()).limit(1L).fetchOne();
