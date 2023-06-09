@@ -47,7 +47,7 @@ public class Order extends BaseEntity {
 
     @JsonManagedReference
     @Builder.Default
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
     @OneToOne
@@ -66,7 +66,7 @@ public class Order extends BaseEntity {
         if (!StringUtils.hasText(orderName)) {
             orderName = orderDetail.getProduct().getName();
         } else {
-            orderName = "%s 외 %d".formatted(orderName,itemCount);
+            orderName = "%s 외 %d개".formatted(orderName,itemCount-1);
         }
     }
 
