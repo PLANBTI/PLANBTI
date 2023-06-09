@@ -44,9 +44,12 @@ public class OrderController {
         return "order/result";
     }
 
-    @GetMapping("/orderInfo")
-    public String orderStatus(Model model) {
-        ResponseData<OrderRequestDto> lastOrderComplete = orderService.findLastOrderByStatus(rq.getMemberId(),COMPLETE);
+    @GetMapping("/orderInfo/{id}")
+    public String orderStatus(Model model,@PathVariable("id") Long orderId) {
+
+        ResponseData<OrderRequestDto> lastOrderComplete =
+                orderService.findOrderByOrderId(rq.getMemberId(),orderId);
+
         model.addAttribute("order", lastOrderComplete.getContent());
         return "order/orderInfo";
     }
