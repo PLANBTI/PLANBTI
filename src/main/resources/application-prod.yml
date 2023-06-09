@@ -1,0 +1,20 @@
+spring:
+  cache:
+    cache-names: mbtiTestCache
+    caffeine:
+      spec: maximumSize=1000, expireAfterAccess=5m
+  profiles:
+    include: secret
+    active: dev
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+
+
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: off
