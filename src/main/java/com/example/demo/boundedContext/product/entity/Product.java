@@ -28,10 +28,13 @@ public class Product extends BaseEntity {
     private int price;
     private int salePrice;
     private int count;
+    private  String imageUrl;
+
 
     @Builder.Default
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
+    
 
 
     @Version

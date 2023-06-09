@@ -178,7 +178,7 @@ public class CustomInitData {
                 admin.addRole(Role.USER);
                 admin.addRole(Role.ADMIN);
                 memberRepository.save(admin);
-                
+
                 Comment comment = Comment.builder()
                         .faq(faq1).content("test content").build();
                 commentRepository.save(comment);
