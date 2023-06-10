@@ -4,27 +4,33 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
+import com.example.demo.boundedContext.product.dto.Basket;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.entity.Product;
+import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.boundedContext.product.repository.ProductRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @ActiveProfiles("test")
 @SpringBootTest
 class ProductFacadeTest {
 
+    @MockBean
+    BasketRepository basketRepository;
     @Autowired
     ProductFacade facade;
     @Autowired
@@ -65,7 +71,13 @@ class ProductFacadeTest {
     @DisplayName("장바구니 여러개 주문 성공")
     @Test
     void t2() {
+        Member user = Member.builder()
+                .build();
+        memberRepository.save(user);
+        Basket basket = new Basket(user.getId());
+
         List<Long> list = new ArrayList<>();
+
         for (int i = 1; i <= 5; i++) {
             Product product = productRepository.save(Product.builder()
                     .id((long) i)
@@ -73,11 +85,11 @@ class ProductFacadeTest {
                     .price(1000 * i)
                     .name("product"+i).build());
             list.add(product.getId());
+            basket.addProduct(product,1);
         }
 
-        Member user = Member.builder()
-                .build();
-        memberRepository.save(user);
+        Mockito.when(basketRepository.findById(user.getId())).thenReturn(Optional.of(basket));
+
 
         facade.createBulkOrder(list, user.getId());
 

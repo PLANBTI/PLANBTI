@@ -9,8 +9,11 @@ import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
+import com.example.demo.boundedContext.product.dto.Basket;
 import com.example.demo.boundedContext.product.entity.Product;
+import com.example.demo.boundedContext.product.event.DeleteBasket;
 import com.example.demo.boundedContext.product.event.ProductDecreaseEvent;
+import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,7 @@ import static com.example.demo.util.rq.ResponseData.Status.SUCCESS;
 @RequiredArgsConstructor
 @Service
 public class OrderService {
+    private final BasketRepository basketRepository;
 
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -70,6 +74,8 @@ public class OrderService {
         for (OrderDetail orderDetail : orderDetailList) {
             publisher.publishEvent(new ProductDecreaseEvent(orderDetail.getProduct().getId(), orderDetail.getCount()));
         }
+
+        publisher.publishEvent(new DeleteBasket(order.getItemCount(),order.getMember().getId()));
     }
 
     public ResponseData<OrderRequestDto> findLastOrderByStatus(Long memberId, OrderStatus status) {
@@ -91,7 +97,8 @@ public class OrderService {
     }
 
     public List<Order> findAllByMember(Member member) {
-        return orderRepository.findByMember(member);
+        List<Order> orderList = orderRepository.findByMember(member);
+        return orderList.stream().filter(i -> !i.getStatus().equals(OrderStatus.BEFORE)).toList();
     }
 
 
@@ -123,9 +130,12 @@ public class OrderService {
                 .build();
         orderRepository.save(order);
 
+        Basket basket = basketRepository.findById(member.getId()).orElseThrow();
+
         for (Product product : products) {
+
             OrderDetail orderDetail = OrderDetail.builder()
-                    .count(1)
+                    .count(basket.getProductCount(product.getId()))
                     .build();
             orderDetail.addOrder(order,product);
             orderDetailRepository.save(orderDetail);

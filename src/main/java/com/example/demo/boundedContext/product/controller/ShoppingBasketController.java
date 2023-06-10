@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -20,9 +21,9 @@ public class ShoppingBasketController {
 
     @ResponseBody
     @GetMapping("/add")
-    public String addProduct(Long productId) {
+    public String addProduct(Long productId,@RequestParam(defaultValue = "1") int count) {
 
-        ResponseData<String> responseData = shoppingBasketService.addProduct(rq.getMemberId(), productId);
+        ResponseData<String> responseData = shoppingBasketService.addProduct(rq.getMemberId(), productId,count);
 
         return responseData.isSuccess() ? responseData.getMsg() : "장바구니에 담는데 실패하였습니다.";
     }

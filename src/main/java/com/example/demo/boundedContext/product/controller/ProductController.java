@@ -1,13 +1,11 @@
 package com.example.demo.boundedContext.product.controller;
 
-import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.boundedContext.order.service.ProductFacade;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
-import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +24,6 @@ public class ProductController {
     private final Rq rq;
     private final ReviewService reviewService;
     private final ProductService productService;
-    private final ShoppingBasketService shoppingBasketService;
-    private final OrderService orderService;
     private final ProductFacade productFacade;
 
     @GetMapping("/detail/{id}")
@@ -69,16 +65,10 @@ public class ProductController {
     }
 
     @PostMapping("/basketOrder")
-    public String basketOrder(@RequestParam("selectedProducts") List<Long> selectedProducts,
-                              Long shoppingId) {
+    public String basketOrder(@RequestParam(name = "productId") List<Long> productIdList) {
 
-        shoppingBasketService.checkOwner(shoppingId, rq.getMemberId());
-
-        productFacade.createBulkOrder(selectedProducts, rq.getMemberId());
-
+        productFacade.createBulkOrder(productIdList, rq.getMemberId());
 
         return rq.redirectWithMsg("/order/orderPage", "주문하러 가기");
     }
-
-
 }

@@ -7,47 +7,52 @@
 <body>
 
 <main layout:fragment="main" class="w-screen h-full">
-    <div th:if="${#lists.isEmpty(products)}" class="w-full h-full flex justify-center items-center">
+    <div th:if="${#lists.isEmpty(products.getProducts())}" class="w-full h-full flex justify-center items-center">
         <p class="text-2xl">장바구니에 담긴 상품이 없습니다.</p>
     </div>
 
-    <script th:inline="javascript">
-        function submitForm() {
-            const form = document.getElementById("orderForm");
-            const selectedProducts = Array.from(form.elements["selectedProducts"].selectedOptions)
-                .map(option => option.value);
-
-            if (selectedProducts.length === 0) {
-                alert("상품을 선택해주세요.");
-                return;
-            }
-            form.elements["selectedProducts"].value = selectedProducts;
-            form.submit();
-        }
-    </script>
-
-    <form th:action="@{/product/basketOrder}" method="post">
-        <input type="hidden" name="shoppingId" th:field="${shoppingId}">
-        <div th:if="${!#lists.isEmpty(products)}" class="w-full h-full flex flex-com justify-center items-center">
+    <form th:action="@{/product/basketOrder}" method="post" th:if="${!#lists.isEmpty(products.getProducts())}">
+        <div  class="w-full h-full flex flex-com justify-center items-center">
             <ul role="list" id="reviewList" class="divide-y divide-gray-100 mt-3 flex-auto w-full">
-                <li th:each="product , i : ${products}" class="flex justify-around gap-x-6 py-5">
+                <li th:each="product , i : ${products.getProducts()}" class="flex justify-around gap-x-6 py-5">
                     <div class="flex gap-x-4 mx-2">
                         <div class="min-w-0 flex-auto">
-                            <p class="mt-1 leading-5 text-gray-500" th:text="${product.name}">product.name</p>
+                            <p class="mt-1 leading-5 text-blue-700 text-xl" th:text="|${i.index+1}번|">product.name</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4 mx-2">
+                        <div class="min-w-0 flex-auto">
+                            <p class="mt-1 leading-5 text-gray-500 text-xl" th:text="${product.name}">product.name</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-x-4 mx-2">
+                        <div class="min-w-0 flex-auto">
+                            <p class="mt-1 leading-5 text-gray-500 text-xl" th:text="|${product.count}개|">product.name</p>
                         </div>
                     </div>
                     <div class="flex flex-col items-end mx-2">
-                        <p class="font-semi bold leading-6 text-gray-900" th:text="${product.price}">product.price</p>
+                        <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.price}원|">
+                            product.price</p>
+                    </div>
+                    <div class="flex flex-col items-end mx-2">
+                        <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.price * product.count}원|">
+                            product.price</p>
                     </div>
                     <div class="flex items-center mb-4">
-                        <input id="default-checkbox" type="checkbox" th:value="${product.id}" name="selectedProducts"
-                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">구매하기</label>
+                        <input  name="productId" type="hidden" th:value="${product.id}">
+
                     </div>
                 </li>
             </ul>
         </div>
-        <button type="submit">주문하기</button>
+        <div class="flex justify-center">
+            <button type="submit"
+                    class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+              <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  주문하기
+              </span>
+            </button>
+        </div>
     </form>
 </main>
 
