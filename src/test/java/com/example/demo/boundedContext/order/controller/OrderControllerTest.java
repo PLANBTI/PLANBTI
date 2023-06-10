@@ -123,7 +123,7 @@ class OrderControllerTest {
                 .andExpect(handler().handlerType(OrderController.class))
                 .andExpect(handler().methodName("exchangePost"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/order/orderInfo**"))
+                .andExpect(redirectedUrlPattern("/order/orderInfo/20**"))
                 .andDo(print());
     }
 }

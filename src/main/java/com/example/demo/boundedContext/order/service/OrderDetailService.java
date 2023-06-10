@@ -10,8 +10,11 @@ import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.event.ProductIncreaseEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.demo.base.redis.RedisPrefix.RETURN;
 
 
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class OrderDetailService {
 
     private final OrderDetailRepository orderDetailRepository;
     private final OrderRepository orderRepository;
+    private final StringRedisTemplate redisTemplate;
     private final ApplicationEventPublisher publisher;
 
     public OrderExchangeDto findOrderDetailById(Long orderId, Long orderItemId, Long memberId) {
@@ -29,23 +33,24 @@ public class OrderDetailService {
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 데이터입니다"));
     }
 
-    public void exchange(OrderExchangeDto dto,Long memberId) {
-        verify(dto.getOrderItemId(),memberId);
+    public void exchange(OrderExchangeDto dto, Long memberId) {
+        verify(dto.getOrderItemId(), memberId);
 
         OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderItemId()).orElseThrow();
         orderDetail.orderExchange();
     }
 
-    public void returnProduct(Long orderId, OrderExchangeDto dto,Long memberId) {
-        verify(dto.getOrderItemId(),memberId);
+    public void returnProduct(Long orderId, OrderExchangeDto dto, Long memberId) {
+        verify(dto.getOrderItemId(), memberId);
         Order order = orderRepository.findById(orderId).orElseThrow();
         order.returnProduct(dto);
 
-        publisher.publishEvent(new ProductIncreaseEvent(dto.getProductName(),dto.getCount()));
+        publisher.publishEvent(new ProductIncreaseEvent(dto.getProductName(), dto.getCount()));
+        redisTemplate.opsForValue().set(RETURN.formatKey(memberId), String.valueOf(memberId));
     }
 
-    public void verify(Long orderItemId,Long memberId) {
-        orderDetailRepository.findByIdAndMemberId(orderItemId,memberId)
+    public void verify(Long orderItemId, Long memberId) {
+        orderDetailRepository.findByIdAndMemberId(orderItemId, memberId)
                 .orElseThrow(() -> new NotOwnerException("이 제품에 대한 권리가 없습니다."));
     }
 }
