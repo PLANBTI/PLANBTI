@@ -80,6 +80,6 @@ public class OrderController {
             orderDetailService.returnProduct(orderId, dto,rq.getMemberId());
         }
 
-        return rq.redirectWithMsg("/order/orderInfo","요청이 성공하였습니다.");
+        return rq.redirectWithMsg("/order/orderInfo/%d".formatted(orderId),"요청이 성공하였습니다.");
     }
 }

@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CustomOrderRepository  {
     Optional<Order> findOrderOneByStatus(Long id, OrderStatus status);
-    Optional<Order> findOrderByOrderId(Long orderId, Long memberId);
+    Optional<Order> findOrderByOrderId(Long memberId, Long orderId);
 }
