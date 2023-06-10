@@ -38,7 +38,7 @@ class ShoppingBasketServiceTest {
         Product product = Product.builder().build();
         productRepository.save(product);
 
-        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId());
+        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(),1);
         assertThat(responseData.getStatusCode()).isEqualTo(ResponseData.Status.SUCCESS);
         assertThat(responseData.getMsg()).contains("장바구니에 상품을 담았습니다.");
 

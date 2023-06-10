@@ -1,6 +1,5 @@
 package com.example.demo.boundedContext.member.controller;
 
-import com.example.demo.base.redis.MemberDtoRepository;
 import com.example.demo.boundedContext.member.dto.MemberChangeDto;
 import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.MbtiTest;
@@ -9,9 +8,8 @@ import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.member.service.TestService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
-import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.boundedContext.product.entity.ShoppingBasket;
-import com.example.demo.boundedContext.product.service.ShoppingBasketService;
+import com.example.demo.boundedContext.product.dto.Basket;
+import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.util.rq.Rq;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.Cookie;
@@ -25,7 +23,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -35,8 +38,8 @@ public class MemberController {
     private  final TestService testService;
     private final MemberService memberService;
     private final OrderService orderService;
-    private final ShoppingBasketService shoppingBasketService;
     private final ApplicationEventPublisher publisher;
+    private final BasketRepository basketRepository;
     private final Rq rq;
 
     @GetMapping("/mypage")
@@ -79,10 +82,12 @@ public class MemberController {
     public String showShoppingBasket(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
 
-        ShoppingBasket shoppingBasket = shoppingBasketService.findByMember(member.getId());
-        List<Product> products = shoppingBasket.getProducts();
-        model.addAttribute("shoppingId",shoppingBasket.getId());
-        model.addAttribute("products", products);
+        Optional<Basket> basketOptional = basketRepository.findById(member.getId());
+        Basket basket = new Basket(member.getId());
+        if (basketOptional.isPresent()) {
+            basket = basketOptional.get();
+        }
+        model.addAttribute("products",basket);
 
         return "member/shoppingbasket";
     }

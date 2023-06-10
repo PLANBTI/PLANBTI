@@ -24,13 +24,13 @@ public class ShoppingBasket extends BaseEntity {
     @ManyToMany
     @JoinTable(name = "shoppingBasket_product")
     private List<Product> products = new ArrayList<>();
-
+    
     private int count;
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product,int count) {
         Optional<Product> optionalProduct = findProduct(product.getId());
         if (optionalProduct.isEmpty()) {
-            addCount(1);
+            addCount(count);
             this.products.add(product);
         }
     }

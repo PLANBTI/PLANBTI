@@ -1,11 +1,12 @@
 package com.example.demo.boundedContext.product.service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
-import com.example.demo.base.exception.handler.NotOwnerException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.product.dto.Basket;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
+import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.boundedContext.product.repository.ShoppingBasketRepository;
 import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +25,12 @@ public class ShoppingBasketService {
     private final ShoppingBasketRepository shoppingBasketRepository;
     private final MemberService memberService;
     private final ProductService productService;
+    private final BasketRepository basketRepository;
 
     public ShoppingBasket findById(Long id) {
         Optional<ShoppingBasket> shoppingBasket = shoppingBasketRepository.findById(id);
 
-        if(shoppingBasket.isEmpty()) {
+        if (shoppingBasket.isEmpty()) {
             throw new DataNotFoundException("존재하지 않는 장바구니입니다.");
         }
 
@@ -39,7 +41,7 @@ public class ShoppingBasketService {
     public ShoppingBasket findByMember(Long memberId) {
         Optional<ShoppingBasket> shoppingBasket = shoppingBasketRepository.findByMemberId(memberId);
 
-        if(shoppingBasket.isEmpty()) {
+        if (shoppingBasket.isEmpty()) {
             Member member = memberService.findById(memberId);
 
 
@@ -54,14 +56,16 @@ public class ShoppingBasketService {
     }
 
 
-
     @Transactional
-    public ResponseData<String> addProduct(Long memberId, Long productId) {
+    public ResponseData<String> addProduct(Long memberId, Long productId, int count) {
 
         Product product = productService.findById(productId);
 
-        ShoppingBasket basket = findByMember(memberId);
-        basket.addProduct(product);
+        Optional<Basket> dtoOptional = basketRepository.findById(memberId);
+
+        Basket basket = dtoOptional.orElseGet(() -> new Basket(memberId));
+        basket.addProduct(product,count);
+        basketRepository.save(basket);
 
         return ResponseData.<String>builder()
                 .statusCode(SUCCESS)
@@ -69,11 +73,4 @@ public class ShoppingBasketService {
                 .build();
     }
 
-
-    @Transactional
-    public void checkOwner(Long shoppingId,Long memberId) {
-        ShoppingBasket basket = findById(shoppingId);
-        if (!basket.isOwner(memberId))
-            throw new NotOwnerException("당신은 이 장바구니의 소유자가 아닙니다.");
-    }
 }
