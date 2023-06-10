@@ -1,0 +1,21 @@
+<html layout:decorate="~{adm/admLayout.html}">
+
+<head>
+    <title>교환/반품 신청 내역 | PLANBTI</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="min-h-screen my-16 min-w-screen w-full">
+    <div class="mr-12">
+        <p class="text-2xl" th:if="${#lists.isEmpty(orderDetails)}">
+            교환/반품 신청 내역이 없습니다.
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

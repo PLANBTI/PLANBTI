@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main" class="container min-h-screen max-w-2xl">
+<main layout:fragment="main" class="w-screen h-full">
 
     <script>
         function Validation__modifyComment(form) {
@@ -20,6 +20,7 @@
         }
     </script>
 
+    <div class="w-full h-full flex flex-col justify-center items-center">
     <h1 class="text-2xl mt-8" th:text="${faq.getCategory()}"></h1>
     <h2 class="text-lg mt-2" th:text="|게시자 : ${faq.getMember().username}|"></h2>
     <div class="divider"></div>
@@ -31,9 +32,9 @@
     <form th:action="@{/comment/modify/{id}(id=${faq.getId()})}" th:object="${CommentForm}" method="POST"
           onsubmit="Validation__modifyComment(this); return false;">
         <textarea name="comment" class="textarea textarea-bordered w-full" placeholder="코멘트를 입력해주세요." th:value="${comment.getContent()}"></textarea>
-        <a th:href="@{/comment/modify/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12">저장하기</a>
+        <input type="submit" class="btn btn-outline btn-success mt-12" value="저장하기"/>
     </form>
-
+    </div>
 </main>
 
 </body>

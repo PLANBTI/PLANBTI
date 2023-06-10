@@ -1,6 +1,5 @@
 package com.example.demo.boundedContext.order.controller;
 
-import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.dto.OrderRequestDto;
@@ -77,9 +76,9 @@ public class OrderController {
         if (!dto.isReturn()) {
             orderDetailService.exchange(dto,rq.getMemberId());
         } else {
-            orderDetailService.returnProduct(orderId, dto,rq.getMemberId());
+            orderDetailService.returnProduct(orderId, dto, rq.getMemberId());
         }
 
-        return rq.redirectWithMsg("/order/orderInfo/%d".formatted(orderId),"요청이 성공하였습니다.");
+        return rq.redirectWithMsg("/order/orderInfo/%d".formatted(orderId),"교환(반품)이 신청되었습니다.");
     }
 }

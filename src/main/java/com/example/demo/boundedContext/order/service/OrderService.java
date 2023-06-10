@@ -6,6 +6,7 @@ import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 import static com.example.demo.util.rq.ResponseData.Status.FAIL;
 import static com.example.demo.util.rq.ResponseData.Status.SUCCESS;
 
@@ -115,6 +117,7 @@ public class OrderService {
 
         OrderDetail orderDetail = OrderDetail.builder()
                 .count(count)
+                .status(PENDING)
                 .build();
         orderDetail.addOrder(order, product);
         orderDetailRepository.save(orderDetail);

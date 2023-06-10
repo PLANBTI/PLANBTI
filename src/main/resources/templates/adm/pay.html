@@ -1,0 +1,47 @@
+<html layout:decorate="~{adm/admLayout.html}">
+
+<head>
+    <title>결제 내역 | PLANBTI</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="my-16 min-w-screen w-full">
+    <div class="mr-12">
+        <p class="text-2xl" th:if="${#lists.isEmpty(orderDetails)}">
+            결제 내역이 없습니다.
+        </p>
+        <div class="w-full" th:if="${!#lists.isEmpty(orderDetails)}">
+            <h1 class="font-black text-2xl mb-12">결제 완료된 주문 목록</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="w-20">회원 ID</th>
+                    <th>주문일시</th>
+                    <th class="w-96">주문명</th>
+                    <th>개별 주문 번호</th>
+                    <th>상품명</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody th:each="orderDetail : ${orderDetails}">
+                <tr>
+                    <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
+                    <td th:text="${#temporals.format(orderDetail.getCreateDate(), 'yyyy-MM-dd HH-mm-ss')}"></td>
+                    <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
+                    <td th:text="${orderDetail.getId()}"></td>
+                    <td th:text="${orderDetail.getProduct().getName()}"></td>
+                    <td>
+                        <a class="btn btn-success btn-sm" th:href="@{/adm/placed/{id}(id=${orderDetail.getId()})}">확인</a></td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+</body>
+
+</html>

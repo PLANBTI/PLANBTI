@@ -115,7 +115,7 @@ class OrderControllerTest {
 
         OrderExchangeDto dto = new OrderExchangeDto(orderItemId, productName, count, price);
 
-        Mockito.doNothing().when(orderDetailService).returnProduct(orderId,dto,1L);
+        Mockito.doNothing().when(orderDetailService).returnProduct(orderId, dto,1L);
 
         mvc.perform(post("/order/exchange/%d".formatted(orderId))
                         .with(csrf())

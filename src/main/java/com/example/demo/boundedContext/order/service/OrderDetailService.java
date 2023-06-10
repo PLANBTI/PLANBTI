@@ -2,9 +2,11 @@ package com.example.demo.boundedContext.order.service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.base.exception.handler.NotOwnerException;
+import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.event.ProductIncreaseEvent;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.base.redis.RedisPrefix.RETURN;
-
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -35,7 +37,6 @@ public class OrderDetailService {
 
     public void exchange(OrderExchangeDto dto, Long memberId) {
         verify(dto.getOrderItemId(), memberId);
-
         OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderItemId()).orElseThrow();
         orderDetail.orderExchange();
     }
@@ -49,8 +50,11 @@ public class OrderDetailService {
         redisTemplate.opsForValue().set(RETURN.formatKey(memberId), String.valueOf(memberId));
     }
 
-    public void verify(Long orderItemId, Long memberId) {
-        orderDetailRepository.findByIdAndMemberId(orderItemId, memberId)
+    public void verify(Long orderItemId,Long memberId) {
+        OrderDetail orderDetail = orderDetailRepository.findByIdAndMemberId(orderItemId,memberId)
                 .orElseThrow(() -> new NotOwnerException("이 제품에 대한 권리가 없습니다."));
+
+        if(orderDetail.getStatus().equals(COMPLETED)) throw new OrderException("구매 확정된 상품입니다.");
     }
+
 }

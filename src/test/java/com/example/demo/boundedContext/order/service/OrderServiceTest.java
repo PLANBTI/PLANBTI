@@ -58,10 +58,12 @@ class OrderServiceTest {
 
         product = productRepository.save(Product.builder().count(100)
                 .price(1000)
+                .salePrice(1000)
                 .build());
 
         Product product2 = productRepository.save(Product.builder().count(100)
                 .price(2000)
+                .salePrice(2000)
                 .build());
 
         order = orderRepository.save(Order.builder()

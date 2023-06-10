@@ -1,19 +1,19 @@
 package com.example.demo.base.initdata;
+
 import com.example.demo.base.Role;
+import com.example.demo.boundedContext.category.entity.Category;
+import com.example.demo.boundedContext.category.repository.CategoryRepository;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.faq.repository.CommentRepository;
 import com.example.demo.boundedContext.faq.repository.FaqRepository;
 import com.example.demo.boundedContext.member.entity.Address;
-import com.example.demo.boundedContext.category.entity.Category;
-import com.example.demo.boundedContext.category.repository.CategoryRepository;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.entity.Product;
@@ -30,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
+
 
 @Profile({"dev", "test"})
 @Configuration
@@ -39,32 +41,21 @@ public class CustomInitData {
                                OrderRepository orderRepository, ProductRepository productRepository,
                                FaqRepository faqRepository, CommentRepository commentRepository,
                                ReviewRepository reviewRepository,
-                               OrderDetailRepository orderDetailRepository, AddressRepository addressRepository,CategoryRepository categoryRepository ) {
+                               OrderDetailRepository orderDetailRepository, AddressRepository addressRepository, CategoryRepository categoryRepository) {
 
         return new CommandLineRunner() {
 
             @Override
             @Transactional
             public void run(String... args) throws Exception {
+                String[] rawCategories = {"istj", "isfj", "infj", "intj", "istp", "isfp", "infp", "intp", "estp", "esfp", "enfp", "entp", "estj", "esfj", "enfj", "entj"};
                 List<Category> categories = new ArrayList<>();
-                categories.add(Category.builder().name("istj").build());
-                categories.add(Category.builder().name("isfj").build());
-                categories.add(Category.builder().name("infj").build());
-                categories.add(Category.builder().name("intj").build());
-                categories.add(Category.builder().name("istp").build());
-                categories.add(Category.builder().name("isfp").build());
-                categories.add(Category.builder().name("infp").build());
-                categories.add(Category.builder().name("intp").build());
-                categories.add(Category.builder().name("estp").build());
-                categories.add(Category.builder().name("esfp").build());
-                categories.add(Category.builder().name("enfp").build());
-                categories.add(Category.builder().name("entp").build());
-                categories.add(Category.builder().name("estj").build());
-                categories.add(Category.builder().name("esfj").build());
-                categories.add(Category.builder().name("enfj").build());
-                categories.add(Category.builder().name("entj").build());
 
-                categoryRepository.saveAll(categories);
+                for(String rawCategory : rawCategories) {
+                    Category category = Category.builder().name(rawCategory).build();
+                    categories.add(category);
+                    categoryRepository.save(category);
+                }
 
                 Product save = productRepository.save(
                         Product.builder()
@@ -87,11 +78,13 @@ public class CustomInitData {
                                 .imageUrl("https://planbti.cdn.ntruss.com/plant2.jpg")
                                 .build()
                 );
+
                 Product product1 = productRepository.save(Product.builder()
-                                .count(10)
+                        .count(10)
                         .price(15000)
                         .category(categories.get(2))
                         .name("product1").build());
+
                 Product product2 = productRepository.save(Product.builder()
                         .count(100)
                         .category(categories.get(3))
@@ -100,8 +93,8 @@ public class CustomInitData {
 
                 for (int i = 0; i < 20; i++) {
                     Review review = Review.builder()
-                            .content("content!!!!"+i)
-                            .title("title"+i)
+                            .content("content!!!!" + i)
+                            .title("title" + i)
                             .rate(i)
                             .build();
                     product1.addReview(review);
@@ -125,16 +118,46 @@ public class CustomInitData {
                 orderRepository.save(order);
 
                 OrderDetail orderDetail1 = OrderDetail.builder()
+                        .status(PENDING)
+                        .product(product1)
+                        .order(order)
                         .count(2)
                         .build();
-                orderDetail1.addOrder(order,product1);
                 orderDetailRepository.save(orderDetail1);
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
+                        .status(PENDING)
+                        .product(product1)
+                        .order(order)
                         .count(2)
                         .build();
-                orderDetail2.addOrder(order,product2);
                 orderDetailRepository.save(orderDetail2);
+
+                OrderDetail orderDetail3 = OrderDetail.builder()
+                        .status(EXCHANGE)
+                        .product(product2)
+                        .invoiceNumber("0123456789")
+                        .order(order)
+                        .count(2)
+                        .build();
+                orderDetailRepository.save(orderDetail3);
+
+                OrderDetail orderDetail4 = OrderDetail.builder()
+                        .status(RETURN)
+                        .product(product1)
+                        .invoiceNumber("0123456789")
+                        .order(order)
+                        .count(2)
+                        .build();
+                orderDetailRepository.save(orderDetail4);
+
+                OrderDetail orderDetail5 = OrderDetail.builder()
+                        .status(PLACED)
+                        .product(product2)
+                        .order(order)
+                        .count(2)
+                        .build();
+                orderDetailRepository.save(orderDetail5);
 
                 Address address = Address.builder()
                         .member(user)
@@ -186,5 +209,5 @@ public class CustomInitData {
 
             }
         };
-      }
+    }
 }

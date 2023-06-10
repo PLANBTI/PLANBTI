@@ -1,31 +1,31 @@
 <html layout:decorate="~{adm/admLayout.html}">
 
 <head>
-    <title>Admin Main | PLANBTI</title>
+    <title>상품평 목록 | PLANBTI</title>
 </head>
 
 <body>
 
 <main layout:fragment="main" class="min-h-screen m-16 w-full">
     <div class="flex">
-        <table class="grow table table-zebra">
-            <p class="text-2xl" th:if="${#lists.isEmpty(reviews)}">
-                상품평이 없습니다.
-            </p>
-            <thead th:if="${!#lists.isEmpty(reviews)}">
+        <p class="text-2xl" th:if="${#lists.isEmpty(reviews)}">
+            상품평이 없습니다.
+        </p>
+        <table class="grow table table-zebra" th:if="${!#lists.isEmpty(reviews)}">
+            <thead>
             <tr>
-                <th>Review</th>
-                <th>Username</th>
-                <th>Product</th>
-                <th>Title</th>
+                <th></th>
+                <th>회원 ID</th>
+                <th>상품명</th>
+                <th>제목</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="review : ${reviews}">
                 <th th:text="${review.getId()}" class="w-20"></th>
-                <td th:text="${review.getMember().username}" class="w-40"></td>
-                <td th:text="${review.getProduct().name}" class="w-40"></td>
-                <td th:text="${review.getTitle()}" ><a th:href="@{/product/detail/{id}(id=${product.getId()})}"></a></td>
+                <td th:text="${review.getMember().getUsername()}" class="w-40"></td>
+                <td th:text="${review.getProduct().getName()}" class="w-40"></td>
+                <td th:text="${review.getTitle()}" ><a th:href="@{/product/detail/{id}(id=${review.getProduct().getId()})}"></a></td>
             </tr>
             </tbody>
         </table>

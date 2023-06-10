@@ -52,7 +52,7 @@ class OrderDetailServiceTest {
         memberRepository.save(member);
 
         Product product = productRepository.save(Product.builder().count(100)
-                        .name("product")
+                .name("product")
                 .price(1000)
                 .build());
 
@@ -100,7 +100,7 @@ class OrderDetailServiceTest {
         OrderExchangeDto dto = new OrderExchangeDto(orderDetail1.getId(), product.getName(), 2, product.getPrice());
 
         //when
-        orderDetailService.returnProduct(order.getId(),dto,member.getId());
+        orderDetailService.returnProduct(order.getId(), dto, member.getId());
 
         //then
         assertThat(orderDetail1.getStatus()).isEqualTo(OrderItemStatus.RETURN);
@@ -108,8 +108,6 @@ class OrderDetailServiceTest {
         assertThat(product.getCount()).isEqualTo(100+dto.getCount());
         assertThat(order.getItemCount()).isEqualTo(orderCount - dto.getCount());
         assertThat(order.getTotalPrice()).isEqualTo(totalPrice - dto.getTotalPrice());
-
     }
-
 
 }
