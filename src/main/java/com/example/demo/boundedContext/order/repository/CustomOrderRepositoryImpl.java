@@ -26,7 +26,7 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
     }
 
     @Override
-    public Optional<Order> findOrderByOrderId(Long orderId, Long memberId ) {
+    public Optional<Order> findOrderByOrderId(Long memberId, Long orderId) {
 
         Order findOrder = jpaQueryFactory.selectFrom(order)
                 .join(order.member, member)
