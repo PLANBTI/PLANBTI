@@ -3,7 +3,7 @@ package com.example.demo.boundedContext.product.service;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
-import com.example.demo.boundedContext.product.dto.Basket;
+import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.repository.BasketRepository;

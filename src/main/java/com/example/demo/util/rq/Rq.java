@@ -4,6 +4,7 @@ import com.example.demo.base.redis.MemberDtoRepository;
 import com.example.demo.base.security.CustomOAuth2User;
 import com.example.demo.boundedContext.member.dto.MemberDto;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.util.ut.Ut;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
