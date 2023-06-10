@@ -9,7 +9,7 @@ import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
-import com.example.demo.boundedContext.product.dto.Basket;
+import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.event.DeleteBasket;
 import com.example.demo.boundedContext.product.event.ProductDecreaseEvent;

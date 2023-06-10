@@ -4,7 +4,7 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
-import com.example.demo.boundedContext.product.dto.Basket;
+import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.dto.ProductOrderDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.repository.BasketRepository;

@@ -1,5 +1,6 @@
-package com.example.demo.boundedContext.product.dto;
+package com.example.demo.boundedContext.product.entity;
 
+import com.example.demo.boundedContext.product.dto.ProductDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class Basket {
 
         if (optionalProductDto.isEmpty()) {
             this.products.add(new ProductDto(product, count));
-            this.count += count;
+            this.count += 1;
             return;
         }
 
