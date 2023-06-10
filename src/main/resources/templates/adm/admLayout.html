@@ -34,20 +34,9 @@
         </div>
     </div>
     <div class="navbar-center justify-content hidden sm:block">
-        <a href="/shop" class="btn btn-ghost normal-case">PLANBTI</a>
+        <a href="/adm" class="btn btn-ghost normal-case">PLANBTI</a>
     </div>
     <div class="navbar-end pr-4">
-        <a href="#" class="btn btn-ghost btn-circle">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </a>
-        <a href="/map" class="btn btn-ghost btn-circle">
-            <i class="fa-regular fa-map"></i>
-        </a>
-        <a sec:authorize="isAuthenticated()" href="#" class="btn btn-ghost btn-circle">
-            <i class="fa-regular fa-heart"></i>
-        </a>
-        <a sec:authorize="isAuthenticated()" href="/member/shoppingbasket" class="btn btn-ghost btn-circle">
-            <i class="fa-solid fa-cart-shopping"></i>
         </a>
         <a sec:authorize="isAnonymous()" href="/member/login" class="btn btn-active btn-sm">
             Sign in
@@ -58,8 +47,8 @@
     </div>
 </nav>
 
-<div class="min-h-fit min-w-fit grow flex flex-row">
-    <ul class="menu bg-base-100 w-60 pt-32 p-12 flex flex-none justify-start">
+<div class="min-h-fit grow flex flex-row">
+    <ul class="menu bg-base-100 w-60 p-12 flex flex-none justify-start">
         <li class="font-black text-lg m-4">회원 관리</li>
         <li><a href="/adm/members">회원 목록</a></li>
         <li><a href="/adm/faq">문의 내역</a></li>
@@ -67,13 +56,12 @@
         <li class="font-black text-lg m-4">상품 관리</li>
         <li><a href="#">상품 등록</a></li>
         <li><a href="#">상품 목록</a></li>
-        <li class="font-black text-lg m-4">배송 관리</li>
-        <li><a href="#">배송 현황</a></li>
-        <li><a href="#">교환 내역</a></li>
-        <li><a href="#">반품 내역</a></li>
         <li class="font-black text-lg m-4">결제 관리</li>
-        <li><a href="#">결제 내역</a></li>
-        <li><a href="#">품목별 매출 현황</a></li>
+        <li><a href="/adm/pay">결제 내역</a></li>
+        <li><a href="#">매출 현황</a></li>
+        <li class="font-black text-lg m-4">배송 관리</li>
+        <li><a href="/adm/orders">주문 내역</a></li>
+        <li><a href="/adm/deliveries">배송 현황</a></li>
     </ul>
     <main layout:fragment="main"></main>
 </div>

@@ -61,7 +61,7 @@ class ProductFacadeTest {
         Order order = orderRepository.findByMember(user).get(0);
 
         assertThat(order.getItemCount()).isEqualTo(count);
-        assertThat(order.getTotalPrice()).isEqualTo((long) product.getPrice() * count);
+        assertThat(order.getTotalPrice()).isEqualTo((long) product.getSalePrice() * count);
 
         Product saveProduct = order.getOrderDetailList().get(0).getProduct();
         assertThat(saveProduct.getId()).isEqualTo(product.getId());
@@ -83,6 +83,7 @@ class ProductFacadeTest {
                     .id((long) i)
                     .count(10)
                     .price(1000 * i)
+                    .salePrice(1000 * i)
                     .name("product"+i).build());
             list.add(product.getId());
             basket.addProduct(product,1);

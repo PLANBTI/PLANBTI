@@ -60,7 +60,7 @@ public class AddressController {
 
         Address defaultAddress = getDefaultAddress(member);
 
-        if(!defaultAddress.equals(address) && isDefault) {
+        if(defaultAddress != null && isDefault && defaultAddress.getId() != address.getId()) {
             addressService.modifyDefault(defaultAddress);
             addressService.modify(member, address, dto, isDefault);
             return rq.redirectWithMsg("/member/profile", "기본 배송지를 변경하였습니다.");

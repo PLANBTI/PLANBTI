@@ -1,0 +1,105 @@
+<html layout:decorate="~{adm/admLayout.html}">
+
+<head>
+    <title>주문 내역 | PLANBTI</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="h-full my-16 min-w-screen w-full">
+    <div class="mr-12">
+        <p class="text-2xl" th:if="${#lists.isEmpty(allList)}">
+            주문 내역이 없습니다.
+        </p>
+        <div class="w-full" th:if="${!#lists.isEmpty(inProgressList)}">
+            <h1 class="font-black text-2xl mb-12">교환/반품 신청</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="w-20">회원 ID</th>
+                    <th class="w-96">주문명</th>
+                    <th>개별 주문 번호</th>
+                    <th>상품명</th>
+                    <th>주문 상태</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody th:each="orderDetail : ${inProgressList}">
+                <tr>
+                    <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
+                    <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
+                    <td th:text="${orderDetail.getId()}"></td>
+                    <td th:text="${orderDetail.getProduct().getName()}"></td>
+                    <td><span class="flex justify-end badge badge-warning badge-lg" th:text="${orderDetail.getStatus().getName()}"></span></td>
+                    <td th:if="${orderDetail.getStatus().getName().equals('교환 요청')}">
+                        <a class="btn btn-success btn-sm" th:href="@{/adm/approve/{id}(id=${orderDetail.getId()})}">승인</a></td>
+                    </td>
+                    <td th:if="${!orderDetail.getStatus().getName().equals('교환 요청')}">
+                        <a class="btn btn-success btn-sm" th:href="@{/adm/complete/{id}(id=${orderDetail.getId()})}">완료</a></td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="divider"></div>
+        <div class="w-full" th:if="${!#lists.isEmpty(completedList)}">
+            <h1 class="font-black text-2xl mb-12">구매 확정</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>회원 ID</th>
+                    <th>주문명</th>
+                    <th>개별 주문 번호</th>
+                    <th>상품명</th>
+                    <th>주문 금액</th>
+                </tr>
+                </thead>
+                <tbody th:each="orderDetail : ${completedList}">
+                <tr>
+                    <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
+                    <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
+                    <td th:text="${orderDetail.getId()}"></td>
+                    <td th:text="${orderDetail.getProduct().getName()}"></td>
+                    <td th:text="${orderDetail.getOrder().getTotalPrice()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="divider"></div>
+        <div class="w-full" th:if="${!#lists.isEmpty(allList)}">
+            <h1 class="font-black text-2xl mb-12">전체 주문 내역</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="w-20">회원 ID</th>
+                    <th class="w-96">주문명</th>
+                    <th>개별 주문 번호</th>
+                    <th>상품명</th>
+                    <th>주문 금액</th>
+                    <th>주문 상태</th>
+                </tr>
+                </thead>
+                <tbody th:each="orderDetail : ${allList}">
+                <tr>
+                    <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
+                    <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
+                    <td th:text="${orderDetail.getId()}"></td>
+                    <td th:text="${orderDetail.getProduct().getName()}"></td>
+                    <td th:text="${orderDetail.getOrder().getTotalPrice()}"></td>
+                    <td>
+                        <span th:if="${orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품')}"
+                              class="flex justify-end badge badge-warning badge-lg" th:text="${orderDetail.getStatus().getName()}"></span>
+                        <span th:if="${!(orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품'))}"
+                              class="flex justify-end badge badge-primary badge-lg" th:text="${orderDetail.getStatus().getName()}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+</body>
+
+</html>
