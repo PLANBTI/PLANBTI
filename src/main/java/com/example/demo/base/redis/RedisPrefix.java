@@ -1,5 +1,9 @@
 package com.example.demo.base.redis;
 
 public enum RedisPrefix {
-    LOGIN, BASKET
+    LOGIN, BASKET, RETURN;
+
+    public String formatKey(Long memberId) {
+        return String.format("%d:%s", memberId, this.name());
+    }
 }

@@ -35,6 +35,8 @@ public class Basket {
 
         Optional<ProductDto> optionalProductDto = findProduct(product.getId());
 
+        time = 30L;
+
         if (optionalProductDto.isEmpty()) {
             this.products.add(new ProductDto(product, count));
             this.count += count;
