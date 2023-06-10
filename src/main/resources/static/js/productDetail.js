@@ -30,8 +30,9 @@ function requestOrder() {
 
 function requestBasket() {
     const check = confirm("장바구니에 넣으시겠습니까?");
+    const count = document.querySelector("#countInput").value;
     if (check) {
-        fetch(`/shopping/add?productId=${productId}`)
+        fetch(`/shopping/add?productId=${productId}&count=${count}`)
             .then(res => res.text())
             .then(data => {
                 console.log(data);
