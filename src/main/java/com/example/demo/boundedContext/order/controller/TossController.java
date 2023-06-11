@@ -42,7 +42,7 @@ public class TossController {
         return rq.redirectWithMsg("/order/orderPage","결제에 실패하였습니다.");
     }
 
-    @GetMapping(value = "fail")
+    @GetMapping(value = "/fail")
     public String paymentResult(
             Model model,
             @RequestParam(value = "message") String message,
