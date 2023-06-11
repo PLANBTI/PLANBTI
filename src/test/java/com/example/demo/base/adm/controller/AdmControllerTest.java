@@ -63,4 +63,8 @@ public class AdmControllerTest {
 
         assertThat(admOrderService.findById(1L).getInvoiceNumber()).isNotNull();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 24bcc9e (test: 관리자 컨트롤러/서비스 유효성 테스트)
