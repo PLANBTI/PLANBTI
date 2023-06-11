@@ -116,6 +116,7 @@ public class OrderService {
         orderRepository.save(order);
 
         OrderDetail orderDetail = OrderDetail.builder()
+                .status(PENDING)
                 .count(count)
                 .status(PENDING)
                 .build();

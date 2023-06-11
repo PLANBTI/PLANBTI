@@ -100,11 +100,7 @@ class OrderDetailServiceTest {
         OrderExchangeDto dto = new OrderExchangeDto(orderDetail1.getId(), product.getName(), 2, product.getPrice());
 
         //when
-<<<<<<< HEAD
         orderDetailService.returnProduct(order.getId(), dto, member.getId());
-=======
-        orderDetailService.returnProduct(order.getId(),dto,member.getId());
->>>>>>> ef1c41b (feat: 관리자 교환/반품 로직 구현 완료)
 
         //then
         assertThat(orderDetail1.getStatus()).isEqualTo(OrderItemStatus.RETURN);
