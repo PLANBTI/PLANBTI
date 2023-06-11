@@ -6,7 +6,6 @@ import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
 import com.example.demo.boundedContext.order.repository.OrderRepository;
 import com.example.demo.boundedContext.product.event.ProductIncreaseEvent;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.base.redis.RedisPrefix.RETURN;
-import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.COMPLETED;
 
 @RequiredArgsConstructor
 @Transactional

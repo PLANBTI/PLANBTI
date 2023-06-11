@@ -7,8 +7,8 @@ public enum OrderItemStatus {
     DELIVERED("배송 완료"),
     CANCELLED("취소"),
     EXCHANGE("교환 요청"),
-    RETURN("반품"),
     APPROVED("승인 완료"),
+    RETURN("반품"),
     COMPLETED("구매 확정");
 
     private String status;
