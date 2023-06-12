@@ -3,6 +3,8 @@ package com.example.demo.boundedContext.member.repository;
 import com.example.demo.boundedContext.member.entity.MbtiTest;
 import com.example.demo.boundedContext.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,5 +15,6 @@ public interface MbtiTestRepository extends JpaRepository<MbtiTest, Long> {
     List<MbtiTest> findAllByMemberUsername(String memberUsername);
 
     Optional<MbtiTest> findByMemberUsername(String memberUsername);
+
 
 }

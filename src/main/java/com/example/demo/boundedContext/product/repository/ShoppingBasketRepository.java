@@ -11,4 +11,5 @@ public interface ShoppingBasketRepository extends JpaRepository<ShoppingBasket, 
 
     @EntityGraph(attributePaths = {"products"})
     Optional<ShoppingBasket> findByMemberId(Long id);
+
 }

@@ -1,12 +1,17 @@
 package com.example.demo.base.adm.controller;
 
 import com.example.demo.base.adm.service.AdmOrderService;
+import com.example.demo.base.image.service.ImageService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
+import com.example.demo.boundedContext.product.dto.ProductDto;
+import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
+import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
+import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
@@ -22,7 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
@@ -36,6 +43,10 @@ public class AdmController {
     private final ReviewService reviewService;
     private final AdmOrderService admOrderService;
     private final Rq rq;
+    private final ProductService productService;
+
+    private final ImageService imageService;
+
 
     @GetMapping("")
     public String showAdmMain() {
@@ -120,7 +131,7 @@ public class AdmController {
     public String approveExchange(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderService.findById(id);
 
-        if(!orderDetail.isEqualStatusTo(EXCHANGE)) {
+        if (!orderDetail.isEqualStatusTo(EXCHANGE)) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
@@ -132,7 +143,7 @@ public class AdmController {
     public String isCompleted(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderService.findById(id);
 
-        if(!(orderDetail.isEqualStatusTo(APPROVED) || orderDetail.isEqualStatusTo(RETURN))) {
+        if (!(orderDetail.isEqualStatusTo(APPROVED) || orderDetail.isEqualStatusTo(RETURN))) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
@@ -140,4 +151,34 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/orders", "교환(반품)이 완료되었습니다.");
     }
 
+
+    @GetMapping("/productList")
+    public String showProduct(Model model) {
+        List<Product> products = productService.findAll();
+        model.addAttribute("products", products);
+        return "adm/productList";
+    }
+
+    @GetMapping("/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        Product product = productService.findById(id);
+        productService.delete(product);
+        return "redirect:/adm/productList";
+    }
+
+    @GetMapping("/productRegister")
+    public String RegisterProduct() {
+        return "adm/productRegister";
+    }
+
+    @PostMapping("/registerpro")
+    public String RegisterProductPro(ProductRegisterDto productRegisterDto, String url){
+        url = imageService.upload(productRegisterDto.getMultipartFile(), UUID.randomUUID().toString());
+        productService.register(productRegisterDto,url);
+
+        return "redirect:/adm/productList";
+    }
+
+
 }
+
