@@ -49,22 +49,12 @@ public class AdmOrderServiceTest {
     @Test
     @DisplayName("findByStatusIsNotPending()")
     void t001() {
-<<<<<<< HEAD
         assertThat(admOrderService.findByStatusIsNotPending().size()).isEqualTo(7);
-=======
-        assertThat(admOrderService.findByStatusIsNotPending().size()).isEqualTo(4);
->>>>>>> 24bcc9e (test: 관리자 컨트롤러/서비스 유효성 테스트)
     }
 
     @Test
     @DisplayName("getStatusInProgress()")
     void t002() {
-<<<<<<< HEAD
         assertThat(admOrderService.getStatusInProgress().size()).isEqualTo(5);
     }
 }
-=======
-        assertThat(admOrderService.getStatusInProgress().size()).isEqualTo(3);
-    }
-}
->>>>>>> 24bcc9e (test: 관리자 컨트롤러/서비스 유효성 테스트)

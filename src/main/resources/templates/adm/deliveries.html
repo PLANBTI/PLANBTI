@@ -48,6 +48,7 @@
                             <input type="text" name="invoiceNumber" placeholder="운송장 번호" class="input input-bordered w-full max-w-xs" />
                             <input type="submit" class="btn btn-success btn-sm" value="저장" />
                         </form>
+<<<<<<< HEAD
                     </td>
                     <td th:if="${orderDetail.getStatus().getName().equals('배송 중') && orderDetail.getInvoiceNumber() != null}" th:text="${orderDetail.getInvoiceNumber()}"></td>
                     <td>
@@ -79,12 +80,20 @@
                     <td th:if="${(orderDetail.getStatus().getName().equals('배송 준비 중') && orderDetail.getInvoiceNumber() == null)
                         || orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품')}">
                         <button class="btn btn-success btn-sm" onclick="Validation__invoiceNumber(this)">저장</button></td>
+=======
+                    </td>
+                    <td th:if="${orderDetail.getStatus().getName().equals('배송 중') && orderDetail.getInvoiceNumber() != null}" th:text="${orderDetail.getInvoiceNumber()}"></td>
+>>>>>>> 60b517a (refactor: 운송장 번호 받는 로직 수정 및 html 정리)
                     <td>
                         <span th:if="${orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품')}"
-                              class="flex justify-end badge badge-warning badge-lg" th:text="${orderDetail.getStatus().getName()}"></span>
+                              class="flex justify-end badge badge-warning badge-lg ml-12" th:text="${orderDetail.getStatus().getName()}"></span>
                         <span th:if="${!(orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품'))}"
+<<<<<<< HEAD
                               class="flex justify-end badge badge-primary badge-lg" th:text="${orderDetail.getStatus().getName()}"></span>
 >>>>>>> 57c5d31 (refactor: 로직 수정 및 html 작업)
+=======
+                              class="flex justify-end badge badge-primary badge-lg ml-12" th:text="${orderDetail.getStatus().getName()}"></span>
+>>>>>>> 60b517a (refactor: 운송장 번호 받는 로직 수정 및 html 정리)
                     </td>
                 </tr>
                 </tbody>
@@ -92,6 +101,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     <script>
         function Validation__invoiceNumber(form) {
@@ -112,23 +122,26 @@
         function Validation__invoiceNumber(button) {
             const invoiceNumber = document.getElementById("invoiceNumber").value;
             const orderDetailId = parseInt(document.getElementById("orderDetailId").textContent);
+=======
+    <script>
+        function Validation__invoiceNumber(form) {
+>>>>>>> 60b517a (refactor: 운송장 번호 받는 로직 수정 및 html 정리)
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/adm/startDelivery/' + orderDetailId;
+            if (form.invoiceNumber.value.trim().length < 10) {
+                toastWarning("운송장 번호를 입력해주세요.");
+                form.invoiceNumber.focus();
+                return;
+            }
 
-            const invoiceNumberField = document.createElement('input');
-            invoiceNumberField.type = 'hidden';
-            invoiceNumberField.name = 'invoiceNumber';
-            invoiceNumberField.value = invoiceNumber;
-            form.appendChild(invoiceNumberField);
-
-            document.body.appendChild(form);
             form.submit();
         }
     </script>
 
+<<<<<<< HEAD
 >>>>>>> ef1c41b (feat: 관리자 교환/반품 로직 구현 완료)
+=======
+
+>>>>>>> 60b517a (refactor: 운송장 번호 받는 로직 수정 및 html 정리)
 </main>
 
 </body>
