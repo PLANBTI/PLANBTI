@@ -19,11 +19,9 @@ public class ShoppingBasketController {
 
     @ResponseBody
     @GetMapping("/add")
-    public String addProduct(Long productId,@RequestParam(defaultValue = "1") int count) {
+    public ResponseData<String> addProduct(Long productId,@RequestParam(defaultValue = "1") int count) {
 
-        ResponseData<String> responseData = shoppingBasketService.addProduct(rq.getMemberId(), productId,count);
-
-        return responseData.isSuccess() ? responseData.getMsg() : "장바구니에 담는데 실패하였습니다.";
+        return shoppingBasketService.addProduct(rq.getMemberId(), productId,count);
     }
 
     @DeleteMapping("/delete/{productId}")

@@ -33,10 +33,14 @@ function requestBasket() {
     const count = document.querySelector("#countInput").value;
     if (check) {
         fetch(`/shopping/add?productId=${productId}&count=${count}`)
-            .then(res => res.text())
+            .then(res => res.json())
             .then(data => {
                 console.log(data);
-                toastNotice(data);
+                if (data.statusCode === 'FAIL') {
+                    toastWarning(data.msg);
+                    return;
+                }
+                toastNotice(data.msg);
             })
             .catch(data => {
                 toastWarning("장바구니에 넣는 데에 실패하였습니다.");
