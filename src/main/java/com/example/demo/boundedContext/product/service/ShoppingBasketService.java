@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.product.service;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.product.dto.ProductDto;
 import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.ShoppingBasket;
@@ -10,6 +11,8 @@ import com.example.demo.boundedContext.product.repository.BasketRepository;
 import com.example.demo.boundedContext.product.repository.ShoppingBasketRepository;
 import com.example.demo.util.rq.ResponseData;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,4 +76,18 @@ public class ShoppingBasketService {
                 .build();
     }
 
+    public ResponseEntity<Void> delete(Long productId, Long memberId) {
+        Optional<Basket> optionalBasket = basketRepository.findById(memberId);
+
+        if (optionalBasket.isEmpty())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        Basket basket = optionalBasket.get();
+        if (basket.deleteProduct(productId)) {
+            basketRepository.save(basket);
+            return  new ResponseEntity<Void>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST) ;
+    }
 }

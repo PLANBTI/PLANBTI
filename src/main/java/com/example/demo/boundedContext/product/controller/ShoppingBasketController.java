@@ -4,11 +4,9 @@ import com.example.demo.boundedContext.product.service.ShoppingBasketService;
 import com.example.demo.util.rq.ResponseData;
 import com.example.demo.util.rq.Rq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequestMapping("/shopping")
@@ -26,5 +24,11 @@ public class ShoppingBasketController {
         ResponseData<String> responseData = shoppingBasketService.addProduct(rq.getMemberId(), productId,count);
 
         return responseData.isSuccess() ? responseData.getMsg() : "장바구니에 담는데 실패하였습니다.";
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<Void> deleteBasket(@PathVariable Long productId) {
+
+        return shoppingBasketService.delete(productId, rq.getMemberId());
     }
 }

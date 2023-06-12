@@ -1,6 +1,8 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>장바구니</title>
 </head>
 
@@ -40,12 +42,17 @@
                     </div>
                     <div class="flex items-center mb-4">
                         <input  name="productId" type="hidden" th:value="${product.id}">
-
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <button type="button" th:data-productId="${product.id}"
+                                class="deleteBasket text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">
+                            Delete
+                        </button>
                     </div>
                 </li>
             </ul>
         </div>
-        <div class="flex justify-center">
+        <div class="flex justify-center orderButton">
             <button type="submit"
                     class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
               <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
@@ -54,6 +61,35 @@
             </button>
         </div>
     </form>
+    <script th:inline="javascript">
+        const $buttons = document.querySelectorAll(".deleteBasket");
+        $buttons.forEach($button => {
+            $button.addEventListener('click',function () {
+                console.log("clcick");
+                const productId = this.getAttribute('data-productId');
+                fetch(`/shopping/delete/${productId}`,{
+                    method: "DELETE",
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            this.closest('li').remove();
+                            toastNotice("장바구니 삭제에 성공하였습니다.");
+                            const listItems = document.querySelectorAll('#reviewList li');
+                            const count = listItems.length;
+                            if (count === 0) {
+                                const $orderButton = document.querySelector('.orderButton');
+                                $orderButton.classList.add("hidden");
+                            }
+                        }
+                    })
+                    .catch(error => toastWarning("장바구니 삭제에 실패하였습니다."));
+            });
+        })
+
+    </script>
 </main>
 
 </body>

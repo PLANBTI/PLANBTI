@@ -55,4 +55,15 @@ public class Basket {
     public int getProductCount(Long productId) {
         return findProduct(productId).orElseThrow().getCount();
     }
+
+    public boolean deleteProduct(Long productId) {
+        Optional<ProductDto> first = products.stream().filter(i -> i.getId().equals(productId)).findFirst();
+        if (first.isEmpty())
+            return false;
+
+        ProductDto productDto = first.get();
+        this.count -= 1;
+        this.products.remove(productDto);
+        return true;
+    }
 }
