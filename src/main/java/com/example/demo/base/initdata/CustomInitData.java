@@ -90,13 +90,14 @@ public class CustomInitData {
                 Product product1 = productRepository.save(Product.builder()
                                 .count(10)
                         .price(15000)
+                        .salePrice(25000)
                         .category(categories.get(2))
-                        .name("product1").build());
+                        .name("자엽풍년화").build());
                 Product product2 = productRepository.save(Product.builder()
                         .count(100)
                         .category(categories.get(3))
                         .price(10000)
-                        .name("product2").build());
+                        .name("스킨답서스").build());
 
                 for (int i = 0; i < 20; i++) {
                     Review review = Review.builder()
