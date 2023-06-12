@@ -2,6 +2,12 @@ package com.example.demo.boundedContext.product.dto;
 
 import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.boundedContext.product.entity.Product;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,4 +43,3 @@ public class ProductRegisterDto {
     }
 
 }
-
