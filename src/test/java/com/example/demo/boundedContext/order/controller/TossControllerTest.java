@@ -6,7 +6,7 @@ import com.example.demo.boundedContext.order.dto.OrderRequest;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.infra.TossPaymentInfra;
-import com.example.demo.boundedContext.order.repository.OrderRepository;
+import com.example.demo.boundedContext.order.repository.order.OrderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

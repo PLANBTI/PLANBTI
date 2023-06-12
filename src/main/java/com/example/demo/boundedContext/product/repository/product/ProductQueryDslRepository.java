@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.product.repository;
+package com.example.demo.boundedContext.product.repository.product;
 
 import com.example.demo.boundedContext.product.entity.Product;
 import org.springframework.data.domain.Page;

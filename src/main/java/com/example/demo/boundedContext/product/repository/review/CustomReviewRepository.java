@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.product.repository;
+package com.example.demo.boundedContext.product.repository.review;
 
 import com.example.demo.boundedContext.product.dto.ReviewDto;
 

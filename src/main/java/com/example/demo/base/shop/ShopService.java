@@ -3,7 +3,7 @@ package com.example.demo.base.shop;
 import com.example.demo.boundedContext.category.entity.Category;
 import com.example.demo.boundedContext.category.repository.CategoryRepository;
 import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.boundedContext.product.repository.ProductRepository;
+import com.example.demo.boundedContext.product.repository.product.ProductRepository;
 import com.example.demo.boundedContext.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

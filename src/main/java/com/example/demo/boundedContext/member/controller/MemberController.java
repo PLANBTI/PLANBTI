@@ -9,7 +9,7 @@ import com.example.demo.boundedContext.member.service.TestService;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.service.OrderService;
 import com.example.demo.boundedContext.product.entity.Basket;
-import com.example.demo.boundedContext.product.repository.BasketRepository;
+import com.example.demo.boundedContext.product.repository.basket.BasketRepository;
 import com.example.demo.util.rq.Rq;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.Cookie;

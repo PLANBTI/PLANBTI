@@ -2,7 +2,7 @@ package com.example.demo.boundedContext.order.controller;
 
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
-import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
 import com.example.demo.boundedContext.order.service.OrderDetailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

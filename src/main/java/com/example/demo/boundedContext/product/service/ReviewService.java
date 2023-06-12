@@ -6,7 +6,7 @@ import com.example.demo.boundedContext.product.entity.Product;
 
 import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Review;
-import com.example.demo.boundedContext.product.repository.ReviewRepository;
+import com.example.demo.boundedContext.product.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

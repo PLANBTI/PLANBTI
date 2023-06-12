@@ -2,7 +2,7 @@ package com.example.demo.base.event.listen;
 
 import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.event.DeleteBasket;
-import com.example.demo.boundedContext.product.repository.BasketRepository;
+import com.example.demo.boundedContext.product.repository.basket.BasketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

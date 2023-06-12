@@ -1,12 +1,10 @@
-package com.example.demo.boundedContext.product.repository;
+package com.example.demo.boundedContext.product.repository.product;
 
 import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.boundedContext.product.entity.QProduct;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

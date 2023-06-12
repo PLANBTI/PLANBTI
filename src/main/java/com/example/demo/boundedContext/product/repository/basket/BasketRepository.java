@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.product.repository;
+package com.example.demo.boundedContext.product.repository.basket;
 
 import com.example.demo.boundedContext.product.entity.Basket;
 import org.springframework.data.repository.CrudRepository;
