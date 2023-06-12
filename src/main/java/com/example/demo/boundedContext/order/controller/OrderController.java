@@ -1,6 +1,5 @@
 package com.example.demo.boundedContext.order.controller;
 
-import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.dto.OrderRequestDto;
 import com.example.demo.boundedContext.order.service.OrderDetailService;

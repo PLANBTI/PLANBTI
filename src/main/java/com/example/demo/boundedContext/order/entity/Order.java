@@ -32,6 +32,8 @@ public class Order extends BaseEntity {
 
     private String imageUrl;
 
+    private String paymentKey;
+
     @Builder.Default
     private Long totalPrice = 0L;
 
@@ -102,7 +104,8 @@ public class Order extends BaseEntity {
     }
 
 
-    public void updateComplete() {
+    public void updateComplete(String paymentKey) {
+        this.paymentKey = paymentKey;
         this.status = OrderStatus.COMPLETE;
         for (OrderDetail item : orderDetailList) {
             item.orderComplete();
