@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.product.repository;
 
 import com.example.demo.boundedContext.product.entity.Product;
+import com.example.demo.boundedContext.product.repository.product.ProductRepository;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

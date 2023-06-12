@@ -6,7 +6,7 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.product.dto.ProductDto;
 import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
 import com.example.demo.boundedContext.product.entity.Product;
-import com.example.demo.boundedContext.product.repository.ProductRepository;
+import com.example.demo.boundedContext.product.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

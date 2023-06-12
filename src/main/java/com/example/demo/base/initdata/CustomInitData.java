@@ -14,12 +14,14 @@ import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
-import com.example.demo.boundedContext.order.repository.OrderRepository;
+
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
+import com.example.demo.boundedContext.order.repository.order.OrderRepository;
+
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
-import com.example.demo.boundedContext.product.repository.ProductRepository;
-import com.example.demo.boundedContext.product.repository.ReviewRepository;
+import com.example.demo.boundedContext.product.repository.product.ProductRepository;
+import com.example.demo.boundedContext.product.repository.review.ReviewRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

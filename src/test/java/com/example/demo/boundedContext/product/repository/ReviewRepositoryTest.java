@@ -3,12 +3,12 @@ package com.example.demo.boundedContext.product.repository;
 import com.example.demo.boundedContext.product.dto.ReviewDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
-import org.assertj.core.api.Assertions;
+import com.example.demo.boundedContext.product.repository.product.ProductRepository;
+import com.example.demo.boundedContext.product.repository.review.ReviewRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.order.repository;
+package com.example.demo.boundedContext.order.repository.orderdetail;
 
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.OrderDetail;

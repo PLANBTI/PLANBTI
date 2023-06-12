@@ -1,4 +1,4 @@
-package com.example.demo.boundedContext.order.repository;
+package com.example.demo.boundedContext.order.repository.order;
 
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.entity.Order;

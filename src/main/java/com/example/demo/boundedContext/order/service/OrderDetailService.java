@@ -6,9 +6,9 @@ import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.order.dto.OrderExchangeDto;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderItemStatus;
-import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
-import com.example.demo.boundedContext.order.repository.OrderRepository;
+
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
+import com.example.demo.boundedContext.order.repository.order.OrderRepository;
 import com.example.demo.boundedContext.product.event.ProductIncreaseEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
