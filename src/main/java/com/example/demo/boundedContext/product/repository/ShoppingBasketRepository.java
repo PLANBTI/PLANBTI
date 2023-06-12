@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ShoppingBasketRepository extends JpaRepository<ShoppingBasket, Long> {
     Optional<ShoppingBasket> findByMemberId(Long id);
+
 }

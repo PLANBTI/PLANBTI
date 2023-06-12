@@ -48,4 +48,5 @@ public class OrderDetailService {
         orderDetailRepository.findByIdAndMemberId(orderItemId,memberId)
                 .orElseThrow(() -> new NotOwnerException("이 제품에 대한 권리가 없습니다."));
     }
+
 }

@@ -89,4 +89,5 @@ public class TestService {
                 .build();
         mbtiTestRepository.save(test1);
     }
+
 }
