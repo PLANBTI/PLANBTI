@@ -120,7 +120,7 @@ public class AdmController {
     public String approveExchange(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderService.findById(id);
 
-        if(!orderDetail.getStatus().equals(EXCHANGE)) {
+        if(!orderDetail.isEqualStatusTo(EXCHANGE)) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
@@ -132,7 +132,7 @@ public class AdmController {
     public String isCompleted(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderService.findById(id);
 
-        if(!(orderDetail.getStatus().equals(APPROVED) || orderDetail.getStatus().equals(RETURN))) {
+        if(!(orderDetail.isEqualStatusTo(APPROVED) || orderDetail.isEqualStatusTo(RETURN))) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
