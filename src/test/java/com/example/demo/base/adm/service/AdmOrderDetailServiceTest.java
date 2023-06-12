@@ -11,16 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @ActiveProfiles("test")
 @SpringBootTest
-public class AdmOrderServiceTest {
+public class AdmOrderDetailServiceTest {
 
     @Autowired
-    private AdmOrderService admOrderService;
+    private AdmOrderDetailService admOrderDetailService;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
@@ -50,12 +52,24 @@ public class AdmOrderServiceTest {
     @Test
     @DisplayName("findByStatusIsNotPending()")
     void t001() {
-        assertThat(admOrderService.findByStatusIsNotPending().size()).isEqualTo(7);
+        assertThat(admOrderDetailService.findByStatusIsNotPending().size()).isEqualTo(7);
     }
 
     @Test
     @DisplayName("getStatusInProgress()")
     void t002() {
-        assertThat(admOrderService.getStatusInProgress().size()).isEqualTo(5);
+        assertThat(admOrderDetailService.getStatusInProgress().size()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("getPendingStatus() & startDelivery()")
+    void t003() {
+        List<OrderDetail> orderDetails = admOrderDetailService.getPendingStatus();
+        OrderDetail orderDetail = orderDetails.get(0);
+
+        admOrderDetailService.startDelivery(orderDetail, "0123456789");
+
+        assertThat(orderDetail.getStatus()).isEqualTo(SHIPPING);
+        assertThat(orderDetail.getInvoiceNumber()).isNotNull();
     }
 }

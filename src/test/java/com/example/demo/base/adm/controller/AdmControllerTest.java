@@ -1,6 +1,6 @@
 package com.example.demo.base.adm.controller;
 
-import com.example.demo.base.adm.service.AdmOrderService;
+import com.example.demo.base.adm.service.AdmOrderDetailService;
 import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdmControllerTest {
 
     @Autowired
-    private AdmOrderService admOrderService;
+    private AdmOrderDetailService admOrderDetailService;
     @Autowired
     private MockMvc mvc;
 
@@ -45,7 +45,7 @@ public class AdmControllerTest {
                 .andExpect(handler().methodName("updateToPlaced"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThat(admOrderService.findById(1L).getStatus()).isEqualTo(OrderItemStatus.PLACED);
+        assertThat(admOrderDetailService.findById(1L).getStatus()).isEqualTo(OrderItemStatus.PLACED);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AdmControllerTest {
                 .andExpect(handler().methodName("startDelivery"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThat(admOrderService.findById(1L).getInvoiceNumber()).isNotNull();
+        assertThat(admOrderDetailService.findById(1L).getInvoiceNumber()).isNotNull();
     }
 
 }

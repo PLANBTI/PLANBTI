@@ -1,11 +1,13 @@
 package com.example.demo.base.adm.controller;
 
+import com.example.demo.base.adm.service.AdmOrderDetailService;
 import com.example.demo.base.adm.service.AdmOrderService;
 import com.example.demo.base.image.service.ImageService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
+import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.product.dto.ProductDto;
 import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
@@ -22,11 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +39,7 @@ public class AdmController {
     private final MemberService memberService;
     private final FaqService faqService;
     private final ReviewService reviewService;
+    private final AdmOrderDetailService admOrderDetailService;
     private final AdmOrderService admOrderService;
     private final Rq rq;
     private final ProductService productService;
@@ -82,21 +81,21 @@ public class AdmController {
 
     @GetMapping("/pay")
     public String showPay(Model model) {
-        List<OrderDetail> orderDetails = admOrderService.getPendingStatus();
+        List<OrderDetail> orderDetails = admOrderDetailService.getPendingStatus();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/pay";
     }
 
     @GetMapping("/placed/{id}")
     public String updateToPlaced(@PathVariable Long id) {
-        OrderDetail orderDetail = admOrderService.findById(id);
-        admOrderService.updateStatus(orderDetail, PLACED);
+        OrderDetail orderDetail = admOrderDetailService.findById(id);
+        admOrderDetailService.updateStatus(orderDetail, PLACED);
         return rq.redirectWithMsg("/adm/deliveries", "주문을 확인하였습니다.");
     }
 
     @GetMapping("/deliveries")
     public String showDeliveries(Model model) {
-        List<OrderDetail> orderDetails = admOrderService.findByStatusIsNotPending();
+        List<OrderDetail> orderDetails = admOrderDetailService.findByStatusIsNotPending();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/deliveries";
     }
@@ -111,16 +110,16 @@ public class AdmController {
 
     @PostMapping("/startDelivery/{id}")
     public String startDelivery(@PathVariable Long id, @Valid InvoiceForm form) {
-        OrderDetail orderDetail = admOrderService.findById(id);
-        admOrderService.startDelivery(orderDetail, form.getInvoiceNumber());
+        OrderDetail orderDetail = admOrderDetailService.findById(id);
+        admOrderDetailService.startDelivery(orderDetail, form.getInvoiceNumber());
         return rq.redirectWithMsg("/adm/deliveries", "운송장 번호가 저장되었습니다.");
     }
 
     @GetMapping("/orders")
     public String showOrderList(Model model) {
-        List<OrderDetail> inProgressList = admOrderService.getStatusInProgress();
-        List<OrderDetail> completedList = admOrderService.getCompletedStatus();
-        List<OrderDetail> allList = admOrderService.findAll();
+        List<OrderDetail> inProgressList = admOrderDetailService.getStatusInProgress();
+        List<OrderDetail> completedList = admOrderDetailService.getCompletedStatus();
+        List<OrderDetail> allList = admOrderDetailService.findAll();
         model.addAttribute("inProgressList", inProgressList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("allList", allList);
@@ -129,7 +128,7 @@ public class AdmController {
 
     @GetMapping("/approve/{id}")
     public String approveExchange(@PathVariable Long id) {
-        OrderDetail orderDetail = admOrderService.findById(id);
+        OrderDetail orderDetail = admOrderDetailService.findById(id);
 
         if (!orderDetail.isEqualStatusTo(EXCHANGE)) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
@@ -141,16 +140,34 @@ public class AdmController {
 
     @GetMapping("/complete/{id}")
     public String isCompleted(@PathVariable Long id) {
-        OrderDetail orderDetail = admOrderService.findById(id);
+        OrderDetail orderDetail = admOrderDetailService.findById(id);
 
         if (!(orderDetail.isEqualStatusTo(APPROVED) || orderDetail.isEqualStatusTo(RETURN))) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
-        admOrderService.updateStatus(orderDetail, COMPLETED);
+        admOrderDetailService.updateStatus(orderDetail, COMPLETED);
         return rq.redirectWithMsg("/adm/orders", "교환(반품)이 완료되었습니다.");
     }
 
+    @GetMapping("/sales")
+    public String showSales(Model model,
+                            @RequestParam(defaultValue = "2023") int year,
+                            @RequestParam(defaultValue = "1") int month,
+                            @RequestParam(defaultValue = "all") String category) {
+        List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(year, month);
+
+        if(!category.equals("all")) {
+            orderDetails = orderDetails.stream()
+                    .filter(od -> od.getProduct().getCategory().getName().equals(category)).toList();
+        }
+
+        Long totalSales = orderDetails.stream().mapToLong(OrderDetail::getAmount).sum();
+
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("totalSales", totalSales);
+        return "adm/sales";
+    }
 
     @GetMapping("/productList")
     public String showProduct(Model model) {
@@ -179,6 +196,4 @@ public class AdmController {
         return "redirect:/adm/productList";
     }
 
-
 }
-

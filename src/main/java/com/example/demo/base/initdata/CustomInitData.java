@@ -14,9 +14,9 @@ import com.example.demo.boundedContext.member.repository.AddressRepository;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-
-import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
+import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.order.repository.order.OrderRepository;
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.repository.product.ProductRepository;
@@ -49,25 +49,15 @@ public class CustomInitData {
             @Override
             @Transactional
             public void run(String... args) throws Exception {
+                String[] rawCategories = {"istj", "isfj", "infj", "intj", "istp", "isfp", "infp", "intp", "estp",
+                "esfp", "enfp", "entp", "estj", "esfj", "enfj", "entj"};
                 List<Category> categories = new ArrayList<>();
-                categories.add(Category.builder().name("istj").build());
-                categories.add(Category.builder().name("isfj").build());
-                categories.add(Category.builder().name("infj").build());
-                categories.add(Category.builder().name("intj").build());
-                categories.add(Category.builder().name("istp").build());
-                categories.add(Category.builder().name("isfp").build());
-                categories.add(Category.builder().name("infp").build());
-                categories.add(Category.builder().name("intp").build());
-                categories.add(Category.builder().name("estp").build());
-                categories.add(Category.builder().name("esfp").build());
-                categories.add(Category.builder().name("enfp").build());
-                categories.add(Category.builder().name("entp").build());
-                categories.add(Category.builder().name("estj").build());
-                categories.add(Category.builder().name("esfj").build());
-                categories.add(Category.builder().name("enfj").build());
-                categories.add(Category.builder().name("entj").build());
 
-                categoryRepository.saveAll(categories);
+                for(String rawCategory : rawCategories) {
+                    Category category = Category.builder().name(rawCategory).build();
+                    categoryRepository.save(category);
+                    categories.add(category);
+                }
 
                 Product save = productRepository.save(
                         Product.builder()
@@ -90,6 +80,7 @@ public class CustomInitData {
                                 .imageUrl("https://planbti.cdn.ntruss.com/plant2.jpg")
                                 .build()
                 );
+
                 Product product1 = productRepository.save(Product.builder()
                         .count(10)
                         .price(15000)
@@ -124,14 +115,23 @@ public class CustomInitData {
 
                 Order order = Order.builder()
                         .orderName("orderName")
+                        .totalPrice(20000L)
                         .member(user)
                         .build();
                 orderRepository.save(order);
 
+                Order order2 = Order.builder()
+                        .orderName("order")
+                        .status(OrderStatus.COMPLETE)
+                        .totalPrice(10000L)
+                        .member(user)
+                        .build();
+                orderRepository.save(order2);
+
                 OrderDetail orderDetail1 = OrderDetail.builder()
                         .status(PENDING)
                         .product(product1)
-                        .order(order)
+                        .order(order2)
                         .count(2)
                         .build();
                 orderDetailRepository.save(orderDetail1);
@@ -139,7 +139,7 @@ public class CustomInitData {
                 OrderDetail orderDetail2 = OrderDetail.builder()
                         .status(PENDING)
                         .product(product1)
-                        .order(order)
+                        .order(order2)
                         .count(2)
                         .build();
                 orderDetailRepository.save(orderDetail2);
@@ -148,7 +148,7 @@ public class CustomInitData {
                         .status(EXCHANGE)
                         .product(product1)
                         .invoiceNumber("0123456789")
-                        .order(order)
+                        .order(order2)
                         .count(2)
                         .build();
                 orderDetailRepository.save(orderDetail3);
@@ -157,18 +157,29 @@ public class CustomInitData {
                         .status(RETURN)
                         .product(product1)
                         .invoiceNumber("0123456789")
-                        .order(order)
+                        .order(order2)
                         .count(2)
                         .build();
                 orderDetailRepository.save(orderDetail4);
 
                 OrderDetail orderDetail5 = OrderDetail.builder()
                         .status(PLACED)
-                        .product(product1)
-                        .order(order)
+                        .product(product2)
+                        .order(order2)
                         .count(2)
                         .build();
                 orderDetailRepository.save(orderDetail5);
+
+                List<OrderDetail> orderDetails = new ArrayList<>();
+                orderDetails.add(orderDetail1);
+                orderDetails.add(orderDetail2);
+                orderDetails.add(orderDetail3);
+                orderDetails.add(orderDetail4);
+                orderDetails.add(orderDetail5);
+
+                Order _order2 = order2.toBuilder()
+                        .orderDetailList(orderDetails).build();
+                orderRepository.save(_order2);
 
                 Address address = Address.builder()
                         .member(user)
@@ -215,8 +226,8 @@ public class CustomInitData {
                 Comment comment = Comment.builder()
                         .faq(faq1).content("test content").build();
                 commentRepository.save(comment);
-                Faq _faq1 = faq1.toBuilder().comment(comment).build();
-                faqRepository.save(_faq1);
+                Faq modifiedFaq1 = faq1.toBuilder().comment(comment).build();
+                faqRepository.save(modifiedFaq1);
 
             }
         };

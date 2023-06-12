@@ -2,11 +2,11 @@ package com.example.demo.boundedContext.order.repository.order;
 
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.order.entity.Order;
-import com.example.demo.boundedContext.order.entity.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
