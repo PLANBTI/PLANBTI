@@ -67,6 +67,7 @@ public class ShoppingBasketService {
         Optional<Basket> dtoOptional = basketRepository.findById(memberId);
 
         Basket basket = dtoOptional.orElseGet(() -> new Basket(memberId));
+
         basket.addProduct(product,count);
         basketRepository.save(basket);
 
@@ -85,9 +86,9 @@ public class ShoppingBasketService {
         Basket basket = optionalBasket.get();
         if (basket.deleteProduct(productId)) {
             basketRepository.save(basket);
-            return  new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST) ;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST) ;
     }
 }

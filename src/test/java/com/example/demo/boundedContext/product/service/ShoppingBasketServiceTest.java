@@ -14,10 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 @ActiveProfiles("test")
 @Transactional
 @SpringBootTest
@@ -34,6 +40,16 @@ class ShoppingBasketServiceTest {
 
     @Autowired
     BasketRepository basketRepository;
+
+    @Container
+    private static final GenericContainer<?> redis = new GenericContainer<>("redis")
+            .withExposedPorts(6379);
+
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.redis.host", redis::getHost);
+        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+    }
 
     @DisplayName("장바구니 추가 성공")
     @Test
@@ -75,6 +91,22 @@ class ShoppingBasketServiceTest {
         assertThat(delete.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(basket.getCount()).isEqualTo(1);
         assertThat(basket.getProducts().get(0).getId()).isEqualTo(product.getId());
+    }
+
+    @DisplayName("장바구니 삭제 기능 실패")
+    @Test
+    void t3() {
+        Member member = Member.builder().build();
+        memberRepository.save(member);
+
+        Product product = Product.builder().build();
+        productRepository.save(product);
+
+        shoppingBasketService.addProduct(member.getId(), product.getId(),1);
+
+        ResponseEntity<Void> delete = shoppingBasketService.delete(product.getId()-1, member.getId());
+
+        assertThat(delete.getStatusCode().is4xxClientError()).isTrue();
     }
 
 }
