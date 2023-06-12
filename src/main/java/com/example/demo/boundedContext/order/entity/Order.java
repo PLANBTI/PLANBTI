@@ -30,6 +30,8 @@ public class Order extends BaseEntity {
 
     private String orderName;
 
+    private String imageUrl;
+
     @Builder.Default
     private Long totalPrice = 0L;
 
@@ -58,6 +60,9 @@ public class Order extends BaseEntity {
         if (!orderDetail.isBeforePaying()) {
             throw new OrderException("주문에 넣을 수 없습니다.");
         }
+
+        if (orderDetailList.size() == 0)
+            this.imageUrl = orderDetail.getImageUrl();
 
         orderDetailList.add(orderDetail);
         addPrice(orderDetail.getAmount());
