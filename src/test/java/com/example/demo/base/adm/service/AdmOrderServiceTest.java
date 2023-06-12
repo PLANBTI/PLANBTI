@@ -1,7 +1,8 @@
 package com.example.demo.base.adm.service;
 
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
+
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

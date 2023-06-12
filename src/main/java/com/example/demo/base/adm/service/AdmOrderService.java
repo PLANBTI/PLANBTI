@@ -3,7 +3,8 @@ package com.example.demo.base.adm.service;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
 import com.example.demo.boundedContext.order.entity.OrderItemStatus;
-import com.example.demo.boundedContext.order.repository.OrderDetailRepository;
+
+import com.example.demo.boundedContext.order.repository.orderdetail.OrderDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
