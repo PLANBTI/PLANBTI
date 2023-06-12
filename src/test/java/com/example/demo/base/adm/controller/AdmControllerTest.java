@@ -52,8 +52,9 @@ public class AdmControllerTest {
     @DisplayName("startDelivery()")
     void t002() throws Exception {
         ResultActions resultActions = mvc
-                .perform(post("/adm/startDelivery/1?invoiceNumber=0123456789")
-                        .with(csrf()))
+                .perform(post("/adm/startDelivery/1")
+                        .with(csrf())
+                        .param("invoiceNumber", "0123456789"))
                 .andDo(print());
 
         resultActions
@@ -63,8 +64,5 @@ public class AdmControllerTest {
 
         assertThat(admOrderService.findById(1L).getInvoiceNumber()).isNotNull();
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> 24bcc9e (test: 관리자 컨트롤러/서비스 유효성 테스트)
