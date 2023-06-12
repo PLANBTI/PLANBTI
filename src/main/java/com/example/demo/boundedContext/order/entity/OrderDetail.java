@@ -29,6 +29,7 @@ public class OrderDetail extends BaseEntity {
     private OrderItemStatus status = PENDING;
 
     private int count;
+    private String imageUrl;
 
     private String invoiceNumber; // 운송장 번호
 
@@ -36,9 +37,11 @@ public class OrderDetail extends BaseEntity {
         if (product.getCount() <= 0 )
             throw new NotEnoughProductCount("수량이 부족합니다.");
         this.product = product;
-
+        this.imageUrl = product.getImageUrl();
         order.addOrderDetail(this);
+
         this.order = order;
+
     }
 
     public boolean isEqualStatusTo(OrderItemStatus status) {
