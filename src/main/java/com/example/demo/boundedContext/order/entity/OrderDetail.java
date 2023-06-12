@@ -41,6 +41,10 @@ public class OrderDetail extends BaseEntity {
         this.order = order;
     }
 
+    public boolean isEqualStatusTo(OrderItemStatus status) {
+        return this.status.equals(status);
+    }
+
     public int getAmount() {
         return product.getSalePrice() * count;
     }

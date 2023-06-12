@@ -52,15 +52,19 @@ public class AdmOrderService {
     }
 
     public void isDelivered(List<OrderDetail> list) {
-        // SHIPPED 상태인 동시에 배송 시작된 시점부터 7일이 지났다면 배송 완료 상태로 변경
-        list.stream().filter(od -> od.getStatus().equals(SHIPPING) && LocalDateTime.now().isAfter(od.getModifyDate().plusDays(7)))
+        // SHIPPING 상태인 동시에 배송 시작된 시점부터 7일이 지났다면 배송 완료 상태로 변경
+        list.stream().filter(od -> od.isEqualStatusTo(SHIPPING) && isPassed(od, 7))
                 .forEach(od -> updateStatus(od, DELIVERED));
     }
 
     public void isCompleted(List<OrderDetail> list) {
-        // 배송 완료 상태인 동시에 배송 완료된 시점부터 7일이 지났다면 구매 확정 상태로 변경
-        list.stream().filter(od -> od.getStatus().equals(DELIVERED) && LocalDateTime.now().isAfter(od.getModifyDate().plusDays(7)))
+        // DELIVERED 상태인 동시에 배송 완료된 시점부터 7일이 지났다면 구매 확정 상태로 변경
+        list.stream().filter(od -> od.isEqualStatusTo(DELIVERED) && isPassed(od, 7))
                 .forEach(od -> updateStatus(od, COMPLETED));
+    }
+
+    private boolean isPassed(OrderDetail orderDetail, int day) {
+        return LocalDateTime.now().isAfter(orderDetail.getModifyDate().plusDays(day));
     }
 
     public void updateStatus(OrderDetail orderDetail, OrderItemStatus status) {
