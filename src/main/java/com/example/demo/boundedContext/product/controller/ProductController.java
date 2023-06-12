@@ -71,4 +71,6 @@ public class ProductController {
 
         return rq.redirectWithMsg("/order/orderPage", "주문하러 가기");
     }
+
+
 }
