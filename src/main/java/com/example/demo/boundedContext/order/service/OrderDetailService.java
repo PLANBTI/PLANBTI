@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.base.redis.RedisPrefix.RETURN;
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.COMPLETED;
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.EXCHANGE;
 
 @RequiredArgsConstructor
 @Transactional
@@ -39,6 +40,8 @@ public class OrderDetailService {
         verify(dto.getOrderItemId(), memberId);
         OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderItemId()).orElseThrow();
         orderDetail.orderExchange();
+
+        redisTemplate.opsForList().leftPush(EXCHANGE.name(), String.valueOf(orderDetail.getId()));
     }
 
     public void returnProduct(Long orderId, OrderExchangeDto dto, Long memberId) {
@@ -47,7 +50,7 @@ public class OrderDetailService {
         order.returnProduct(dto);
 
         publisher.publishEvent(new ProductIncreaseEvent(dto.getProductName(), dto.getCount()));
-        redisTemplate.opsForValue().set(RETURN.formatKey(memberId), String.valueOf(memberId));
+        redisTemplate.opsForValue().set(RETURN.formatKey(memberId), order.getPaymentKey());
     }
 
     public void verify(Long orderItemId,Long memberId) {
