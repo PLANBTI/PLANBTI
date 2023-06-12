@@ -8,22 +8,19 @@ import com.example.demo.boundedContext.product.entity.ShoppingBasket;
 import com.example.demo.boundedContext.product.repository.basket.BasketRepository;
 import com.example.demo.boundedContext.product.repository.product.ProductRepository;
 import com.example.demo.util.rq.ResponseData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
+
 @ActiveProfiles("test")
 @Transactional
 @SpringBootTest
@@ -41,14 +38,12 @@ class ShoppingBasketServiceTest {
     @Autowired
     BasketRepository basketRepository;
 
-    @Container
-    private static final GenericContainer<?> redis = new GenericContainer<>("redis")
-            .withExposedPorts(6379);
+    @Autowired
+    RedisTemplate redisTemplate;
 
-    @DynamicPropertySource
-    static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", redis::getFirstMappedPort);
+    @AfterEach
+    void deleteRedis() {
+        redisTemplate.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
 
     @DisplayName("장바구니 추가 성공")
@@ -60,7 +55,7 @@ class ShoppingBasketServiceTest {
         Product product = Product.builder().count(2).build();
         productRepository.save(product);
 
-        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(),1);
+        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(), 1);
         assertThat(responseData.getStatusCode()).isEqualTo(ResponseData.Status.SUCCESS);
         assertThat(responseData.getMsg()).contains("장바구니에 상품을 담았습니다.");
 
@@ -78,7 +73,7 @@ class ShoppingBasketServiceTest {
         Product product = Product.builder().count(1).build();
         productRepository.save(product);
 
-        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(),2);
+        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(), 2);
         assertThat(responseData.getStatusCode()).isEqualTo(ResponseData.Status.FAIL);
         assertThat(responseData.getMsg()).contains("재고량을 초과하여 담을 수 없습니다.");
     }
@@ -95,8 +90,8 @@ class ShoppingBasketServiceTest {
         Product product2 = Product.builder().count(4).build();
         productRepository.save(product2);
 
-        shoppingBasketService.addProduct(member.getId(), product.getId(),1);
-        shoppingBasketService.addProduct(member.getId(), product2.getId(),2);
+        shoppingBasketService.addProduct(member.getId(), product.getId(), 1);
+        shoppingBasketService.addProduct(member.getId(), product2.getId(), 2);
 
 
         ResponseEntity<Void> delete = shoppingBasketService.delete(product2.getId(), member.getId());
@@ -116,9 +111,9 @@ class ShoppingBasketServiceTest {
         Product product = Product.builder().build();
         productRepository.save(product);
 
-        shoppingBasketService.addProduct(member.getId(), product.getId(),1);
+        shoppingBasketService.addProduct(member.getId(), product.getId(), 1);
 
-        ResponseEntity<Void> delete = shoppingBasketService.delete(product.getId()-1, member.getId());
+        ResponseEntity<Void> delete = shoppingBasketService.delete(product.getId() - 1, member.getId());
 
         assertThat(delete.getStatusCode().is4xxClientError()).isTrue();
     }
