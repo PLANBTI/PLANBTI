@@ -2,7 +2,7 @@ package com.example.demo.boundedContext.order.infra;
 
 import com.example.demo.base.AppEnv;
 import com.example.demo.boundedContext.order.dto.OrderRequest;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -37,6 +37,32 @@ public class TossPaymentInfra {
         RequestEntity<OrderRequest> request = new RequestEntity<>(orderRequest, headers, HttpMethod.POST, uri);
 
         return restTemplate.exchange(request, String.class);
+    }
+
+    public ResponseEntity<String> refundRequest(String paymentKEy,String reason) {
+
+        String authorizations = "Basic " + new String(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
+
+        URI uri = UriComponentsBuilder.fromUriString(AppEnv.tossRefundRequestUrl)
+                .path(paymentKEy)
+                .path("cancel")
+                .encode().build().toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", authorizations);
+
+
+        RequestEntity<RefundReason> request = new RequestEntity<>(new RefundReason(reason), headers, HttpMethod.POST, uri);
+
+        return restTemplate.exchange(request, String.class);
+    }
+
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Data
+    static class RefundReason {
+        private String cancelReason;
     }
 
 

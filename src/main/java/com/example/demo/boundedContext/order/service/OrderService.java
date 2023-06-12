@@ -70,7 +70,7 @@ public class OrderService {
     public void orderPayComplete(OrderRequest orderRequest) {
         Order order = findByOrderRequest(orderRequest);
 
-        order.updateComplete();
+        order.updateComplete(orderRequest.getPaymentKey());
         List<OrderDetail> orderDetailList = order.getOrderDetailList();
 
         for (OrderDetail orderDetail : orderDetailList) {
