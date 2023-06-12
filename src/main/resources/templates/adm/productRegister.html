@@ -1,0 +1,86 @@
+<html layout:decorate="~{adm/admLayout.html}">
+
+<head>
+    <title>Product Registration| PLANBTI</title>
+</head>
+<style>
+    .inputArea{
+        width: 500px;
+        margin: 0 auto;
+        margin-top:40px
+    }
+    .layout input {
+        width: 100%;
+        box-sizing: border-box;
+
+    }
+    .layout  textarea{
+        width: 100%;
+        margin-top:10px;
+        min-height: 300px ;
+    }
+
+</style>
+
+<body>
+
+<main layout:fragment="main" class="min-w-fit min-h-full">
+    <p class="text-2xl pt-36">상품등록 페이지입니다.</p>
+
+    <form action="/prodcutRegister/registerpro" role="form" method="post" autocomplete="off" C  id="uploadForm" enctype="multipart/form-data">
+
+        <div class="inputArea">
+            <label>카테고리</label>
+            <select class="category">
+                <option value="">istj</option>
+                <option value="">isfj</option>
+                <option value="">infj</option>
+                <option value="">intj</option>
+                <option value="">istp</option>
+                <option value="">isfp</option>
+                <option value="">infp</option>
+                <option value="">estp</option>
+                <option value="">esfp</option>
+                <option value="">enfp</option>
+                <option value="">entp</option>
+                <option value="">estj</option>
+                <option value="">esfj</option>
+                <option value="">enfj</option>
+                <option value="">entj</option>
+            </select>
+        </div>
+
+        <div class="inputArea">
+            <label for="productName">상품명</label>
+            <textarea class="textarea textarea-accent" placeholder="상품명을 입력하세요" id="productName" cols="40"></textarea>
+        </div>
+
+        <div class="inputArea">
+            <label for="productPrice">상품가격</label>
+            <textarea class="textarea textarea-accent" placeholder="상품가격을 입력하세요" id="productPrice"></textarea>
+        </div>
+
+        <div class="inputArea">
+            <label for="productCount">상품수량</label>
+            <textarea class="textarea textarea-accent" placeholder="상품 수량을 입력하세요" id="productCount"></textarea>
+        </div>
+
+        <div class="inputArea">
+            <label for="productContent">상품소개</label>
+            <textarea class="textarea textarea-accent" placeholder="상품 소개를 입력하세요" id="productContent"></textarea>
+        </div>
+
+        <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs" />
+
+        <div class="inputArea">
+            <button type="submit" id="register_Btn" class="btn btn-primary">등록</button>
+        </div>
+
+
+    </form>
+
+
+</main>
+
+</body>
+</html>
