@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.example.demo.util.rq.ResponseData.Status.FAIL;
 import static com.example.demo.util.rq.ResponseData.Status.SUCCESS;
 
 @Service
@@ -66,6 +67,12 @@ public class ShoppingBasketService {
         Optional<Basket> dtoOptional = basketRepository.findById(memberId);
 
         Basket basket = dtoOptional.orElseGet(() -> new Basket(memberId));
+        if (!product.isEnoughCount(basket.getCount() + count)) {
+            return ResponseData.<String>builder()
+                    .statusCode(FAIL)
+                    .msg("재고량을 초과하여 담을 수 없습니다. \n 주문 가능 개수: %d".formatted(product.getCount() -  basket.getCount()))
+                    .build();
+        }
 
         basket.addProduct(product,count);
         basketRepository.save(basket);

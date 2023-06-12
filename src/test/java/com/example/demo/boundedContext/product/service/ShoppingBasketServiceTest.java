@@ -57,7 +57,7 @@ class ShoppingBasketServiceTest {
         Member member = Member.builder().build();
         memberRepository.save(member);
 
-        Product product = Product.builder().build();
+        Product product = Product.builder().count(2).build();
         productRepository.save(product);
 
         ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(),1);
@@ -69,16 +69,30 @@ class ShoppingBasketServiceTest {
         assertThat(basket.getMember().getId()).isEqualTo(member.getId());
     }
 
-    @DisplayName("장바구니 삭제 기능 성공")
+    @DisplayName("장바구니 재고량 초과 등록 실패")
     @Test
     void t2() {
         Member member = Member.builder().build();
         memberRepository.save(member);
 
-        Product product = Product.builder().build();
+        Product product = Product.builder().count(1).build();
         productRepository.save(product);
 
-        Product product2 = Product.builder().build();
+        ResponseData<String> responseData = shoppingBasketService.addProduct(member.getId(), product.getId(),2);
+        assertThat(responseData.getStatusCode()).isEqualTo(ResponseData.Status.FAIL);
+        assertThat(responseData.getMsg()).contains("재고량을 초과하여 담을 수 없습니다.");
+    }
+
+    @DisplayName("장바구니 삭제 기능 성공")
+    @Test
+    void t3() {
+        Member member = Member.builder().build();
+        memberRepository.save(member);
+
+        Product product = Product.builder().count(4).build();
+        productRepository.save(product);
+
+        Product product2 = Product.builder().count(4).build();
         productRepository.save(product2);
 
         shoppingBasketService.addProduct(member.getId(), product.getId(),1);
@@ -95,7 +109,7 @@ class ShoppingBasketServiceTest {
 
     @DisplayName("장바구니 삭제 기능 실패")
     @Test
-    void t3() {
+    void t4() {
         Member member = Member.builder().build();
         memberRepository.save(member);
 
