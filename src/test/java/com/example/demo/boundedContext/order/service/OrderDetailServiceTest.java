@@ -86,6 +86,7 @@ class OrderDetailServiceTest {
                 .build());
 
         Order order = orderRepository.save(Order.builder()
+                        .paymentKey("paymentKey")
                 .member(member)
                 .build());
 
