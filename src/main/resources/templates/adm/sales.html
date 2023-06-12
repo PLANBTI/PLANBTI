@@ -1,0 +1,98 @@
+<html layout:decorate="~{adm/admLayout.html}">
+
+<head>
+    <title>매출 현황 | PLANBTI</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="my-16 min-w-screen w-full">
+    <div class="mr-12">
+        <p class="text-2xl" th:if="${#lists.isEmpty(orderDetails)}">
+        <h1 class="font-black text-2xl mb-12">월별 매출 현황</h1>
+
+        <form class="flex gap-4 mb-4" th:action="@{/adm/sales}" method="GET">
+            <div>
+                <label for="year">연도 : </label>
+                <select id="year" name="year" class="select select-bordered w-24 max-w-xs">
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <div>
+                <label for="month">월 : </label>
+                <select id="month" name="month" class="select select-bordered w-24 max-w-xs">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+            <div>
+                <label for="category">카테고리 : </label>
+                <select id="category" name="category" class="select select-bordered w-24 max-w-xs">
+                    <option value="all">all</option>
+                    <option value="istj">ISTJ</option>
+                    <option value="isfj">ISFJ</option>
+                    <option value="infj">INFJ</option>
+                    <option value="intj">INTJ</option>
+                    <option value="istp">ISTP</option>
+                    <option value="isfp">ISFP</option>
+                    <option value="infp">INFP</option>
+                    <option value="intp">INTP</option>
+                    <option value="estp">ESTP</option>
+                    <option value="esfp">ESFP</option>
+                    <option value="enfp">ENFP</option>
+                    <option value="entp">ENTP</option>
+                    <option value="estj">ESTJ</option>
+                    <option value="esfj">ESFJ</option>
+                    <option value="enfj">ENFJ</option>
+                    <option value="entj">ENTJ</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success">확인</button>
+            </div>
+        </form>
+        </p>
+        <div class="w-full">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="w-20">회원 ID</th>
+                    <th>주문일시</th>
+                    <th class="w-96">주문명</th>
+                    <th>상품 개수</th>
+                    <td>총 주문 금액</td>
+                    <th>주문 상태</th>
+                </tr>
+                </thead>
+                <tbody th:each="orderDetail : ${orderDetails}">
+                <tr>
+                    <td th:text="${orderDetail.getOrder().getMember().username}"></td>
+                    <td th:text="${#temporals.format(orderDetail.getCreateDate(), 'yyyy-MM-dd HH-mm-ss')}"></td>
+                    <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
+                    <td th:text="${orderDetail.getCount()}"></td>
+                    <td th:text="${orderDetail.getAmount()}"></td>
+                    <td>
+                        <span class="flex justify-end badge badge-primary badge-lg" th:text="${orderDetail.getStatus()}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="divider"></div>
+            <h2 class="mb-12" th:text="|총 주문 금액 : ${totalSales} 원|"></h2>
+        </div>
+    </div>
+</main>
+
+</body>
+
+</html>

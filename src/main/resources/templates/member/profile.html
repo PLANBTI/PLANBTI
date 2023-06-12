@@ -1,7 +1,7 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>My Profile | PLANBTI</title>
+    <title>회원 정보 | PLANBTI</title>
 </head>
 
 <body>
@@ -14,15 +14,15 @@
             <table class="table w-full">
                 <tbody>
                 <tr>
-                    <th>Username</th>
+                    <th>ID</th>
                     <td th:text="${member.username}"></td>
                 </tr>
                 <tr>
-                    <th>E-mail</th>
+                    <th>이메일</th>
                     <td th:text="${member.email}"></td>
                 </tr>
                 <tr>
-                    <th>Phone Number</th>
+                    <th>연락처</th>
                     <td th:text="${member.phoneNumber}"></td>
                 </tr>
                 </tbody>

@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main"  class="w-screen h-full">
+<main layout:fragment="main" class="w-screen h-full">
     <script>
         function Validation__createAddr(form) {
 
@@ -45,40 +45,32 @@
     </script>
 
     <div class="w-full h-full flex flex-col justify-center items-center">
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <h1 class="text-2xl font-black mt-8">배송지 추가</h1>
-=======
-    <h1 class="text-2xl font-black">배송지 추가</h1>
->>>>>>> ef1c41b (feat: 관리자 교환/반품 로직 구현 완료)
-=======
-    <h1 class="text-2xl mt-8 font-black">배송지 추가</h1>
->>>>>>> 57c5d31 (refactor: 로직 수정 및 html 작업)
-    <form class="w-6/12" th:action="@{/address/create}" th:object="${AddressDto}" method="POST"
-          onsubmit="Validation__createAddr(this); return false;">
-        <div>
-            <input type="text" name="name" placeholder="이름" class="input input-bordered w-full mt-12" />
-        </div>
-        <div>
-            <input type="text" name="addr" placeholder="주소" class="input input-bordered w-full mt-12" />
-        </div>
-        <div>
-            <input type="text" name="addrDetail" placeholder="상세 주소" class="input input-bordered w-full mt-12" />
-        </div>
-        <div>
-            <input type="text" name="zipCode" placeholder="우편번호" class="input input-bordered w-full mt-12" />
-        </div>
-        <div>
-            <input type="text" name="phoneNumber" placeholder="연락처" class="input input-bordered w-full mt-12" />
-        </div>
-        <div>
-            <h2 class="mt-12">기본 배송지 여부</h2>
-            <input type="checkbox" name="isDefault" class="checkbox checkbox-success" checked />
-        </div>
-        <div>
-            <input type="submit" value="저장하기" class="btn btn-outline w-full my-12">
-        </div>
-    </form>
+        <h1 class="text-2xl font-black mt-8">배송지 추가</h1>
+        <form class="w-6/12" th:action="@{/address/create}" th:object="${AddressDto}" method="POST"
+              onsubmit="Validation__createAddr(this); return false;">
+            <div>
+                <input type="text" name="name" placeholder="이름" class="input input-bordered w-full mt-12"/>
+            </div>
+            <div>
+                <input type="text" name="addr" placeholder="주소" class="input input-bordered w-full mt-12"/>
+            </div>
+            <div>
+                <input type="text" name="addrDetail" placeholder="상세 주소" class="input input-bordered w-full mt-12"/>
+            </div>
+            <div>
+                <input type="text" name="zipCode" placeholder="우편번호" class="input input-bordered w-full mt-12"/>
+            </div>
+            <div>
+                <input type="text" name="phoneNumber" placeholder="연락처" class="input input-bordered w-full mt-12"/>
+            </div>
+            <div>
+                <h2 class="mt-12">기본 배송지 여부</h2>
+                <input type="checkbox" name="isDefault" class="checkbox checkbox-success" checked/>
+            </div>
+            <div>
+                <input type="submit" value="저장하기" class="btn btn-outline w-full my-12">
+            </div>
+        </form>
     </div>
 </main>
 

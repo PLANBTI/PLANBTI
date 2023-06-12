@@ -1,7 +1,7 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>My Page</title>
+    <title>회원 정보 수정 | PLANBTI</title>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
 
     <div class="w-full h-full flex flex-col justify-center items-center">
     <h1 class="text-2xl mt-8 font-black">회원 정보 수정</h1>
-    <form class="w-6/12" th:action="@{/member/modify}" th:object="${MemberModifyForm}" method="POST"
+    <form class="w-6/12" th:action="@{/member/modify}" th:object="${MemberModifyDto}" method="POST"
           onsubmit="Validation__modify(this); return false;">
         <div>
             <input type="text" name="email" placeholder="E-mail" class="input input-bordered w-full mt-12" />
