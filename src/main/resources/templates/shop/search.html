@@ -1,45 +1,43 @@
 <html layout:decorate="~{common/layout.html}">
+
 <head>
-    <title>SEARCH</title>
+    <title>상품 검색 | PLANBTI</title>
 </head>
 
 <body>
 
-<main layout:fragment="main" class="container mx-12 py-8 min-h-screen">
-    <div style="text-align:center">
-        <h1 class="text-xl mb-10"><b>상품 검색</b></h1>
+<main layout:fragment="main" class="w-screen h-full">
+    <div class="flex flex-col">
+        <h1 class="text-xl my-12 text-center"><b>상품 검색</b></h1>
 
-        <form th:action th:method="get">
-            <input name="keyword" th:value="${keyword}" type="text" placeholder="검색할 상품명을 입력하세요" class="input input-bordered input-accent w-full max-w-xs" />
-            <button class="btn btn-success">검색</button>
-        </form>
-    </div>
-    </div>
+        <div class="flex flex-row w-full justify-center">
+            <form th:action th:method="get">
+                <input name="keyword" th:value="${keyword}" type="text" placeholder="검색할 상품명을 입력하세요."
+                       class="input input-bordered input-accent w-96 max-w-xs"/>
+                <button class="btn btn-success">검색</button>
+            </form>
+        </div>
 
-
-<div  div th:if="${!paging.isEmpty()}" class="card card-compact w-96 bg-base-100 shadow-xl">
-    <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 h-64 bg-base-100 m-4" th:each="product : ${paging}">
-    <img id="imgId" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}" />
-    <div class="card-body">
-        <h2 class="card-title" th:text="${product.getName()}"></h2>
-        <p th:text="|${product.getSalePrice()} 원|"></p>
-        <div class="card-actions justify-end">
-            <button class="btn btn-primary">상세보기</button>
+        <div class="flex justify-center">
+            <div class="flex flex-row flex-wrap w-5/6" th:if="${!paging.isEmpty()}">
+                <div class="card card-compact w-96 bg-base-100 shadow-xl m-12" th:each="product : ${paging}">
+                    <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 bg-base-100 m-16">
+                        <img id="imgId" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
+                        <div class="card-body">
+                            <h2 class="card-title" th:text="${product.getName()}"></h2>
+                            <p th:text="|${product.getSalePrice()} 원|"></p>
+                            <div class="card-actions justify-end">
+                                <button class="btn btn-primary">상세보기</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 </main>
 
-<footer class="bg-green-100 py-8">
-    <div class="container mx-auto text-center">
-        <p><i class="fa-regular fa-copyright"></i> 2023 <b>PLANBTI</b>. All rights reserved.</p>
-    </div>
-</footer>
 </body>
 
-
-
-</html>
-</body>
 </html>

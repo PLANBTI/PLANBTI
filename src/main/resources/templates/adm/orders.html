@@ -6,12 +6,12 @@
 
 <body>
 
-<main layout:fragment="main" class="h-full my-16 min-w-screen w-full">
-    <div class="mr-12">
+<main layout:fragment="main" class="h-full my-16 min-w-screen w-full flex justify-center">
+    <div>
         <p class="text-2xl" th:if="${#lists.isEmpty(allList)}">
             주문 내역이 없습니다.
         </p>
-        <div class="w-full" th:if="${!#lists.isEmpty(inProgressList)}">
+        <div class="w-full my-12" th:if="${!#lists.isEmpty(inProgressList)}">
             <h1 class="font-black text-2xl mb-12">교환/반품 신청</h1>
             <table class="table">
                 <thead>
@@ -41,8 +41,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="divider"></div>
-        <div class="w-full" th:if="${!#lists.isEmpty(completedList)}">
+        <div class="w-full my-12" th:if="${!#lists.isEmpty(completedList)}">
             <h1 class="font-black text-2xl mb-12">구매 확정</h1>
             <table class="table">
                 <thead>
@@ -65,8 +64,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="divider"></div>
-        <div class="w-full" th:if="${!#lists.isEmpty(allList)}">
+        <div class="w-full my-12" th:if="${!#lists.isEmpty(allList)}">
             <h1 class="font-black text-2xl mb-12">전체 주문 내역</h1>
             <table class="table">
                 <thead>

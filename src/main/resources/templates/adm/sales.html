@@ -6,8 +6,8 @@
 
 <body>
 
-<main layout:fragment="main" class="my-16 min-w-screen w-full">
-    <div class="mr-12">
+<main layout:fragment="main" class="my-16 min-w-screen w-full flex justify-center">
+    <div class="flex flex-col">
         <h1 class="font-black text-2xl mb-12">월별 매출 현황</h1>
         <form class="flex gap-4 mb-4" th:action="@{/adm/sales}" method="GET">
             <div>
@@ -18,9 +18,8 @@
             </div>
             <div>
                 <label for="month">월 : </label>
-                <select id="month" name="month" th:each="num : ${#numbers.sequence(1, 12)}"
-                        class="select select-bordered w-24 max-w-xs">
-                    <option th:value="${num}" th:text="${num}"></option>
+                <select id="month" name="month" class="select select-bordered w-24 max-w-xs">
+                    <option th:value="${num}" th:text="${num}" th:each="num : ${#numbers.sequence(1, 12)}"></option>
                 </select>
             </div>
             <div>
@@ -75,8 +74,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="divider"></div>
-            <h2 class="mb-12" th:text="|총 주문 금액 : ${totalSales} 원|"></h2>
+            <h2 class="my-12" th:text="|총 주문 금액 : ${totalSales} 원|"></h2>
         </div>
     </div>
 </main>
