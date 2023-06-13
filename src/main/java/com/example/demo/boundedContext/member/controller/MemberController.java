@@ -12,6 +12,8 @@ import com.example.demo.boundedContext.product.entity.Basket;
 import com.example.demo.boundedContext.product.repository.basket.BasketRepository;
 import com.example.demo.util.rq.Rq;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -30,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
+@Tag(name = "회원 정보",description = "회원 정보 전반에 관한 컨트롤러")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -42,6 +45,7 @@ public class MemberController {
     private final BasketRepository basketRepository;
     private final Rq rq;
 
+    @Operation(summary = "회원 정보 선택")
     @GetMapping("/mypage")
     public String showMyPage(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -50,6 +54,7 @@ public class MemberController {
     }
 
     // 회원 정보 조회
+    @Operation(summary = "회원 정보",description = "회원에 관한 정보를 보여줍니다.")
     @GetMapping("/profile")
     public String showProfile(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -57,6 +62,7 @@ public class MemberController {
         return "member/profile";
     }
 
+    @Operation(summary = "회원 정보 수정",description = "회원 정보를 수정을 위한 자료를 보여줍니다.")
     @GetMapping("/modify")
     public String modify(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -64,6 +70,7 @@ public class MemberController {
         return "member/modify";
     }
 
+    @Operation(summary = "회원 정보 수정 요청",description = "회원 정보 수정을 요청합니다.")
     @PostMapping("/modify")
     public String modify(@Valid MemberModifyDto dto) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -78,6 +85,7 @@ public class MemberController {
         return rq.redirectWithMsg("/member/profile", "회원 정보를 수정하였습니다.");
     }
 
+    @Operation(summary = "회원 물품 장바구니",description = "회원이 장바구니에 담은 물품을 보여줍니다.")
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -92,6 +100,7 @@ public class MemberController {
         return "member/shoppingbasket";
     }
 
+    @Operation(summary = "회원 테스트 결과",description = "회원 테스트 결과를 보여줍니다.")
     @GetMapping("/testresult")
     public String showTestResult(Model model, HttpServletRequest request) {
         // 쿠키 값들을 보관할 Map 생성
@@ -124,6 +133,7 @@ public class MemberController {
         return "member/testResult";
     }
 
+    @Operation(summary = "회원 주문 목록",description = "진행중이거나 완료된 주문을 보여줍니다.")
     @GetMapping("/orderlist")
     public String showOrderlist(Model model) {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
@@ -133,6 +143,7 @@ public class MemberController {
     }
 
     // soft-delete, 회원 탈퇴
+    @Operation(summary = "회원 탈퇴",description = "회원 탈퇴 요청입니다.")
     @GetMapping("/delete")
     public String delete() {
         Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
