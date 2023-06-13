@@ -28,9 +28,8 @@
         <button id="B" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
     </article>
     <article class="result hidden text-center">
-<!--        <img src="${imageUrl}" alt="Image from Naver">-->
-        <div id="chat-container">
-        </div>
+        <div id="mbti-img"></div>
+        <div id="chat-container"></div>
         <button onclick="refreshPage()" type="button" class="mt-5 btn btn-outline">닫기</button>
         <button onclick="redirectToPage()" type="button" class="mt-5 btn btn-outline">서비스 더 이용하기</button>
     </article>
@@ -161,10 +160,12 @@
                     type: "POST",
                     data: {message: mbti},
                     success: function (response) {
+                        var mbtiImg = $("#mbti-img");
                         var chatContainer = $("#chat-container");
                         var assistantMessage = response.choices[0].message.content;
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
                         var jsonString = JSON.stringify(replacedResponse);
+                        mbtiImg.append("<img src=https://kr.object.ncloudstorage.com/planbti/"+ mbti +".jpg></img>");
                         chatContainer.append("<div class='message'>" + jsonString + "</div>");
                     },
                     error: function (error) {

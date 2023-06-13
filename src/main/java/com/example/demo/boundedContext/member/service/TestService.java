@@ -75,6 +75,7 @@ public class TestService {
                 .result(result)
                 .title(title)
                 .content(content)
+                .testImgUrl("https://kr.object.ncloudstorage.com/planbti/"+result+".jpg")
                 .build();
 
         mbtiTestRepository.save(test);
