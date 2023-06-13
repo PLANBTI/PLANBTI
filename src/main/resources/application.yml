@@ -70,5 +70,8 @@ custom:
   site:
     baseUrl: http://localhost:8080
 
+prometheus:
+  ip: ${publicIp:localhost:8080}
+
 
 
