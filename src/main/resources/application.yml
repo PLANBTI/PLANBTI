@@ -54,6 +54,10 @@ decorator:
 
 management:
   endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
     metrics:
       enabled: true
     prometheus:
@@ -61,9 +65,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-  server:
-    port: 2023
+        include: info, health, prometheus
 custom:
   site:
     baseUrl: http://localhost:8080
+
+
+
