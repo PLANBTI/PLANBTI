@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     private List<Address> addresses = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<MbtiTest> tests = new ArrayList<>();
 
     @Convert(converter = CustomConverter.class)
