@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.SHIPPING;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -25,19 +26,19 @@ public class AdmOrderDetailServiceTest {
     @Test
     @DisplayName("findByStatusIsNotPending()")
     void t001() {
-        assertThat(admOrderDetailService.findByStatusIsNotPending().size()).isEqualTo(3);
+        assertThat(admOrderDetailService.getStatusIsNotPending().size()).isEqualTo(3);
     }
 
     @Test
     @DisplayName("getStatusInProgress()")
     void t002() {
-        assertThat(admOrderDetailService.getStatusInProgress().size()).isEqualTo(2);
+        assertThat(admOrderDetailService.getStatusIsInProgress().size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("getPendingStatus() & startDelivery()")
     void t003() {
-        List<OrderDetail> orderDetails = admOrderDetailService.getPendingStatus();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsPending();
         OrderDetail orderDetail = orderDetails.get(0);
 
         admOrderDetailService.startDelivery(orderDetail, "0123456789");
@@ -53,12 +54,12 @@ public class AdmOrderDetailServiceTest {
 
         assertThat(orderDetails.size()).isEqualTo(5);
 
-        orderDetails = orderDetails.stream().filter(od -> od.getOrder().getStatus().equals(OrderStatus.COMPLETE)).toList();
+        orderDetails = orderDetails.stream().filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
 
         assertThat(orderDetails.size()).isEqualTo(5);
 
         assertThat(orderDetails.stream()
-                .filter(od -> od.getProduct().getCategory().getName().equals("infj")).count()).isEqualTo(4);
+                .filter(od -> od.getProduct().isEqualCategoryTo("infj")).count()).isEqualTo(4);
     }
 
 }

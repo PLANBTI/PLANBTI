@@ -25,12 +25,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 
 @Tag(name = "회원 정보",description = "회원 정보 전반에 관한 컨트롤러")
 @Controller
@@ -38,7 +36,7 @@ import java.util.Optional;
 @RequestMapping("/member")
 public class MemberController {
 
-    private  final TestService testService;
+    private final TestService testService;
     private final MemberService memberService;
     private final OrderService orderService;
     private final ApplicationEventPublisher publisher;
@@ -48,7 +46,7 @@ public class MemberController {
     @Operation(summary = "회원 정보 선택")
     @GetMapping("/mypage")
     public String showMyPage(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         model.addAttribute("member", member);
         return "member/myPage";
     }
@@ -57,7 +55,7 @@ public class MemberController {
     @Operation(summary = "회원 정보",description = "회원에 관한 정보를 보여줍니다.")
     @GetMapping("/profile")
     public String showProfile(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         model.addAttribute("member", member);
         return "member/profile";
     }
@@ -65,7 +63,7 @@ public class MemberController {
     @Operation(summary = "회원 정보 수정",description = "회원 정보를 수정을 위한 자료를 보여줍니다.")
     @GetMapping("/modify")
     public String modify(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         model.addAttribute("member", member);
         return "member/modify";
     }
@@ -73,13 +71,13 @@ public class MemberController {
     @Operation(summary = "회원 정보 수정 요청",description = "회원 정보 수정을 요청합니다.")
     @PostMapping("/modify")
     public String modify(@Valid MemberModifyDto dto) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
 
         if (dto.isSame(member)) rq.historyBack("수정된 내용이 없습니다.");
 
-        Member modify = memberService.modify(member, dto);
+        Member modifiedMember = memberService.modify(member, dto);
 
-        publisher.publishEvent(new MemberChangeDto(modify.getId(),modify.getUsername(),modify.getEmail()));
+        publisher.publishEvent(new MemberChangeDto(modifiedMember.getId(),modifiedMember.getUsername(),modifiedMember.getEmail()));
 
         memberService.modify(member, dto);
         return rq.redirectWithMsg("/member/profile", "회원 정보를 수정하였습니다.");
@@ -88,7 +86,7 @@ public class MemberController {
     @Operation(summary = "회원 물품 장바구니",description = "회원이 장바구니에 담은 물품을 보여줍니다.")
     @GetMapping("/shoppingbasket")
     public String showShoppingBasket(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
 
         Optional<Basket> basketOptional = basketRepository.findById(member.getId());
         Basket basket = new Basket(member.getId());
@@ -118,7 +116,7 @@ public class MemberController {
         String plantDescription = cookieValues.get("plantDescription");
 
         // 로그인된 사용자 정보를 가져옵니다
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
 
         if(!testService.isMemberExist(member.getUsername()) && (StringUtils.isBlank(mbti) || StringUtils.isBlank(plantName) || StringUtils.isBlank(plantDescription))){
             return rq.historyBack("테스트를 진행해 주세요");
@@ -136,7 +134,7 @@ public class MemberController {
     @Operation(summary = "회원 주문 목록",description = "진행중이거나 완료된 주문을 보여줍니다.")
     @GetMapping("/orderlist")
     public String showOrderlist(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         List<Order> orderList = orderService.findAllByMember(member);
         model.addAttribute("orderList", orderList);
         return "member/orderlist";
@@ -146,9 +144,8 @@ public class MemberController {
     @Operation(summary = "회원 탈퇴",description = "회원 탈퇴 요청입니다.")
     @GetMapping("/delete")
     public String delete() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         memberService.delete(member);
-        return "redirect:/logout";
+        return rq.redirectWithMsg("/logout", "회원 탈퇴가 처리되었습니다.");
     }
-
 }

@@ -27,16 +27,4 @@ public class Address extends BaseEntity {
     private String phoneNumber;
     private boolean isDefault;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return Objects.equals(name, address.name) && Objects.equals(addr, address.addr) && Objects.equals(addrDetail, address.addrDetail) && Objects.equals(zipCode, address.zipCode) && Objects.equals(phoneNumber, address.phoneNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, addr, addrDetail, zipCode, phoneNumber);
-    }
 }

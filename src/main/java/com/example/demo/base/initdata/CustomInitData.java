@@ -83,14 +83,16 @@ public class CustomInitData {
 
                 Product product1 = productRepository.save(Product.builder()
                         .count(10)
-                        .price(15000)
+                        .price(25000)
                         .salePrice(25000)
                         .category(categories.get(2))
                         .name("자엽풍년화").build());
+
                 Product product2 = productRepository.save(Product.builder()
                         .count(100)
-                        .category(categories.get(3))
                         .price(10000)
+                        .salePrice(10000)
+                        .category(categories.get(3))
                         .name("스킨답서스").build());
 
                 for (int i = 0; i < 20; i++) {
@@ -177,9 +179,9 @@ public class CustomInitData {
                 orderDetails.add(orderDetail4);
                 orderDetails.add(orderDetail5);
 
-                Order _order2 = order2.toBuilder()
+                Order modifiedOrder2 = order2.toBuilder()
                         .orderDetailList(orderDetails).build();
-                orderRepository.save(_order2);
+                orderRepository.save(modifiedOrder2);
 
                 Address address = Address.builder()
                         .member(user)
@@ -193,8 +195,7 @@ public class CustomInitData {
 
                 List<Address> list = user.getAddresses();
                 list.add(address);
-                Member modifiedUser = user.toBuilder()
-                        .addresses(list).build();
+                Member modifiedUser = user.toBuilder().addresses(list).build();
                 memberRepository.save(modifiedUser);
 
                 Faq faq1 = Faq.builder()

@@ -42,11 +42,11 @@ public class AddressController {
     })
     @PostMapping("/create")
     public String create(@Valid AddressDto dto, @RequestParam(name = "isDefault", required = false) boolean isDefault) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        Address address = getDefaultAddress(member);
+        Member member = memberService.findByUsername(rq.getUsername());
+        Address defaultAddress = getDefaultAddress(member);
 
-        if(address != null && isDefault) {
-            addressService.modifyDefault(address);
+        if(defaultAddress != null && isDefault) {
+            addressService.modifyDefault(defaultAddress);
             addressService.create(member, dto, isDefault);
             return rq.redirectWithMsg("/member/profile", "기본 배송지를 변경하였습니다.");
         }
@@ -71,8 +71,12 @@ public class AddressController {
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable Long id, @Valid AddressDto dto,
                          @RequestParam(name = "isDefault", required = false) boolean isDefault) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
+
+        if(!address.getMember().getUsername().equals(member.getUsername())) {
+            return rq.historyBack("접근 권한이 없습니다.");
+        }
 
         if(dto.isSame(address)) rq.historyBack("수정된 내용이 없습니다.");
 
@@ -89,7 +93,7 @@ public class AddressController {
     }
 
     private Address getDefaultAddress(Member member) {
-        return member.getAddresses().stream().filter(address -> address.isDefault()).findFirst().orElse(null);
+        return member.getAddresses().stream().filter(Address::isDefault).findFirst().orElse(null);
     }
 
     @Operation(summary = "주소 정보 삭제",description = "회원의 배송지 주소를 삭제합니다.")
@@ -97,7 +101,11 @@ public class AddressController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         Address address = addressService.findByIdAndDeleteDateIsNull(id);
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
+
+        if(!address.getMember().equals(member)) {
+            return rq.historyBack("접근 권한이 없습니다.");
+        }
 
         addressService.delete(member, address);
         return rq.redirectWithMsg("/member/profile", "배송지를 삭제하였습니다.");

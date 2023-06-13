@@ -1,9 +1,9 @@
 package com.example.demo.boundedContext.member.service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +46,7 @@ public class MemberServiceTest {
     @Test
     @DisplayName("modify")
     void t001() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("test1");
+        Member member = memberService.findByUsername("test1");
         MemberModifyDto dto = new MemberModifyDto("modify1@test.com", "01000000000");
 
         memberService.modify(member, dto);
@@ -58,18 +58,18 @@ public class MemberServiceTest {
     @Test
     @DisplayName("soft delete")
     void t002() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("test1");
+        Member member = memberService.findByUsername("test1");
 
         memberService.delete(member);
 
-        assertThatThrownBy(() -> memberService.findByUsernameAndDeleteDateIsNull("test1"))
+        assertThatThrownBy(() -> memberService.findByUsername("test1"))
                 .isInstanceOf(DataNotFoundException.class);
     }
 
     @Test
     @DisplayName("event - whenAfterCreateAddress")
     void t003() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("test1");
+        Member member = memberService.findByUsername("test1");
 
         Address address = Address.builder()
                 .name("test1").addr("서울시").addrDetail("중구").zipCode("00000")
@@ -84,7 +84,7 @@ public class MemberServiceTest {
     @Test
     @DisplayName("event - whenAfterModifyAddress")
     void t004() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("test1");
+        Member member = memberService.findByUsername("test1");
 
         Address oldAddress = Address.builder()
                 .name("test1").addr("서울시").addrDetail("중구").zipCode("00000")
@@ -106,7 +106,7 @@ public class MemberServiceTest {
     @WithUserDetails("user1")
     @DisplayName("event - whenAfterDeleteAddress")
     void t005() {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member member = memberService.findByUsername("user1");
         List<Address> list = member.getAddresses();
         Address deleteAddress = list.get(0);
 

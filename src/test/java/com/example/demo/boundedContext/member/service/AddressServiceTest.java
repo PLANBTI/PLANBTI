@@ -23,7 +23,7 @@ public class AddressServiceTest {
     @Test
     @DisplayName("create")
     void t001() {
-        Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member user1 = memberService.findByUsername("user1");
         AddressDto dto = new AddressDto("테스트 1", "대구시", "수성구", "55555", "01012345678");
 
         Address testAddress = addressService.create(user1, dto, false);
@@ -35,7 +35,7 @@ public class AddressServiceTest {
     @Test
     @DisplayName("modify")
     void t002() {
-        Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member user1 = memberService.findByUsername("user1");
         Address address = user1.getAddresses().get(0);
         AddressDto dto = new AddressDto("테스트 1", "대구시", "수성구", "55555", "01012345678");
 
@@ -50,7 +50,7 @@ public class AddressServiceTest {
     @Test
     @DisplayName("delete")
     void t003() {
-        Member user1 = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member user1 = memberService.findByUsername("user1");
         Address testAddress = user1.getAddresses().get(0);
 
         addressService.delete(user1, testAddress);

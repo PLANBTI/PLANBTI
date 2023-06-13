@@ -51,8 +51,8 @@
     <script>
         function Validation__invoiceNumber(form) {
 
-            if (form.invoiceNumber.value.trim().length < 10) {
-                toastWarning("운송장 번호를 입력해주세요.");
+            if (form.invoiceNumber.value.trim().length < 6 || form.invoiceNumber.value.trim().length > 16) {
+                toastWarning("운송장 번호를 정확히 입력해주세요.");
                 form.invoiceNumber.focus();
                 return;
             }

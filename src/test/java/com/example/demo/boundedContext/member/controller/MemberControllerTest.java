@@ -84,7 +84,7 @@ public class MemberControllerTest {
                 .andExpect(handler().methodName("delete"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThatThrownBy(() -> memberService.findByUsernameAndDeleteDateIsNull("user1"))
+        assertThatThrownBy(() -> memberService.findByUsername("user1"))
                 .isInstanceOf(DataNotFoundException.class);
     }
 }

@@ -54,7 +54,7 @@ public class AddressControllerTest {
                 .andExpect(handler().methodName("create"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member member = memberService.findByUsername("user1");
         List<Address> list = addressService.findByMember(member);
         assertThat(list.size()).isEqualTo(2);
     }
@@ -80,7 +80,7 @@ public class AddressControllerTest {
                 .andExpect(handler().methodName("modify"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member member = memberService.findByUsername("user1");
         List<Address> list = addressService.findByMember(member);
 
         assertThat(list.size()).isEqualTo(1);
@@ -102,7 +102,7 @@ public class AddressControllerTest {
                 .andExpect(handler().methodName("delete"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
+        Member member = memberService.findByUsername("user1");
         List<Address> list = addressService.findByMember(member);
         assertThat(list.size()).isEqualTo(0);
     }

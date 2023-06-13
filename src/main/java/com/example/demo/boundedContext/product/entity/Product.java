@@ -46,6 +46,10 @@ public class Product extends BaseEntity {
         this.count -= purchase;
     }
 
+    public boolean isEqualCategoryTo(String category) {
+        return this.category.getName().equals(category);
+    }
+
     public boolean isEnoughCount(int count) {
         return this.count - count >= 0;
     }

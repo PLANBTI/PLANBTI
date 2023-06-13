@@ -1,12 +1,10 @@
 package com.example.demo.boundedContext.faq.Service;
 
 import com.example.demo.base.exception.handler.DataNotFoundException;
-import com.example.demo.boundedContext.faq.Controller.FaqController;
 import com.example.demo.boundedContext.faq.dto.FaqDto;
 import com.example.demo.boundedContext.faq.dto.FaqModifyDto;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
-import com.example.demo.boundedContext.faq.entity.FaqCategory;
 import com.example.demo.boundedContext.faq.repository.FaqRepository;
 import com.example.demo.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +21,20 @@ public class FaqService {
 
     public Faq findById(Long id) {
         return faqRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의입니다."));
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의글입니다."));
     }
 
     public Faq findByIdAndDeleteDateIsNull(Long id) {
         return faqRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의입니다."));
+                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 문의글입니다."));
+    }
+
+    public List<Faq> findByMember(Member member) {
+        return faqRepository.findByMember(member);
     }
 
     public List<Faq> findAll() {
         return faqRepository.findAll();
-    }
-
-    public List<Faq> findByMemberAndDeleteDateIsNull(Member member) {
-        return faqRepository.findByMemberAndDeleteDateIsNull(member);
     }
 
     public Faq create(Member member, FaqDto dto) {
@@ -46,8 +44,7 @@ public class FaqService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .email(dto.getEmail()).build();
-        faqRepository.save(faq);
-        return faq;
+        return faqRepository.save(faq);
     }
 
     public Faq modify(Faq faq, FaqModifyDto dto) {
@@ -55,8 +52,7 @@ public class FaqService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .email(dto.getEmail()).build();
-        faqRepository.save(modifiedFaq);
-        return modifiedFaq;
+        return faqRepository.save(modifiedFaq);
     }
 
     // soft-delete
@@ -73,20 +69,17 @@ public class FaqService {
     }
 
     public void whenAfterCreateComment(Faq faq, Comment comment) {
-        Faq faq1 = faq.toBuilder()
-                .comment(comment).build();
+        Faq faq1 = faq.toBuilder().comment(comment).build();
         faqRepository.save(faq1);
     }
 
     public void whenAfterModifyComment(Faq faq, Comment modifiedComment) {
-        Faq faq1 = faq.toBuilder()
-                .comment(modifiedComment).build();
+        Faq faq1 = faq.toBuilder().comment(modifiedComment).build();
         faqRepository.save(faq1);
     }
 
     public void whenBeforeDeleteComment(Faq faq) {
-        Faq faq1 = faq.toBuilder()
-                .comment(null).build();
+        Faq faq1 = faq.toBuilder().comment(null).build();
         faqRepository.save(faq1);
     }
 }

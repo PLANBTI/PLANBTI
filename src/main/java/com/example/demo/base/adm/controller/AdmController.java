@@ -7,7 +7,6 @@ import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
@@ -16,6 +15,7 @@ import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 
 @RequiredArgsConstructor
 @Controller
@@ -45,6 +46,11 @@ public class AdmController {
     @GetMapping("")
     public String showAdmMain() {
         return "adm/main";
+    }
+
+    @GetMapping("/")
+    public String showAdmMain2() {
+        return "redirect:/adm";
     }
 
     @GetMapping("/members")
@@ -76,7 +82,7 @@ public class AdmController {
 
     @GetMapping("/pay")
     public String showPay(Model model) {
-        List<OrderDetail> orderDetails = admOrderDetailService.getPendingStatus();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsPending();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/pay";
     }
@@ -90,7 +96,7 @@ public class AdmController {
 
     @GetMapping("/deliveries")
     public String showDeliveries(Model model) {
-        List<OrderDetail> orderDetails = admOrderDetailService.findByStatusIsNotPending();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsNotPending();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/deliveries";
     }
@@ -100,6 +106,7 @@ public class AdmController {
     @AllArgsConstructor
     public static class InvoiceForm {
         @NotBlank
+        @Size(min = 6, max = 16)
         private String invoiceNumber;
     }
 
@@ -112,9 +119,10 @@ public class AdmController {
 
     @GetMapping("/orders")
     public String showOrderList(Model model) {
-        List<OrderDetail> inProgressList = admOrderDetailService.getStatusInProgress();
-        List<OrderDetail> completedList = admOrderDetailService.getCompletedStatus();
+        List<OrderDetail> inProgressList = admOrderDetailService.getStatusIsInProgress();
+        List<OrderDetail> completedList = admOrderDetailService.getStatusIsCompleted();
         List<OrderDetail> allList = admOrderDetailService.findAll();
+
         model.addAttribute("inProgressList", inProgressList);
         model.addAttribute("completedList", completedList);
         model.addAttribute("allList", allList);
@@ -129,8 +137,8 @@ public class AdmController {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
-        orderDetail.updateStatus(APPROVED);
-        return rq.redirectWithMsg("/adm/orders", "승인되었습니다.");
+        admOrderDetailService.updateStatus(orderDetail, APPROVED);
+        return rq.redirectWithMsg("/adm/orders", "교환 요청이 승인되었습니다.");
     }
 
     @GetMapping("/complete/{id}")
@@ -153,11 +161,11 @@ public class AdmController {
         List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(year, month);
 
         orderDetails = orderDetails.stream()
-                .filter(od -> od.getOrder().getStatus().equals(OrderStatus.COMPLETE)).toList();
+                .filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
 
         if (!category.equals("all")) {
             orderDetails = orderDetails.stream()
-                    .filter(od -> od.getProduct().getCategory().getName().equals(category))
+                    .filter(od -> od.getProduct().isEqualCategoryTo(category))
                     .toList();
         }
 
@@ -183,12 +191,12 @@ public class AdmController {
     }
 
     @GetMapping("/productRegister")
-    public String RegisterProduct() {
+    public String registerProduct() {
         return "adm/productRegister";
     }
 
     @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto, String url) {
+    public String registerProductPro(ProductRegisterDto productRegisterDto, String url) {
         url = imageService.upload(productRegisterDto.getMultipartFile(), UUID.randomUUID().toString());
         productService.register(productRegisterDto, url);
 

@@ -1,4 +1,4 @@
-package com.example.demo.base.map;
+package com.example.demo.boundedContext.map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

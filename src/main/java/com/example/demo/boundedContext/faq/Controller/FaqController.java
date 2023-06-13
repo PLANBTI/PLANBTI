@@ -45,11 +45,16 @@ public class FaqController {
         return "adm/faqList";
     }
 
+    @GetMapping("/")
+    public String showFaq2() {
+        return "redirect:/adm";
+    }
+
     @Operation(summary = "회원 문의 사항", description = "해당 회원의 문의 사항을 보여줍니다.")
     @GetMapping("/myFaq")
     public String showMyFaq(Model model) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
-        List<Faq> faqList = faqService.findByMemberAndDeleteDateIsNull(member);
+        Member member = memberService.findByUsername(rq.getUsername());
+        List<Faq> faqList = faqService.findByMember(member);
         model.addAttribute(faqList);
         return "member/faqList";
     }
@@ -73,9 +78,9 @@ public class FaqController {
     @Operation(summary = "회원 문의 사항 생성 요청", description = "회원 문의 사항을 생성합니다.")
     @PostMapping("/create")
     public String create(@Valid FaqDto dto) {
-        Member member = memberService.findByUsernameAndDeleteDateIsNull(rq.getUsername());
+        Member member = memberService.findByUsername(rq.getUsername());
         Faq faq = faqService.create(member, dto);
-        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ가 작성되었습니다.");
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "문의글이 작성되었습니다.");
     }
 
     @Operation(summary = "FAQ 수정 페이지 불러오기", description = "해당 FAQ의 수정 페이지를 불러옵니다.")
@@ -95,7 +100,7 @@ public class FaqController {
         if (dto.isSame(faq)) rq.historyBack("수정된 내용이 없습니다.");
 
         faqService.modify(faq, dto);
-        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ를 수정하였습니다.");
+        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "문의글을 수정하였습니다.");
     }
 
     // 회원이 자신의 FAQ를 삭제
@@ -103,8 +108,13 @@ public class FaqController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+
+        if(!faq.getMember().getUsername().equals(rq.getUsername())) {
+            return rq.historyBack("접근 권한이 없습니다.");
+        }
+
         faqService.delete(faq);
-        return rq.redirectWithMsg("/faq/detail/%s".formatted(faq.getId()), "FAQ를 삭제하였습니다.");
+        return rq.redirectWithMsg("/faq/myFaq", "문의글을 삭제하였습니다.");
     }
 
     // 관리자가 FAQ를 완전 삭제
@@ -112,9 +122,9 @@ public class FaqController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/deleteAdm/{id}")
     public String deleteHard(@PathVariable Long id) {
-        Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
+        Faq faq = faqService.findById(id);
         faqService.deleteHard(faq);
-        return "redirect:/faq/faqList";
+        return rq.redirectWithMsg("/adm/faq", "문의글을 삭제하였습니다.");
     }
 
 }
