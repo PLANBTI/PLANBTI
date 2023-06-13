@@ -3,6 +3,7 @@ package com.example.demo.boundedContext.product.entity;
 import com.example.demo.base.entity.BaseEntity;
 import com.example.demo.base.exception.handler.OrderException;
 import com.example.demo.boundedContext.category.entity.Category;
+import com.example.demo.boundedContext.product.dto.ProductDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -40,6 +41,7 @@ public class Product extends BaseEntity {
     @Version
     private Long version;
 
+
     public void updateProductCount(int purchase) {
         if (!isEnoughCount(purchase))
             throw new OrderException("재고가 부족합니다");
@@ -60,4 +62,16 @@ public class Product extends BaseEntity {
     }
 
 
-}
+    public void setUrl(String url) {
+        this.imageUrl = url;
+        }
+    public void setUpdate(ProductDto productDto) {
+        this.content= productDto.getContent();
+        this.price=productDto.getPrice();
+        this.salePrice= productDto.getSalePrice();
+        this.count= productDto.getCount();
+        this.name= productDto.getName();
+    }
+
+
+    }

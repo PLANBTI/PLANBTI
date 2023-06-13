@@ -2,6 +2,8 @@ package com.example.demo.base.adm.controller;
 
 import com.example.demo.base.adm.service.AdmOrderService;
 import com.example.demo.base.image.service.ImageService;
+import com.example.demo.boundedContext.category.entity.Category;
+import com.example.demo.boundedContext.category.service.CategoryService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
@@ -20,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +49,9 @@ public class AdmController {
     private final ProductService productService;
 
     private final ImageService imageService;
+
+    private final CategoryService categoryService;
+
 
 
     @GetMapping("")
@@ -167,17 +173,39 @@ public class AdmController {
     }
 
     @GetMapping("/productRegister")
-    public String RegisterProduct() {
+    public String RegisterProduct(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
         return "adm/productRegister";
     }
 
     @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto, String url){
-        url = imageService.upload(productRegisterDto.getMultipartFile(), UUID.randomUUID().toString());
-        productService.register(productRegisterDto,url);
+    public String RegisterProductPro(ProductRegisterDto productRegisterDto){
+        String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
+
+        productService.register(productRegisterDto, url);
 
         return "redirect:/adm/productList";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modifyProduct/{id}")
+    public String modifyProduct(@PathVariable Long id){
+        Product product=this.productService.findById(id);
+        //productService.
+        return "adm/productModify";
+    }
+
+    @PostMapping("/modifypro")
+    public String ModifyProductPro(ProductRegisterDto productRegisterDto){
+        String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
+        productService.modify(productRegisterDto,url);
+        return "redirect:/adm/productList";
+    }
+
+
+
+
 
 
 }
