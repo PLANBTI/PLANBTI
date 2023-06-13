@@ -1,7 +1,6 @@
 package com.example.demo.base.adm.controller;
 
 import com.example.demo.base.adm.service.AdmOrderDetailService;
-import com.example.demo.base.adm.service.AdmOrderService;
 import com.example.demo.base.image.service.ImageService;
 import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
@@ -39,11 +38,9 @@ public class AdmController {
     private final FaqService faqService;
     private final ReviewService reviewService;
     private final AdmOrderDetailService admOrderDetailService;
-    private final AdmOrderService admOrderService;
     private final Rq rq;
     private final ProductService productService;
     private final ImageService imageService;
-
 
     @GetMapping("")
     public String showAdmMain() {
@@ -152,13 +149,13 @@ public class AdmController {
     public String showSales(Model model,
                             @RequestParam(defaultValue = "2023") int year,
                             @RequestParam(defaultValue = "1") int month,
-                            @RequestParam(defaultValue = "all") String category){
+                            @RequestParam(defaultValue = "all") String category) {
         List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(year, month);
 
         orderDetails = orderDetails.stream()
                 .filter(od -> od.getOrder().getStatus().equals(OrderStatus.COMPLETE)).toList();
 
-        if(!category.equals("all")) {
+        if (!category.equals("all")) {
             orderDetails = orderDetails.stream()
                     .filter(od -> od.getProduct().getCategory().getName().equals(category))
                     .toList();
@@ -191,9 +188,9 @@ public class AdmController {
     }
 
     @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto, String url){
+    public String RegisterProductPro(ProductRegisterDto productRegisterDto, String url) {
         url = imageService.upload(productRegisterDto.getMultipartFile(), UUID.randomUUID().toString());
-        productService.register(productRegisterDto,url);
+        productService.register(productRegisterDto, url);
 
         return "redirect:/adm/productList";
     }
