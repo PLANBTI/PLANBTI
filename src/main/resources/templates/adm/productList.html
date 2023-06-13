@@ -1,13 +1,13 @@
 <html layout:decorate="~{adm/admLayout.html}">
 
 <head>
-    <title>Members | PLANBTI</title>
+    <title>상품 목록 | PLANBTI</title>
 </head>
 
 <body>
 
-<main layout:fragment="main" class="min-h-screen my-16 min-w-screen w-full">
-    <div class="flex mr-12">
+<main layout:fragment="main" class="h-full my-16 min-w-screen w-full">
+    <div class="flex justify-center">
         <p class="text-2xl" th:if="${#lists.isEmpty(products)}">
             상품이 없습니다.
         </p>
@@ -22,25 +22,30 @@
                 <th>등록날짜</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
-            <tbody  th:each="product: ${products}">
+            <tbody th:each="product: ${products}">
             <tr>
                 <td th:text="${product.getId()}"></td>
-                <td th:text="${product.getName()}"class="w-60" ></td>
+                <td th:text="${product.getName()}" class="w-60"></td>
                 <td th:text="${product.getCount()}"></td>
-                <td th:text="${product.getSalePrice()}"class="w-60"></td>
+                <td th:text="${product.getSalePrice()}" class="w-60"></td>
                 <td th:text="${product.getPrice()}"></td>
                 <td th:text="${product.getCreateDate()}" class="w-60"></td>
                 <td th:text="${product.getDeleteDate()}" class="w-60"></td>
-                <td th:if="${product.deleteDate == null}"><a class="btn btn-outline"  th:href="@{/adm/deleteProduct/{id}(id=${product.getId()})}">삭제</a></td>
-                <td th:if="${product.deleteDate != null}"><a class="btn btn-outline" >삭제됨</a></td>
-                <td th:if="${product.deleteDate == null}"><a class="btn btn-outline" th:href="@{/adm/modifyProduct/{id}(id=${product.getId()})}">수정</a></td>
+                <td th:if="${product.deleteDate == null}">
+                    <a class="btn btn-outline" th:href="@{/adm/modifyProduct/{id}(id=${product.getId()})}">수정</a>
+                </td>
+                <td>
+                    <a th:if="${product.deleteDate == null}" class="btn btn-outline"
+                       th:href="@{/adm/deleteProduct/{id}(id=${product.getId()})}">삭제</a>
+                    <a th:if="${product.deleteDate != null}" class="btn btn-disabled">삭제됨</a>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-
 </main>
 
 </body>

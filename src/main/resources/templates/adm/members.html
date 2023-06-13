@@ -7,15 +7,15 @@
 <body>
 
 <main layout:fragment="main" class="min-h-screen my-16 min-w-screen w-full">
-    <div class="mr-12">
+    <div class="flex justify-center">
         <p class="text-2xl" th:if="${#lists.isEmpty(members)}">
             회원이 없습니다.
         </p>
         <table class="table" th:if="${!#lists.isEmpty(members)}">
             <thead>
             <tr>
-                <th>Id</th>
-                <th>Username</th>
+                <th>고유번호</th>
+                <th>회원 ID</th>
                 <th>Email</th>
                 <th>연락처</th>
                 <th>가입 일시</th>

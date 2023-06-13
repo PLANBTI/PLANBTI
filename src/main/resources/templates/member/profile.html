@@ -39,7 +39,7 @@
                     <p th:text="|상세 주소 : ${address.addrDetail}|"></p>
                     <p th:text="|우편 번호 : ${address.zipCode}|"></p>
                     <p th:text="|연락처 : ${address.phoneNumber}|"></p>
-                    <kbd th:if="${address.isDefault()}" class="kbd kbd-sm">기본 배송지</kbd>
+                    <kbd th:if="${address.isDefault()}" class="badge badge-success w-full my-2">기본 배송지</kbd>
                     <div class="card-actions justify-end">
                         <a th:href="@{/address/modify/{id}(id=${address.getId()})}" class="btn btn-outline btn-success grow mr-2">수정</a>
                         <a th:href="@{/address/delete/{id}(id=${address.getId()})}" class="btn btn-outline grow-0">삭제</a>
