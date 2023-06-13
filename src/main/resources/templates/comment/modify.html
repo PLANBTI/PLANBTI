@@ -32,11 +32,8 @@
     <form th:action="@{/comment/modify/{id}(id=${faq.getId()})}" th:object="${CommentForm}" method="POST"
           onsubmit="Validation__modifyComment(this); return false;">
         <textarea name="comment" class="textarea textarea-bordered w-full" placeholder="코멘트를 입력해주세요." th:value="${comment.getContent()}"></textarea>
-<<<<<<< HEAD
         <input type="submit" class="btn btn-outline btn-success mt-12" value="저장하기"/>
-=======
-        <input type="submit" class="btn btn-outline btn-success mt-12" value="저장하기" />
->>>>>>> 60b517a (refactor: 운송장 번호 받는 로직 수정 및 html 정리)
+
     </form>
     </div>
 </main>

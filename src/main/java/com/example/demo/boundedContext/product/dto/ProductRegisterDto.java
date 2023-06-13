@@ -16,8 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Builder
 public class ProductRegisterDto {
+    private Long id;
 
-    private Category category;
+    private String category;
 
     private String name;
 
@@ -29,11 +30,11 @@ public class ProductRegisterDto {
 
     private int count;
 
-    private MultipartFile multipartFile;
+    private MultipartFile file;
 
-    public Product toEntity(){
+    public Product toEntity(Category categoryEntity){
         return Product.builder()
-                .category(category)
+                .category(categoryEntity)
                 .name(name)
                 .content(content)
                 .price(price)
@@ -41,5 +42,19 @@ public class ProductRegisterDto {
                 .count(count)
                 .build();
     }
+
+    public Product update(Long id,Category categoryEntity){
+        return Product.builder()
+                .category(categoryEntity)
+                .id(id)
+                .name(name)
+                .content(content)
+                .price(price)
+                .salePrice(salePrice)
+                .count(count)
+                .build();
+    }
+
+
 
 }

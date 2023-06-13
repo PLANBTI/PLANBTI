@@ -12,7 +12,6 @@ spring:
     hibernate:
       ddl-auto: create
 
-
   security:
     oauth2:
       client:
@@ -21,19 +20,19 @@ spring:
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
 
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
             client-authentication-method: POST
 
           google:
             scope: profile
             client-name: Google
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
 
         provider:
           kakao:
@@ -55,6 +54,10 @@ decorator:
 
 management:
   endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
     metrics:
       enabled: true
     prometheus:
@@ -62,7 +65,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-  server:
-    port: 2023
+        include: info, health, prometheus
+custom:
+  site:
+    baseUrl: http://localhost:8080
 
+prometheus:
+  ip: ${publicIp:localhost:8080}
