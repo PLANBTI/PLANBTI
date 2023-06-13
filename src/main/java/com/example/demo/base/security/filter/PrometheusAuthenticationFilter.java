@@ -30,7 +30,7 @@ public class PrometheusAuthenticationFilter extends OncePerRequestFilter {
 
         if (requestIp && equalIp) {
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken("prometheus", null, new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority("ADMIN"))));
+            Authentication authentication = new UsernamePasswordAuthenticationToken("prometheus", null, new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             filterChain.doFilter(request, response);
