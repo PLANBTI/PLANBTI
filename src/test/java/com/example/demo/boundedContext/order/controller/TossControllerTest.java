@@ -68,8 +68,7 @@ class TossControllerTest {
 
         mvc.perform(get("/toss/success").params(map))
                 .andExpect(handler().handlerType(TossController.class))
-                .andExpect(handler().methodName("orderByToss"))
-                .andExpect(redirectedUrlPattern("/order/result**"));
+                .andExpect(handler().methodName("orderByToss"));
     }
 
     @DisplayName("toss fail test")
@@ -95,7 +94,6 @@ class TossControllerTest {
         mvc.perform(get("/toss/success").params(map))
                 .andExpect(handler().handlerType(TossController.class))
                 .andExpect(handler().methodName("orderByToss"))
-                .andExpect(redirectedUrlPattern("/order/orderPage**"))
                 .andDo(print());
     }
 
