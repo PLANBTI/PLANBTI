@@ -39,12 +39,12 @@ public class TossPaymentInfra {
         return restTemplate.exchange(request, String.class);
     }
 
-    public ResponseEntity<String> refundRequest(String paymentKEy,String reason) {
+    public ResponseEntity<String> refundRequest(String paymentKey,String reason) {
 
         String authorizations = "Basic " + new String(Base64.getEncoder().encode(secretKey.getBytes(StandardCharsets.UTF_8)));
 
         URI uri = UriComponentsBuilder.fromUriString(AppEnv.tossRefundRequestUrl)
-                .path(paymentKEy)
+                .path(paymentKey)
                 .path("cancel")
                 .encode().build().toUri();
 
