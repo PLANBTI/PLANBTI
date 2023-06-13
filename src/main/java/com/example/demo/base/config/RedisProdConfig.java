@@ -13,7 +13,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 @Slf4j
-@Profile("prod")
+@Profile("ex")
 @RequiredArgsConstructor
 @Configuration
 public class RedisProdConfig {

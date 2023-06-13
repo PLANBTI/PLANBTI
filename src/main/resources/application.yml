@@ -20,19 +20,19 @@ spring:
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
 
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
             client-authentication-method: POST
 
           google:
             scope: profile
             client-name: Google
-            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
 
         provider:
           kakao:
@@ -64,4 +64,6 @@ management:
         include: "*"
   server:
     port: 2023
-
+custom:
+  site:
+    baseUrl: http://localhost:8080
