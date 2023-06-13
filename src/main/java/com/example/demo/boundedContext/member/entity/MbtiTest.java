@@ -18,6 +18,7 @@ public class MbtiTest extends BaseEntity {
     private String title;
     private String content;
 
+    private String testImgUrl;
     @ManyToOne
     private Member member;
 

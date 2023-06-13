@@ -12,6 +12,7 @@
         </div>
         <div th:unless="${#lists.isEmpty(tests)}">
             <div th:each="test : ${tests}">
+                <img th:src="@{${test.testImgUrl}}"/>
                 <h2 class="text-2xl text-center py-12" th:text="${test.title}"></h2>
                 <p class="mb-2" th:text="${test.content}"></p>
             </div>
