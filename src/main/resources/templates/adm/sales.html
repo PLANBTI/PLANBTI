@@ -8,9 +8,7 @@
 
 <main layout:fragment="main" class="my-16 min-w-screen w-full">
     <div class="mr-12">
-        <p class="text-2xl" th:if="${#lists.isEmpty(orderDetails)}">
         <h1 class="font-black text-2xl mb-12">월별 매출 현황</h1>
-
         <form class="flex gap-4 mb-4" th:action="@{/adm/sales}" method="GET">
             <div>
                 <label for="year">연도 : </label>
@@ -38,7 +36,7 @@
             <div>
                 <label for="category">카테고리 : </label>
                 <select id="category" name="category" class="select select-bordered w-24 max-w-xs">
-                    <option value="all">all</option>
+                    <option value="all">전체</option>
                     <option value="istj">ISTJ</option>
                     <option value="isfj">ISFJ</option>
                     <option value="infj">INFJ</option>
@@ -70,7 +68,7 @@
                     <th>주문일시</th>
                     <th class="w-96">주문명</th>
                     <th>상품 개수</th>
-                    <td>총 주문 금액</td>
+                    <td>주문 금액</td>
                     <th>주문 상태</th>
                 </tr>
                 </thead>

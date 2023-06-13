@@ -7,9 +7,8 @@ import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.service.MemberService;
-import com.example.demo.boundedContext.order.entity.Order;
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.product.dto.ProductDto;
+import com.example.demo.boundedContext.order.entity.OrderStatus;
 import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.entity.Review;
@@ -43,7 +42,6 @@ public class AdmController {
     private final AdmOrderService admOrderService;
     private final Rq rq;
     private final ProductService productService;
-
     private final ImageService imageService;
 
 
@@ -154,12 +152,16 @@ public class AdmController {
     public String showSales(Model model,
                             @RequestParam(defaultValue = "2023") int year,
                             @RequestParam(defaultValue = "1") int month,
-                            @RequestParam(defaultValue = "all") String category) {
+                            @RequestParam(defaultValue = "all") String category){
         List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(year, month);
+
+        orderDetails = orderDetails.stream()
+                .filter(od -> od.getOrder().getStatus().equals(OrderStatus.COMPLETE)).toList();
 
         if(!category.equals("all")) {
             orderDetails = orderDetails.stream()
-                    .filter(od -> od.getProduct().getCategory().getName().equals(category)).toList();
+                    .filter(od -> od.getProduct().getCategory().getName().equals(category))
+                    .toList();
         }
 
         Long totalSales = orderDetails.stream().mapToLong(OrderDetail::getAmount).sum();

@@ -1,7 +1,6 @@
 package com.example.demo.base.adm.controller;
 
 import com.example.demo.base.adm.service.AdmOrderDetailService;
-import com.example.demo.boundedContext.order.entity.OrderItemStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,7 +45,7 @@ public class AdmControllerTest {
                 .andExpect(handler().methodName("updateToPlaced"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThat(admOrderDetailService.findById(1L).getStatus()).isEqualTo(OrderItemStatus.PLACED);
+        assertThat(admOrderDetailService.findById(1L).getStatus()).isEqualTo(PLACED);
     }
 
     @Test
@@ -63,6 +63,36 @@ public class AdmControllerTest {
                 .andExpect(status().is3xxRedirection());
 
         assertThat(admOrderDetailService.findById(1L).getInvoiceNumber()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("approveExchange()")
+    void t003() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/adm/approve/3"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(AdmController.class))
+                .andExpect(handler().methodName("approveExchange"))
+                .andExpect(status().is3xxRedirection());
+
+        assertThat(admOrderDetailService.findById(3L).getStatus()).isEqualTo(APPROVED);
+    }
+
+    @Test
+    @DisplayName("isCompleted()")
+    void t004() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/adm/complete/4"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(AdmController.class))
+                .andExpect(handler().methodName("isCompleted"))
+                .andExpect(status().is3xxRedirection());
+
+        assertThat(admOrderDetailService.findById(4L).getStatus()).isEqualTo(COMPLETED);
     }
 
 }

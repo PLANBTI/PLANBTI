@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Entity
 public class OrderDetail extends BaseEntity {
