@@ -48,18 +48,13 @@ public class MemberService {
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
-    public Member findByUsername(String username) {
-        return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
-    }
-
     public Member findByIdAndDeleteDateIsNull(Long id) {
         return memberRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
-    public Member findByUsernameAndDeleteDateIsNull(String username) {
-        return memberRepository.findByUsernameAndDeleteDateIsNull(username)
+    public Member findByUsername(String username) {
+        return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new DataNotFoundException("존재하지 않는 유저입니다."));
     }
 
@@ -72,8 +67,7 @@ public class MemberService {
                 .email(dto.getEmail())
                 .phoneNumber(dto.getPhoneNumber())
                 .build();
-        memberRepository.save(modifiedMember);
-        return modifiedMember;
+        return memberRepository.save(modifiedMember);
     }
 
     // soft-delete

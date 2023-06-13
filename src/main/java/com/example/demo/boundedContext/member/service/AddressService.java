@@ -10,9 +10,7 @@ import com.example.demo.boundedContext.member.entity.Member;
 import com.example.demo.boundedContext.member.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,16 +46,12 @@ public class AddressService {
                 .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
-        addressRepository.save(address);
+
         publisher.publishEvent(new EventAfterCreateAddress(this, member, address));
-        return address;
+        return addressRepository.save(address);
     }
 
     public Address modify(Member member, Address address, AddressDto dto, boolean isDefault) {
-        if(!address.getMember().equals(member)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
-        }
-
         Address modifiedAddress = address.toBuilder()
                 .name(dto.getName())
                 .addr(dto.getAddr())
@@ -66,9 +60,9 @@ public class AddressService {
                 .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
-        addressRepository.save(modifiedAddress);
+
         publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
-        return modifiedAddress;
+        return addressRepository.save(modifiedAddress);
     }
 
     public void modifyDefault(Address address) {
@@ -79,10 +73,6 @@ public class AddressService {
 
     // soft-delete
     public void delete(Member member, Address address) {
-        if(!address.getMember().equals(member)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "접근 권한이 없습니다.");
-        }
-
         Address deletedAddress = address.toBuilder()
                 .deleteDate(LocalDateTime.now())
                 .build();

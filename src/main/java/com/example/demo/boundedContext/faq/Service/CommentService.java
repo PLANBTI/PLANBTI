@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,19 +37,17 @@ public class CommentService {
         Comment comment = Comment.builder()
                 .faq(faq)
                 .content(content).build();
-        commentRepository.save(comment);
 
         publisher.publishEvent(new EventAfterCreateComment(this, faq, comment));
-        return comment;
+        return commentRepository.save(comment);
     }
 
     public Comment modify(Faq faq, Comment comment, String content) {
         Comment modifiedComment = comment.toBuilder()
                 .content(content).build();
-        commentRepository.save(modifiedComment);
 
         publisher.publishEvent(new EventAfterModifyComment(this, faq, modifiedComment));
-        return modifiedComment;
+        return commentRepository.save(modifiedComment);
     }
 
     // hard-delete

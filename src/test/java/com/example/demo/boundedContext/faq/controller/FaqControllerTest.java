@@ -58,8 +58,8 @@ public class FaqControllerTest {
                 .andExpect(handler().methodName("create"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Faq> list = faqService.findByMemberAndDeleteDateIsNull(member);
+        Member member = memberService.findByUsername("user1");
+        List<Faq> list = faqService.findByMember(member);
         assertThat(list.size()).isEqualTo(3);
     }
 
@@ -80,8 +80,8 @@ public class FaqControllerTest {
                 .andExpect(handler().methodName("modify"))
                 .andExpect(status().is3xxRedirection());
 
-        Member member = memberService.findByUsernameAndDeleteDateIsNull("user1");
-        List<Faq> list = faqService.findByMemberAndDeleteDateIsNull(member);
+        Member member = memberService.findByUsername("user1");
+        List<Faq> list = faqService.findByMember(member);
         assertThat(list.size()).isEqualTo(2);
 
         Faq faq = list.get(0);
