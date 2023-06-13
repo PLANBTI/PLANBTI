@@ -67,10 +67,11 @@ public class ShoppingBasketService {
         Optional<Basket> dtoOptional = basketRepository.findById(memberId);
 
         Basket basket = dtoOptional.orElseGet(() -> new Basket(memberId));
-        if (!product.isEnoughCount(basket.getCount() + count)) {
+        int productCount = basket.getProductCount(product.getId());
+        if (!product.isEnoughCount(productCount + count)) {
             return ResponseData.<String>builder()
                     .statusCode(FAIL)
-                    .msg("재고량을 초과하여 담을 수 없습니다. \n 주문 가능 개수: %d".formatted(product.getCount() -  basket.getCount()))
+                    .msg("재고량을 초과하여 담을 수 없습니다. \n 주문 가능 개수: %d".formatted(product.getCount() -  productCount))
                     .build();
         }
 

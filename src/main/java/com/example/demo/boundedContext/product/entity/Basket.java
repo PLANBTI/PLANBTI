@@ -1,7 +1,6 @@
 package com.example.demo.boundedContext.product.entity;
 
 import com.example.demo.boundedContext.product.dto.ProductDto;
-import com.example.demo.boundedContext.product.entity.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,7 +52,8 @@ public class Basket {
     }
 
     public int getProductCount(Long productId) {
-        return findProduct(productId).orElseThrow().getCount();
+        Optional<ProductDto> optionalProductDto = findProduct(productId);
+        return optionalProductDto.isEmpty() ? 0 : optionalProductDto.orElseThrow().getCount();
     }
 
     public boolean deleteProduct(Long productId) {
