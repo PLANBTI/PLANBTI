@@ -5,6 +5,9 @@ import com.example.demo.boundedContext.faq.Service.FaqService;
 import com.example.demo.boundedContext.faq.entity.Comment;
 import com.example.demo.boundedContext.faq.entity.Faq;
 import com.example.demo.util.rq.Rq;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Tag(name = "Comment Controller",description = "Comment 생성, 수정, 삭제")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/comment")
@@ -35,6 +39,7 @@ public class CommentController {
         private String content;
     }
 
+    @Operation(summary = "comment 신청 페이지")
     @GetMapping("/create/{id}")
     public String create(Model model, @PathVariable Long id) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
@@ -42,6 +47,8 @@ public class CommentController {
         return "comment/create";
     }
 
+    @Operation(summary = "comment 생성",description = "comment 생성을 요청합니다.")
+    @Parameter(name = "form",description = "추가할 comment 내용")
     @PostMapping("/create/{id}")
     public String create(@PathVariable Long id, @Valid CommentForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
@@ -49,6 +56,7 @@ public class CommentController {
         return rq.redirectWithMsg("/faq/detail/%s".formatted(id), "코멘트를 추가하였습니다.");
     }
 
+    @Operation(summary = "comment 수정 페이지")
     @GetMapping("/modify/{id}")
     public String modify(@PathVariable Long id, Model model) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
@@ -58,6 +66,8 @@ public class CommentController {
         return "comment/modify";
     }
 
+    @Operation(summary = "comment 수정")
+    @Parameter(name = "form",description = "변경할 comment 내용")
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable Long id, @Valid CommentForm form) {
         Faq faq = faqService.findByIdAndDeleteDateIsNull(id);
@@ -70,6 +80,7 @@ public class CommentController {
         return rq.redirectWithMsg("/faq/detail/%s".formatted(id), "코멘트를 수정하였습니다.");
     }
 
+    @Operation(summary = "comment 삭제")
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         Comment comment = commentService.findById(id);

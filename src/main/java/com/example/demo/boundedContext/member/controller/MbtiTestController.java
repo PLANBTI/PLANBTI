@@ -1,5 +1,8 @@
 package com.example.demo.boundedContext.member.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -27,13 +30,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Tag(name = "MBTI",description = "MBTI 결과 및 chatGpt 요청 컨트롤러")
 @Controller
 public class MbtiTestController {
 
+    @Operation(summary = "mbti test 요청")
     @GetMapping("/test")
     public String mbtiTestPage() {
         return "member/mbtiTest.html";
     }
+
     @GetMapping("/redirect")
     public String redirectToPage(Model model) {
 
@@ -45,6 +51,8 @@ public class MbtiTestController {
     @Value("${chatGpt.api-key}")
     private String chatGptkey;
 
+    @Operation(summary = "mbti test 결과 chatGpt 요청",hidden = true)
+    @Parameter(name = "message",description = "mbti test 결과 메시지입니다.")
 //    @Cacheable(value = "mbtiTestCache", key = "#message")
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response) {
