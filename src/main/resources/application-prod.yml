@@ -1,8 +1,4 @@
 spring:
-  cache:
-    cache-names: mbtiTestCache
-    caffeine:
-      spec: maximumSize=1000, expireAfterAccess=5m
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://172.17.0.1:3306/planbti__prod?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
@@ -12,15 +8,15 @@ spring:
     redis:
       port: 6379
       host: 172.17.0.1
-
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: validate
-
-
-
 decorator:
   datasource:
     p6spy:
       enable-logging: off
+
+custom:
+  site:
+    baseUrl: https://www.planbti.shop
