@@ -34,7 +34,7 @@ import java.util.List;
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 
 
-@Profile({"dev", "test"})
+@Profile({"dev", "test", "prod"})
 @Configuration
 public class CustomInitData {
     @Bean
