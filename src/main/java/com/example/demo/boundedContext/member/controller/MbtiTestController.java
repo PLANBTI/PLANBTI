@@ -40,14 +40,6 @@ public class MbtiTestController {
         return "member/mbtiTest.html";
     }
 
-    @GetMapping("/redirect")
-    public String redirectToPage(Model model) {
-
-        model.addAttribute("redirectUrl", "redirect:/shop/");
-
-        return "redirect";
-    }
-
     @Value("${chatGpt.api-key}")
     private String chatGptkey;
 
