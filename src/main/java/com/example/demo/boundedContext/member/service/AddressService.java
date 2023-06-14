@@ -46,9 +46,10 @@ public class AddressService {
                 .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
+        addressRepository.save(address);
 
         publisher.publishEvent(new EventAfterCreateAddress(this, member, address));
-        return addressRepository.save(address);
+        return address;
     }
 
     public Address modify(Member member, Address address, AddressDto dto, boolean isDefault) {
@@ -60,9 +61,10 @@ public class AddressService {
                 .phoneNumber(dto.getPhoneNumber())
                 .isDefault(isDefault)
                 .build();
+        addressRepository.save(modifiedAddress);
 
         publisher.publishEvent(new EventAfterModifyAddress(this, member, address, modifiedAddress));
-        return addressRepository.save(modifiedAddress);
+        return modifiedAddress;
     }
 
     public void modifyDefault(Address address) {
