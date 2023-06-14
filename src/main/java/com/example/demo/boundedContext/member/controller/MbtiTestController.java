@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,18 +88,5 @@ public class MbtiTestController {
         }
     }
 
-    @AllArgsConstructor
-    @Data
-    static class Body {
-        String model;
-        List<Message> messages;
-    }
-
-    @AllArgsConstructor
-    @Data
-    static class Message {
-        String role;
-        String content;
-    }
 }
 
