@@ -211,8 +211,6 @@ public class AdmController {
         return "redirect:/adm/productList";
     }
 
-
-
     //@PreAuthorize("isAuthenticated()")
     @GetMapping("/modifyProduct/{id}")
     public String modifyProduct(@PathVariable Long id,Model model){
@@ -232,8 +230,6 @@ public class AdmController {
         productService.modify(productRegisterDto,url);
         return "redirect:/adm/productList";
     }
-
-
 
 
 }
