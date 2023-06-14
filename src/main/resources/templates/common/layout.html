@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+<!--    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />-->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/87140d707c.js" crossorigin="anonymous"></script>
     <!-- toastr 불러오기 -->
@@ -52,10 +53,10 @@
         <a sec:authorize="isAuthenticated()" href="/member/shoppingbasket" class="btn btn-ghost btn-circle">
             <i class="fa-solid fa-cart-shopping"></i>
         </a>
-        <a sec:authorize="isAnonymous()" href="/member/login" class="btn btn-active btn-sm">
+        <a sec:authorize="isAnonymous()" href="/member/login" class="btn btn-sm btn-neutral">
             Sign in
         </a>
-        <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-active btn-sm">
+        <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-sm btn-neutral">
             Logout
         </a>
     </div>

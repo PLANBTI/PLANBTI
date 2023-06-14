@@ -31,6 +31,7 @@
             </div>
         </article>
         <article class="result hidden text-center">
+            <span class="loading loading-spinner text-success"></span>
             <div id="mbti-img"></div>
             <br>
             <div id="chat-container"></div>
@@ -171,6 +172,7 @@
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
                         mbtiImg.append("<img src=https://planbti.cdn.ntruss.com/" + mbti.toLowerCase() + ".jpg></img>");
                         chatContainer.append("<div>" + replacedResponse + "</div>");
+                        $(".loading").hide();
                     },
                     error: function (error) {
                         console.log("Error:", error);
