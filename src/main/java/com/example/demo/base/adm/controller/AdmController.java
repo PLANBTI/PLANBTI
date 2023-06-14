@@ -15,6 +15,7 @@ import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
+import com.example.demo.util.ut.Ut;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -193,7 +195,7 @@ public class AdmController {
     public String deleteProduct(@PathVariable Long id) {
         Product product = productService.findById(id);
         productService.delete(product);
-        return "redirect:/adm/productList";
+        return  rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
     }
 
     @GetMapping("/productRegister")
