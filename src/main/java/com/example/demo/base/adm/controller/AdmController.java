@@ -207,13 +207,18 @@ public class AdmController {
 
     @PostMapping("/registerpro")
     public String RegisterProductPro(ProductRegisterDto productRegisterDto){
+        if (productRegisterDto == null) {
+            return rq.redirectWithMsg("/adm/productList", "모든 항목을 입력하세요.");
+        }
+
         String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         productService.register(productRegisterDto, url);
 
-        return "redirect:/adm/productList";
+        return  rq.redirectWithMsg("/adm/productList", "상품이 등록되었습니다.");
     }
 
-    //@PreAuthorize("isAuthenticated()")
+
+
     @GetMapping("/modifyProduct/{id}")
     public String modifyProduct(@PathVariable Long id,Model model){
         Product product=this.productService.findById(id);
