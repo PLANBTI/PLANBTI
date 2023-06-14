@@ -7,17 +7,16 @@
 <body>
 
 <main layout:fragment="main" class="w-screen h-full">
-    <div class="flex flex-row m-16 min-w-fit">
+    <div class="flex flex-row m-16 min-w-fit min-h-fit">
         <ul class="menu bg-base-100 w-40 flex-none mt-20">
             <th:block th:each="category : ${categories}">
                 <li><a th:href="@{/shop/{category}(category=${category.name})}" th:text="${category.name}"></a></li>
             </th:block>
         </ul>
         <div th:if="${!paging.isEmpty()}" class="flex flex-wrap">
-            <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="w-60 h-64 bg-base-100 m-4"
+            <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="m-12 w-60 h-64 bg-base-100"
                th:each="product : ${paging}">
-                <!--<img src="" class="h-44 bg-green-500">  식물 이미지 -->
-                <img id="imgId" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
+                <img id="imgId" class="w-80 h-60" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
                 <div class="w-60 h-20 p-4">
                     <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>
                     <p class="flex justify-end" th:text="|${product.price} 원|"></p>
