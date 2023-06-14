@@ -1,38 +1,44 @@
 <html layout:decorate="~{common/layout.html}">
 <head>
-    <title>PLANBTI 테스트</title>
+    <title>PLANBTI 테스트 | PLANBTI</title>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 
 <body>
 
-<main layout:fragment="main" class="container mx-auto py-40 flex justify-center min-h-screen max-w-2xl">
-    <article class="start text-center">
-        <h1 class="mt-5 text-center">식물 유형 테스트</h1>
-        <h5 class="mt-2 text-center">어느 날 갑자기 내가 꽃집 사장님 된다면?</h5>
-        <button type="button" class=" mt-5 btn btn-outline btn-success" onclick='start();'>테스트 시작하기</button>
-    </article>
-    <article class="intro hidden text-center">
-        <h1 class="mt-5 text-center">PLANBTI</h1>
-        <h5 class="mt-5 text-center">어느 날 눈을 떠보니 <br> 한 꽃집에 사장이 되어 하루를 시작한다. <br><br>여기가 어디지...?</h5>
-        <br><br>
-        <button type="button" class="mt btn btn-outline btn-success" onclick='intro();'>테스트 시작하기</button>
-    </article>
-    <article class="question hidden text-center">
-        <div class="progress mt-5">
-            <div class="progress-bar bg-success" role="progressbar" style="width: calc(100/12*1%)"></div>
-        </div>
-        <h2 id="questionTitle" class="text-center mt-5">문제</h2>
-        <input id="type" type="hidden" value="EI">
-        <button id="A" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
-        <button id="B" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
-    </article>
-    <article class="result hidden text-center">
-        <div id="mbti-img"></div><br>
-        <div id="chat-container"></div>
-        <button onclick="refreshPage()" type="button" class="mt-5 btn btn-outline">닫기</button>
-        <button onclick="redirectToPage()" type="button" class="mt-5 btn btn-outline">서비스 더 이용하기</button>
-    </article>
+<main layout:fragment="main" class="w-screen h-full">
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <article class="start text-center">
+            <h1 class="mt-5 text-center">식물 유형 테스트</h1>
+            <h5 class="mt-2 text-center">어느 날 갑자기 내가 꽃집 사장님 된다면?</h5>
+            <button type="button" class=" mt-5 btn btn-outline btn-success" onclick='start();'>테스트 시작하기</button>
+        </article>
+        <article class="intro hidden text-center">
+            <h1 class="mt-5 text-center font-black text-2xl">PLANBTI</h1>
+            <h5 class="mt-5 text-center">어느 날 눈을 떠보니 <br> 한 꽃집에 사장이 되어 하루를 시작한다. <br><br>여기가 어디지...?</h5>
+            <br><br>
+            <button type="button" class="mt btn btn-outline btn-success" onclick='intro();'>테스트 시작하기</button>
+        </article>
+        <article class="question hidden text-center">
+            <div class="progress mt-5">
+                <div class="progress-bar bg-success" role="progressbar" style="width: calc(100/12*1%)"></div>
+            </div>
+            <h2 id="questionTitle" class="text-center mt-20">문제</h2>
+            <input id="type" type="hidden" value="EI">
+            <div class="flex flex-col">
+                <button id="A" type="button" class="mt-5 w-full btn btn-outline btn-success">Primary</button>
+                <button id="B" type="button" class="mt-5 w-full btn btn-outline btn-success">Primary</button>
+            </div>
+        </article>
+        <article class="result hidden text-center">
+            <div id="mbti-img"></div>
+            <br>
+            <div id="chat-container"></div>
+            <button onclick="refreshPage()" type="button" class="mt-5 btn btn-outline">닫기</button>
+            <button onclick="redirectToPage()" type="button" class="mt-5 mb-12 btn btn-success">서비스 더 이용하기</button>
+        </article>
+    </div>
+
     <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
     <input type="hidden" id="EI" value="0">
@@ -113,6 +119,7 @@
                 "B": "눈 뜨면 돌아갈 수 있을까? 그대로면 어떡하지??"
             }
         }
+
         function start() {
             $(".start").hide();
             $(".intro").show();
@@ -162,7 +169,7 @@
                         var chatContainer = $("#chat-container");
                         var assistantMessage = response.choices[0].message.content;
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
-                        mbtiImg.append("<img src=https://planbti.cdn.ntruss.com/"+ mbti.toLowerCase() +".jpg></img>");
+                        mbtiImg.append("<img src=https://planbti.cdn.ntruss.com/" + mbti.toLowerCase() + ".jpg></img>");
                         chatContainer.append("<div>" + replacedResponse + "</div>");
                     },
                     error: function (error) {
