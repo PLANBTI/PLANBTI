@@ -37,17 +37,19 @@ public class CommentService {
         Comment comment = Comment.builder()
                 .faq(faq)
                 .content(content).build();
+        commentRepository.save(comment);
 
         publisher.publishEvent(new EventAfterCreateComment(this, faq, comment));
-        return commentRepository.save(comment);
+        return comment;
     }
 
     public Comment modify(Faq faq, Comment comment, String content) {
         Comment modifiedComment = comment.toBuilder()
                 .content(content).build();
+        commentRepository.save(modifiedComment);
 
         publisher.publishEvent(new EventAfterModifyComment(this, faq, modifiedComment));
-        return commentRepository.save(modifiedComment);
+        return modifiedComment;
     }
 
     // hard-delete
