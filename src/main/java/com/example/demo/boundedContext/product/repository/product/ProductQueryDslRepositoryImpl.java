@@ -51,6 +51,24 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
+    @Override
+    public Page<Product> findAllForPaging(Pageable pageable) {
+        JPAQuery<Product> contentQuery = jpaQueryFactory
+                .select(product)
+                .from(product)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(getOrderSpecifiers(pageable.getSort()));
+
+        List<Product> content = contentQuery.fetch();
+
+        JPAQuery<Long> countQuery = jpaQueryFactory
+                .select(product.count())
+                .from(product);
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
     private BooleanExpression eqCategoryName(String categoryName) {
         if (categoryName == null) return null;
         return product.category.name.eq(categoryName);
