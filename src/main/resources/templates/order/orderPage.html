@@ -75,8 +75,8 @@
                     paymentWidget.requestPayment({
                         orderId: orderId,
                         orderName: orderName,
-                        successUrl: "http://localhost:8080/toss/success",
-                        failUrl: "http://localhost:8080/toss/fail",
+                        successUrl: "https://www.planbti.shop/toss/success",
+                        failUrl: "https://www.planbti.shop/toss/fail",
                         customerName: username
                     }).catch(function (error) {
                         toastWarning("결제 요청에 실패하였습니다. 다시 이용해 주세요");
