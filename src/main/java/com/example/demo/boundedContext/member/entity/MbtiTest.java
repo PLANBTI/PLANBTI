@@ -1,6 +1,7 @@
 package com.example.demo.boundedContext.member.entity;
 
 import com.example.demo.base.entity.BaseEntity;
+import com.example.demo.boundedContext.category.entity.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
