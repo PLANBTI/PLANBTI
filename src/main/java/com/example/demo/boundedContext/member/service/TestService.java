@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -75,7 +76,7 @@ public class TestService {
                 .result(result)
                 .title(title)
                 .content(content)
-                .testImgUrl("https://kr.object.ncloudstorage.com/planbti/"+result+".jpg")
+                .testImgUrl("https://planbti.cdn.ntruss.com/"+result.toLowerCase()+".jpg")
                 .build();
 
         mbtiTestRepository.save(test);
