@@ -85,7 +85,8 @@ class OrderRepositoryTest {
         Order order = orderRepository.save(Order.builder().status(OrderStatus.COMPLETE)
                 .member(member).build());
 
-        Product product = productRepository.save(Product.builder().name("product").count(100).price(1000).build());
+        Product product = productRepository.save(Product.builder().name("product").count(100)
+                .salePrice(1000).price(1000).build());
 
         OrderDetail orderDetail = OrderDetail.builder().count(10).build();
         orderDetail.addOrder(order,product);
@@ -93,7 +94,7 @@ class OrderRepositoryTest {
 
         OrderExchangeDto dto = orderDetailRepository.findByOrderIdAndMemberId(order.getId(), orderDetail.getId(), member.getId()).orElseThrow();
 
-        Assertions.assertThat(dto.getTotalPrice()).isEqualTo(product.getPrice() * orderDetail.getCount());
+        Assertions.assertThat(dto.getTotalPrice()).isEqualTo(product.getSalePrice() * orderDetail.getCount());
         Assertions.assertThat(dto.getOrderItemId()).isEqualTo(orderDetail.getId());
         Assertions.assertThat(dto.getProductName()).isEqualTo("product");
 
