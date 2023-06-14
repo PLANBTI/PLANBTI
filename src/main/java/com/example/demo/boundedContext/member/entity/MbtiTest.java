@@ -2,6 +2,7 @@ package com.example.demo.boundedContext.member.entity;
 
 import com.example.demo.base.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,9 +18,8 @@ public class MbtiTest extends BaseEntity {
     private String result;
     private String title;
     private String content;
-
     private String testImgUrl;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
 }
