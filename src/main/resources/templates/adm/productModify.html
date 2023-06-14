@@ -21,20 +21,26 @@
                                 th:text="${category.name}"></option>
                     </select>
 
-                    <input type="text" name="id" th:value="${product.getId()}" class="input input-bordered w-full mt-12"/>
+                    <label></label>
+                    <input type="hidden" name="id" th:value="${product.getId()}"  class="input input-bordered w-full mt-12" />
 
+                    <label>상품명</label>
                     <input type="text" name="name" th:value="${product.getName()}"
                            class="input input-bordered w-full mt-12"/>
 
+                    <label>정가</label>
                     <input type="text" name="price" th:value="${product.getPrice()}"
                            class="input input-bordered w-full mt-12"/>
 
+                    <label>판매가</label>
                     <input type="text" name="salePrice" th:value="${product.getSalePrice()}"
                            class="input input-bordered w-full mt-12"/>
 
+                    <label>수량</label>
                     <input type="text" name="count" th:value="${product.getCount()}"
                            class="input input-bordered w-full mt-12"/>
 
+                    <label>상품 소개</label>
                     <input type="text" name="content" class="input input-bordered w-full my-12"
                            th:attr="placeholder=${product.getContent() == null ? '상품 소개를 입력하세요' : ''},
                 value=${product.getContent() != null ? product.getContent() : ''}"/>
