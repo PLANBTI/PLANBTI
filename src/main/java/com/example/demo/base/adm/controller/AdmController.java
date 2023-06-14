@@ -224,8 +224,7 @@ public class AdmController {
     }
 
     @PostMapping("/modifypro")
-    public String ModifyProductPro(ProductRegisterDto productRegisterDto){
-        String url=null;
+    public String ModifyProductPro(ProductRegisterDto productRegisterDto,String url){
         if (!productRegisterDto.getFile().isEmpty()){
             url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         }

@@ -40,6 +40,7 @@
                 value=${product.getContent() != null ? product.getContent() : ''}"/>
 
                     <label>이미지 재업로드</label>
+                    <input type="hidden" name="url" th:value="${product.imageUrl}">
                     <input type="file" name="file" class="file-input file-input-bordered file-input-success w-full"/>
                     <button type="submit" id="register_Btn" class="btn btn-success w-full my-12">등록</button>
                 </form>
