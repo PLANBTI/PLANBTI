@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.member.service;
 
+import com.example.demo.base.AppEnv;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.boundedContext.member.entity.MbtiTest;
 import com.example.demo.boundedContext.member.entity.Member;
@@ -76,7 +77,7 @@ public class TestService {
                 .result(result)
                 .title(title)
                 .content(content)
-                .testImgUrl("https://planbti.cdn.ntruss.com/"+result.toLowerCase()+".jpg")
+                .testImgUrl(AppEnv.imageUrl+result.toLowerCase()+".jpg")
                 .build();
 
         mbtiTestRepository.save(test);
