@@ -47,18 +47,7 @@ public class PrometheusAuthenticationFilter extends OncePerRequestFilter {
 
         boolean requestIp = request.getRequestURI().equals("/actuator/prometheus");
         boolean equalIp = ip.equals(prometheusIp);
-        String requestURL = request.getRequestURL().toString();
-        String remoteIP = request.getRemoteAddr();
 
-        log.info("진짜 ip: {}",ip);
-        log.info("요청 주소: {}", request.getRequestURI());
-        log.info("요청한 사람의 ip: {}",request.getRemoteHost());
-        log.info("요청한 사람의 port: {}",request.getRemotePort());
-        log.info("주소 검증: {}", requestIp);
-        log.info("ip 검증: {}",equalIp);
-        log.info("요청한 사람의 통합 주소: {}",requestURL);
-        log.info("remoteIP: {}",remoteIP);
-        log.info("prometheusIp : {}",prometheusIp);
 
         if (requestIp && equalIp) {
 
