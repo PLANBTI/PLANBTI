@@ -33,11 +33,17 @@
                         </div>
                     </div>
                     <div class="flex flex-col items-end mx-2">
+                        <del>
                         <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.price}원|">
+                            product.price</p>
+                        </del>
+                    </div>
+                    <div class="flex flex-col items-end mx-2">
+                        <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.salePrice}원|">
                             product.price</p>
                     </div>
                     <div class="flex flex-col items-end mx-2">
-                        <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.price * product.count}원|">
+                        <p class="font-semi bold leading-6 text-gray-900 text-xl" th:text="|${product.salePrice * product.count}원|">
                             product.price</p>
                     </div>
                     <div class="flex items-center mb-4">

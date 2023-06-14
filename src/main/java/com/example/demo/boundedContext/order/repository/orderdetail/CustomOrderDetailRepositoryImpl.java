@@ -29,7 +29,7 @@ public class CustomOrderDetailRepositoryImpl implements CustomOrderDetailReposit
     public Optional<OrderExchangeDto> findByOrderIdAndMemberId(Long orderId, Long orderItemId, Long memberId) {
 
         OrderExchangeDto orderExchangeDto = jpaQueryFactory.select(Projections.constructor(
-                        OrderExchangeDto.class, orderDetail.id, product.name, orderDetail.count, product.price
+                        OrderExchangeDto.class, orderDetail.id, product.name, orderDetail.count, product.salePrice
                 ))
                 .from(order)
                 .join(order.orderDetailList, orderDetail)
