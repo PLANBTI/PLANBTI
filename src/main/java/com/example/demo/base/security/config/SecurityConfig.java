@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true));
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/comment/**","/adm/**","/actuator/**").hasRole("ADMIN")
+                .requestMatchers("/comment/**","/adm/**","/actuator/**","/swagger-ui/**").hasRole("ADMIN")
                 .requestMatchers("/member/login").anonymous()
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/favicon.ico", "/resource/**", "/error",
