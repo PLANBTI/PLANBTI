@@ -58,6 +58,7 @@ public class PrometheusAuthenticationFilter extends OncePerRequestFilter {
         log.info("ip 검증: {}",equalIp);
         log.info("요청한 사람의 통합 주소: {}",requestURL);
         log.info("remoteIP: {}",remoteIP);
+        log.info("prometheusIp : {}",prometheusIp);
 
         if (requestIp && equalIp) {
 
