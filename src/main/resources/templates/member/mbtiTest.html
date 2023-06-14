@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main" class="container mx-auto py-40 flex justify-center min-h-screen">
+<main layout:fragment="main" class="container mx-auto py-40 flex justify-center min-h-screen max-w-2xl">
     <article class="start text-center">
         <h1 class="mt-5 text-center">식물 유형 테스트</h1>
         <h5 class="mt-2 text-center">어느 날 갑자기 내가 꽃집 사장님 된다면?</h5>
@@ -28,7 +28,7 @@
         <button id="B" type="button" class="mt-5 btn btn-outline btn-success">Primary</button>
     </article>
     <article class="result hidden text-center">
-        <div id="mbti-img"></div>
+        <div id="mbti-img"></div><br>
         <div id="chat-container"></div>
         <button onclick="refreshPage()" type="button" class="mt-5 btn btn-outline">닫기</button>
         <button onclick="redirectToPage()" type="button" class="mt-5 btn btn-outline">서비스 더 이용하기</button>
@@ -164,9 +164,8 @@
                         var chatContainer = $("#chat-container");
                         var assistantMessage = response.choices[0].message.content;
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
-                        var jsonString = JSON.stringify(replacedResponse);
-                        mbtiImg.append("<img src=https://kr.object.ncloudstorage.com/planbti/"+ mbti +".jpg></img>");
-                        chatContainer.append("<div class='message'>" + jsonString + "</div>");
+                        mbtiImg.append("<img src=https://planbti.cdn.ntruss.com/"+ mbti.toLowerCase() +".jpg></img>");
+                        chatContainer.append("<div>" + replacedResponse + "</div>");
                     },
                     error: function (error) {
                         console.log("Error:", error);
