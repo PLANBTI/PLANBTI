@@ -41,6 +41,7 @@
                            class="input input-bordered w-full mt-12"/>
 
                     <label>상품 소개</label>
+
                     <input type="text" name="content" class="input input-bordered w-full my-12"
                            th:attr="placeholder=${product.getContent() == null ? '상품 소개를 입력하세요' : ''},
                 value=${product.getContent() != null ? product.getContent() : ''}"/>

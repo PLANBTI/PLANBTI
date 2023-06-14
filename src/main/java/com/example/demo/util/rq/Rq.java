@@ -64,6 +64,12 @@ public class Rq {
         return member.getUsername();
     }
 
+<<<<<<< HEAD
+=======
+    public boolean isAdmin() {
+        return member.getUsername().equals("admin");
+    }
+>>>>>>> e694d30 (feat : About, Main 페이지)
 
     public String historyBack(String msg) {
         String referer = req.getHeader("referer");

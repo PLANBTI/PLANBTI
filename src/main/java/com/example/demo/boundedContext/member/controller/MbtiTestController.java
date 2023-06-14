@@ -8,9 +8,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+=======
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+>>>>>>> e694d30 (feat : About, Main 페이지)
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -35,8 +41,14 @@ public class MbtiTestController {
 
     @Operation(summary = "mbti test 결과 chatGpt 요청",hidden = true)
     @Parameter(name = "message",description = "mbti test 결과 메시지입니다.")
+<<<<<<< HEAD
     @PostMapping("/send")
     public ResponseEntity<String> send(String message, HttpServletResponse response, Model model) {
+=======
+    @Cacheable(value = "mbtiTestCache")
+    @PostMapping("/send")
+    public ResponseEntity<String> send(String message, HttpServletResponse response) {
+>>>>>>> e694d30 (feat : About, Main 페이지)
 
         if (!isValidMBTI(message)) {
             // 요청 값이 유효하지 않을 경우 에러 처리
@@ -53,7 +65,11 @@ public class MbtiTestController {
         // <p> 태그에서 plantDescription 추출 후 쿠키 설정
         extractContentAndSetCookie(responseBody, response, "<p>(.*?)</p>", "plantDescription");
 
+<<<<<<< HEAD
         return ResponseEntity.ok(responseBody);
+=======
+        return null;
+>>>>>>> e694d30 (feat : About, Main 페이지)
     }
 
     // MBTI 유형 검증 메소드

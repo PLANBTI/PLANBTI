@@ -24,11 +24,19 @@ public class ProductRegisterDto {
 
     private String content;
 
+<<<<<<< HEAD
     private Integer price;
 
     private Integer salePrice;
 
     private Integer count;
+=======
+    private int price;
+
+    private int salePrice;
+
+    private int count;
+>>>>>>> e694d30 (feat : About, Main 페이지)
 
     private MultipartFile file;
 
