@@ -3,62 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-    <title>주문</title>
+    <title>주문하기 | PLANBTI</title>
 </head>
 <body>
 
-<main class="min-w-full" layout:fragment="main">
+<main class="w-screen h-full" layout:fragment="main">
     <script th:inline="javascript">
         const orderId = /*[[${order.uuid}]]*/ null;
         const orderName = /*[[${order.orderName}]]*/ null;
         const orderTotalPrice = /*[[${order.totalAmount}]]*/ null;
         const username = /*[[${username}]]*/ null;
     </script>
-    <div class="flex flex-col border rounded-[20px] justify-content align-items mx-auto w-2/3 ">
+
+    <div class="flex flex-col my-12 justify-content align-items mx-auto w-2/3 ">
         <div class="text-2xl text-green-700 underline justify-center text-center" th:if="${order.getOrderId()} == null">
             주문 데이터 없음
         </div>
         <div class="h-screen flex flex-col justify-center align-items gap-3 mt-3" th:if="${order.getOrderId()} != null">
+            <p class="text-3xl mb-12 font-bold">주문내역</p>
             <table class="text-center border">
                 <tr>
-                    <th colspan="2" class="text-xl bg-gray-400 font-bold">주문내역</th>
+                    <td class="text-xl border py-2 font-bold">주문번호</td>
+                    <td class="text-bold text-xl border py-2 rounded-[20px] px-[10px]" id="orderId"
+                        th:text="|${order.orderId}|"></td>
                 </tr>
                 <tr>
-                    <td class="text-xl border  py-2 font-bold">주문번호</td>
-                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderId" th:text="|${order.orderId}|"></td>
+                    <td class="text-xl border py-2 font-bold">주문 날짜</td>
+                    <td class="text-bold text-xl border py-2 rounded-[20px] px-[10px]" id="orderDate"
+                        th:text="${#temporals.format(order.createDate, 'yyyy-MM-dd')}"></td>
                 </tr>
                 <tr>
-                    <td class="text-xl border  py-2 font-bold">주문 날짜</td>
-                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="orderDate" th:text="${#temporals.format(order.createDate, 'yyyy-MM-dd')}"></td>
-                </tr>
-                <tr>
-                    <td class="text-xl border  py-2 font-bold">총 주문 금액</td>
-                    <td class="text-bold text-xl border py-2  rounded-[20px] px-[10px] " id="totalAmount" th:text="|${order.getTotalAmount()}원|"></td>
+                    <td class="text-xl border py-2 font-bold">총 주문 금액</td>
+                    <td class="text-bold text-xl border py-2 rounded-[20px] px-[10px]" id="totalAmount"
+                        th:text="|${order.getTotalAmount()}원|"></td>
                 </tr>
             </table>
             <table class="text-center border">
                 <thead>
-                    <tr>
-                        <th class="text-xl font-bold">번호</th>
-                        <th class="text-xl font-bold">상품명</th>
-                        <th class="text-xl font-bold">개수</th>
-                        <th class="text-xl font-bold">금액</th>
-                    </tr>
+                <tr>
+                    <th class="text-xl font-bold">번호</th>
+                    <th class="text-xl font-bold">상품명</th>
+                    <th class="text-xl font-bold">개수</th>
+                    <th class="text-xl font-bold">금액</th>
+                </tr>
                 </thead>
                 <tbody id="detailsRow" class="hidden">
-                    <tr class = "gap-3 cursor-pointer border"  th:each="orderItem , i : ${order.orderDetails}" >
-                        <td class="text-xl" id="num" th:text="${i.index+1}">번호</td>
-                        <td class="text-xl" id="name" th:text="${orderItem.getProductName()}"></td>
-                        <td class="text-xl" id="count" th:text="${orderItem.getCount()}">개수</td>
-                        <td class="text-xl" id="total" th:text="|${orderItem.getAmount()}원|">금액</td>
-                    </tr>
+                <tr class="gap-3 cursor-pointer border" th:each="orderItem , i : ${order.orderDetails}">
+                    <td class="text-xl" id="num" th:text="${i.index+1}">번호</td>
+                    <td class="text-xl" id="name" th:text="${orderItem.getProductName()}"></td>
+                    <td class="text-xl" id="count" th:text="${orderItem.getCount()}">개수</td>
+                    <td class="text-xl" id="total" th:text="|${orderItem.getAmount()}원|">금액</td>
+                </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-outline btn-primary" id="showButton" onclick="toggleRowDetails()">주문정보보기</button>
+            <button type="button" class="btn btn-outline btn-success" id="showButton" onclick="toggleRowDetails()">
+                주문정보보기
+            </button>
             <div id="payment-method"></div>
             <div id="agreement"></div>
-            <div class="flex justify-center mt-3">
-                <button id="payment-button" class="btn btn-outline">결제하기</button>
+            <div>
+                <button id="payment-button" class="w-full btn btn-success">결제하기</button>
             </div>
             <script th:inline="javascript">
                 const clientKey = "test_ck_O6BYq7GWPVvKaD0ZD0arNE5vbo1d"
@@ -82,6 +86,7 @@
                         toastWarning("결제 요청에 실패하였습니다. 다시 이용해 주세요");
                     });
                 })
+
                 function toggleRowDetails() {
                     const detailsRow = document.getElementById('detailsRow');
                     const $button = document.querySelector("#showButton");
@@ -98,8 +103,6 @@
         </div>
     </div>
 </main>
-
-
 
 </body>
 </html>
