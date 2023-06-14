@@ -77,6 +77,15 @@
             <h2 class="my-12" th:text="|총 주문 금액 : ${totalSales} 원|"></h2>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedMonth = urlParams.get('month');
+        $("select[name=month]:last").val(selectedMonth);
+
+        const selectedCategory = urlParams.get('category');
+        $("select[name=category]:last").val(selectedCategory);
+    </script>
 </main>
 
 </body>

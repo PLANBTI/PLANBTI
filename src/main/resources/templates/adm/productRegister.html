@@ -1,59 +1,45 @@
 <html layout:decorate="~{adm/admLayout.html}">
 
 <head>
-    <title>Product Registration| PLANBTI</title>
+    <title>상품 등록 | PLANBTI</title>
 </head>
-<style>
-    .inputArea {
-        width: 500px;
-        margin: 0 auto;
-        margin-top: 40px
-    }
-
-    .layout input {
-        width: 100%;
-        box-sizing: border-box;
-
-    }
-
-    .layout textarea {
-        width: 100%;
-        margin-top: 10px;
-        min-height: 300px;
-    }
-
-</style>
 
 <body>
 
-<main layout:fragment="main" class="min-w-fit min-h-full">
-    <p class="text-2xl pt-36">상품 등록 페이지입니다.</p>
+<main layout:fragment="main" class="min-h-screen my-16 min-w-screen w-full">
+    <div class="flex flex-col justify-center">
+        <p class="text-2xl font-black my-12 text-center">상품 등록</p>
 
-    <form th:action="@{/adm/registerpro}" role="form" th:method="post" autocomplete="off" id="uploadForm"
-          enctype="multipart/form-data">
-        <div class="w-full h-full flex flex-col justify-center items-center">
-            <label>카테고리</label>
-            <select class="category" name="category">
-                <option th:each="category : ${categories}" th:text="${category.name}"></option>
-            </select>
+        <div class="flex flex-col max-w-2xl mx-auto">
+            <form th:action="@{/adm/registerpro}" role="form" th:method="post" autocomplete="off" id="uploadForm"
+                  enctype="multipart/form-data">
+                <label>카테고리</label>
+                <select class="category select select-bordered w-24" name="category">
+                    <option th:each="category : ${categories}" th:text="${category.name}"></option>
+                </select>
 
-            <input type="text" name="name" placeholder="상품명을 입력하세요" class="input input-bordered w-full mt-12"/>
+                <input type="text" name="name" placeholder="상품명을 입력하세요" class="input input-bordered w-full mt-12"/>
 
-            <input type="text" name="price" placeholder="상품 정가를 입력하세요" class="input input-bordered w-full mt-12"/>
+                <input type="text" name="price" placeholder="상품 정가를 입력하세요"
+                       class="input input-bordered w-full mt-12"/>
 
-            <input type="text" name="salePrice" placeholder="상품 판매가를 입력하세요" class="input input-bordered w-full mt-12"/>
+                <input type="text" name="salePrice" placeholder="상품 판매가를 입력하세요"
+                       class="input input-bordered w-full mt-12"/>
 
-            <input type="text" name="count" placeholder="상품 수량을 입력하세요" class="input input-bordered w-full mt-12"/>
+                <input type="text" name="count" placeholder="상품 수량을 입력하세요"
+                       class="input input-bordered w-full mt-12"/>
 
-            <input type="text" name="content" placeholder="상품 소개를 입력하세요" class="input input-bordered w-full mt-12"/>
+                <input type="text" name="content" placeholder="상품 소개를 입력하세요"
+                       class="input input-bordered w-full mt-12"/>
 
-            <input type="file" name="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs"/>
+                <input type="file" name="file"
+                       class="file-input file-input-bordered file-input-success w-full my-12"/>
 
-            <button type="submit" id="register_Btn" class="btn btn-primary">등록</button>
+                <button type="submit" id="register_Btn" class="btn btn-success w-full mb-12">등록</button>
+
+            </form>
         </div>
-
-
-    </form>
+    </div>
 
 
 </main>
