@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class MbtiCacheService {
 
     @Cacheable(value = "mbti",key = "#message")
     public String getMbtiResult(String message) {
+
+        log.info("캐시 설정 {} , 시간 : {}" ,message, LocalDate.now());
 
         RestTemplate restTemplate = new RestTemplate();
 
