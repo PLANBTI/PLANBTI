@@ -48,7 +48,6 @@ public class AdmController {
     private final ImageService imageService;
     private final CategoryService categoryService;
 
-
     @GetMapping("")
     public String showAdmMain() {
         return "adm/main";
@@ -202,7 +201,6 @@ public class AdmController {
         model.addAttribute("categories", categories);
         return "adm/productRegister";
     }
-
 
     private boolean isProductRegisterDtoValid(ProductRegisterDto productRegisterDto) {
         return productRegisterDto != null &&
