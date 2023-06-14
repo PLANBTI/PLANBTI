@@ -68,7 +68,7 @@ public class Product extends BaseEntity {
 
     public void setUrl(String url) {
         this.imageUrl = url;
-        }
+    }
     public void setName(String name) {
         this.name= name;
     }
@@ -90,4 +90,4 @@ public class Product extends BaseEntity {
     }
 
 
-    }
+}
