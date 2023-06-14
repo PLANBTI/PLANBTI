@@ -69,9 +69,14 @@ management:
 custom:
   site:
     baseUrl: http://localhost:8080
+<<<<<<< HEAD
 
 prometheus:
   ip: ${publicIp:localhost:8080}
 
 
+=======
+>>>>>>> 5bd3de6 (feat : 상품 수정 기능 구현)
 
+prometheus:
+  ip: ${publicIp:localhost:8080}
