@@ -23,11 +23,12 @@ public class ShopService {
         return productService.findAllByCategoryNameAndKeyword(categoryName, null, pageable);
     }
 
+    public Page<Product> findAllForPaging(Pageable pageable) {
+        return productRepository.findAllForPaging(pageable);
+    }
+
     public Optional<Category> categoryView(Long id){
         return categoryRepository.findById(id);
     }
-
-
-
 
 }

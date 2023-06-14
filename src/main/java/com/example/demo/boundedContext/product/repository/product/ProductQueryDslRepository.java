@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductQueryDslRepository {
     Page<Product> findAllByCategoryNameAndKeyword(String categoryName, String keyword, Pageable pageable);
+
+    Page<Product> findAllForPaging(Pageable pageable);
 }
