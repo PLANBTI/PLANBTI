@@ -12,4 +12,5 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Category extends BaseEntity {
     private String name;
+
 }

@@ -80,3 +80,78 @@ prometheus:
 
 prometheus:
   ip: ${publicIp:localhost:8080}
+
+
+spring:
+  cache:
+    cache-names: mbtiTestCache
+    caffeine:
+      spec: maximumSize=1000, expireAfterAccess=5m
+  profiles:
+    include: secret
+    active: dev
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+
+
+  datasource:
+    url: jdbc:mariadb://localhost:3306/planbti
+    username: testuser
+    password: 5678
+
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            scope:
+            client-name: Naver
+            authorization-grant-type: authorization_code
+            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+
+          kakao:
+            scope:
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+            client-authentication-method: POST
+
+          google:
+            scope: profile
+            client-name: Google
+            redirect-uri: '${custom.site.baseUrl:http://localhost:8080}/{action}/oauth2/code/{registrationId}'
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 2023
+
