@@ -15,7 +15,6 @@ import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
-import com.example.demo.util.ut.Ut;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,16 +22,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
-=======
->>>>>>> e694d30 (feat : About, Main 페이지)
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,10 +36,7 @@ import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/adm")
-<<<<<<< HEAD
 @Slf4j
-=======
->>>>>>> e694d30 (feat : About, Main 페이지)
 public class AdmController {
 
     private final MemberService memberService;
@@ -58,10 +49,6 @@ public class AdmController {
     private final CategoryService categoryService;
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e694d30 (feat : About, Main 페이지)
     @GetMapping("")
     public String showAdmMain() {
         return "adm/main";
@@ -206,11 +193,7 @@ public class AdmController {
     public String deleteProduct(@PathVariable Long id) {
         Product product = productService.findById(id);
         productService.delete(product);
-<<<<<<< HEAD
         return rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
-=======
-        return  rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
->>>>>>> e694d30 (feat : About, Main 페이지)
     }
 
     @GetMapping("/productRegister")
@@ -220,7 +203,6 @@ public class AdmController {
         return "adm/productRegister";
     }
 
-<<<<<<< HEAD
 
     private boolean isProductRegisterDtoValid(ProductRegisterDto productRegisterDto) {
         return productRegisterDto != null &&
@@ -233,7 +215,6 @@ public class AdmController {
 
     }
 
-
     @PostMapping("/registerpro")
     public String RegisterProductPro(ProductRegisterDto productRegisterDto) {
         System.out.println("productRegisterDto : " + productRegisterDto);
@@ -242,31 +223,15 @@ public class AdmController {
             return rq.historyBack("모든 항목을 입력하세요.");
         }
 
-
         String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         productService.register(productRegisterDto, url);
 
         return rq.redirectWithMsg("/adm/productList", "상품이 등록되었습니다.");
     }
 
-
     @GetMapping("/modifyProduct/{id}")
     public String modifyProduct(@PathVariable Long id, Model model) {
         Product product = this.productService.findById(id);
-=======
-    @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto){
-        String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
-        productService.register(productRegisterDto, url);
-
-        return "redirect:/adm/productList";
-    }
-
-    //@PreAuthorize("isAuthenticated()")
-    @GetMapping("/modifyProduct/{id}")
-    public String modifyProduct(@PathVariable Long id,Model model){
-        Product product=this.productService.findById(id);
->>>>>>> e694d30 (feat : About, Main 페이지)
         model.addAttribute("product", product);
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
@@ -274,22 +239,12 @@ public class AdmController {
     }
 
     @PostMapping("/modifypro")
-<<<<<<< HEAD
     public String ModifyProductPro(ProductRegisterDto productRegisterDto, String url) {
         if (!productRegisterDto.getFile().isEmpty()) {
             url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         }
         productService.modify(productRegisterDto, url);
-=======
-    public String ModifyProductPro(ProductRegisterDto productRegisterDto,String url){
-        if (!productRegisterDto.getFile().isEmpty()){
-            url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
-        }
-        productService.modify(productRegisterDto,url);
->>>>>>> e694d30 (feat : About, Main 페이지)
         return "redirect:/adm/productList";
     }
 
-
 }
-
