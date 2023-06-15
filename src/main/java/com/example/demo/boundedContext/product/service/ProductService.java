@@ -79,10 +79,4 @@ public class ProductService {
         productRepository.save(product);
     }
 
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e694d30 (feat : About, Main 페이지)
 }

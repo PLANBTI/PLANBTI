@@ -33,7 +33,7 @@
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a href="/test"><i class="fa-solid fa-file-lines"></i>MBTI Test</a></li>
                 <li sec:authorize="isAuthenticated()"><a href="/member/mypage"><i class="fa-solid fa-user"></i>My Page</a></li>
-                <li><a href="#"><i class="fa-solid fa-tree"></i>About</a></li>
+                <li><a href="/about"><i class="fa-solid fa-tree"></i>About</a></li>
             </ul>
         </div>
     </div>
@@ -47,8 +47,6 @@
         <a href="/map" class="btn btn-ghost btn-circle">
             <i class="fa-regular fa-map"></i>
         </a>
-        <a sec:authorize="isAuthenticated()" href="#" class="btn btn-ghost btn-circle">
-            <i class="fa-regular fa-heart"></i>
         </a>
         <a sec:authorize="isAuthenticated()" href="/member/shoppingbasket" class="btn btn-ghost btn-circle">
             <i class="fa-solid fa-cart-shopping"></i>
