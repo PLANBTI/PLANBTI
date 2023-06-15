@@ -57,6 +57,7 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
         JPAQuery<Product> contentQuery = jpaQueryFactory
                 .select(product)
                 .from(product)
+                .where(product.deleteDate.isNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(getOrderSpecifiers(pageable.getSort()));
@@ -65,7 +66,8 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
 
         JPAQuery<Long> countQuery = jpaQueryFactory
                 .select(product.count())
-                .from(product);
+                .from(product)
+                .where(product.deleteDate.isNull());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }

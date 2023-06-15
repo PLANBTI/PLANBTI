@@ -33,6 +33,10 @@ public class FaqService {
         return faqRepository.findByMember(member);
     }
 
+    public List<Faq> findAllByMember(Member member) {
+        return faqRepository.findAllByMember(member);
+    }
+
     public List<Faq> findAll() {
         return faqRepository.findAll();
     }

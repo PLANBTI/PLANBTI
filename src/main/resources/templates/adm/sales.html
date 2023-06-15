@@ -69,7 +69,7 @@
                     <td th:text="${orderDetail.getCount()}"></td>
                     <td th:text="${orderDetail.getAmount()}"></td>
                     <td>
-                        <span class="flex justify-end badge badge-primary badge-lg" th:text="${orderDetail.getStatus()}"></span>
+                        <span class="flex justify-end badge badge-primary badge-lg" th:text="${orderDetail.getStatus().getName()}"></span>
                     </td>
                 </tr>
                 </tbody>

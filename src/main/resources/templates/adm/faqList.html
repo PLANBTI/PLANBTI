@@ -11,7 +11,7 @@
         <p class="text-2xl" th:if="${#lists.isEmpty(faqList)}">
             문의 내역이 없습니다.
         </p>
-        <table class="table table-zebra" th:if="${!#lists.isEmpty(faqList)}">
+        <table class="table" th:if="${!#lists.isEmpty(faqList)}">
             <thead>
             <tr>
                 <th>FAQ</th>

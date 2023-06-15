@@ -14,4 +14,7 @@ public interface FaqRepository extends JpaRepository<Faq, Long> {
 
     @Query("SELECT f FROM Faq f WHERE f.member =:member AND f.deleteDate IS NULL")
     List<Faq> findByMember(@Param("member") Member member);
+
+    @Query("SELECT f FROM Faq f WHERE f.member =:member")
+    List<Faq> findAllByMember(@Param("member") Member member);
 }

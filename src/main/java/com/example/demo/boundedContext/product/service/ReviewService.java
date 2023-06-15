@@ -52,16 +52,19 @@ public class ReviewService {
                 .image(image)
                 .rate(rate).build();
         reviewRepository.save(review);
+
         return review;
     }
 
     public Review modify(Review review, String title, String content, String image, int rate) {
+        Member member = review.getMember();
         Review modifiedReview = review.toBuilder()
                 .title(title)
                 .content(content)
                 .image(image)
                 .rate(rate).build();
         reviewRepository.save(modifiedReview);
+
         return modifiedReview;
     }
 

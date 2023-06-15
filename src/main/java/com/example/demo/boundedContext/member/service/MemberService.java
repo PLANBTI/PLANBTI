@@ -3,9 +3,9 @@ package com.example.demo.boundedContext.member.service;
 import com.example.demo.base.Role;
 import com.example.demo.base.exception.handler.DataNotFoundException;
 import com.example.demo.base.security.social.inter.DivideOAuth2User;
+import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.entity.Address;
 import com.example.demo.boundedContext.member.entity.Member;
-import com.example.demo.boundedContext.member.dto.MemberModifyDto;
 import com.example.demo.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -113,4 +113,5 @@ public class MemberService {
                 .build();
         memberRepository.save(member1);
     }
+
 }

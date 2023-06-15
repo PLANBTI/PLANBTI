@@ -31,7 +31,10 @@ public class AdmOrderDetailService {
         List<OrderDetail> list = orderDetailRepository.findAll();
         isDelivered();
         isCompleted();
-        return list.stream().filter(od -> !od.getStatus().equals(PENDING)).toList();
+        return list.stream()
+                .filter(od -> od.getStatus().equals(PLACED) || od.getStatus().equals(SHIPPING)
+                    || od.getStatus().equals(APPROVED) || od.getStatus().equals(RETURN))
+                .toList();
     }
 
     public List<OrderDetail> getStatusIsPending() {
