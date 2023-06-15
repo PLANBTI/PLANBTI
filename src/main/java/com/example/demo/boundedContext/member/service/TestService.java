@@ -43,7 +43,7 @@ public class TestService {
     }
 
     public boolean isMemberExist(String memberUsername) {
-        return mbtiTestRepository.findByMemberUsername(memberUsername).isPresent();
+        return mbtiTestRepository.findAllByMemberUsername(memberUsername).isEmpty();
     }
 
     public List<MbtiTest> findAllTestsByMember(Member member) {
