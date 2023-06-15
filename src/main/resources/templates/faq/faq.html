@@ -19,13 +19,13 @@
             <h3 class="mb-4" th:text="|Email : ${faq.getEmail()}|"></h3>
             <a th:if="${faq.getMember().username.equals(@rq.getUsername())}" th:href="@{/faq/modify/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mb-8 mr-4 btn-sm">수정하기</a>
             <a th:if="${faq.getMember().username.equals(@rq.getUsername())}" th:href="@{/faq/delete/{id}(id=${faq.getId()})}" class="btn btn-outline mb-8 btn-sm">삭제</a>
-            <a th:if="${comment == null && @rq.isAdmin()}" th:href="@{/comment/create/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12">코멘트 남기기</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${comment == null}" th:href="@{/comment/create/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12">코멘트 남기기</a>
             <div th:if="${comment != null}">
                 <h1 class="font-black">관리자</h1>
                 <p class="mt-4" th:text="${comment.getContent()}"></p>
                 <div class="flex flex-row">
-                    <a th:if="${@rq.isAdmin()}" th:href="@{/comment/modify/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12 mr-4 btn-sm">코멘트 수정하기</a>
-                    <a th:if="${@rq.isAdmin()}" th:href="@{/comment/delete/{id}(id=${comment.getId()})}" class="btn btn-outline mt-12 btn-sm">코멘트 삭제하기</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/comment/modify/{id}(id=${faq.getId()})}" class="btn btn-outline btn-success mt-12 mr-4 btn-sm">코멘트 수정하기</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/comment/delete/{id}(id=${comment.getId()})}" class="btn btn-outline mt-12 btn-sm">코멘트 삭제하기</a>
                 </div>
             </div>
         </div>

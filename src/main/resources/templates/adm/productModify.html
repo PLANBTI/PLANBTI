@@ -12,40 +12,39 @@
 
         <div class="flex flex-col h-full w-full">
             <img id="imgId" style="height: 400px; width: 400px;" class="m-12 mx-auto" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
-            <div class="flex flex-col max-w-2xl mx-auto">
+            <div class="flex flex-col w-4/6 mx-auto">
                 <form th:action="@{/adm/modifypro}" role="form" th:method="post" autocomplete="off" id="uploadForm"
                       enctype="multipart/form-data">
-                    <label>카테고리</label>
-                    <select class="category select select-bordered w-24" name="category">
+                    <p class="font-bold mb-2">카테고리</p>
+                    <select class="category select select-bordered w-40 mb-12" name="category">
                         <option th:value="${category.id}" th:each="category : ${categories}"
                                 th:text="${category.name}"></option>
                     </select>
 
                     <label></label>
                     <input type="hidden" name="id" th:value="${product.getId()}"  class="input input-bordered w-full mt-12" />
-
-                    <label>상품명</label>
+                    <p class="font-bold mb-2">상품명</p>
                     <input type="text" name="name" th:value="${product.getName()}"
-                           class="input input-bordered w-full mt-12"/>
+                           class="input input-bordered w-full mb-12"/>
 
-                    <label>정가</label>
+                    <p class="font-bold mb-2">정가</p>
                     <input type="text" name="price" th:value="${product.getPrice()}"
-                           class="input input-bordered w-full mt-12"/>
+                           class="input input-bordered w-full mb-12"/>
 
-                    <label>판매가</label>
+                    <p class="font-bold mb-2">판매가</p>
                     <input type="text" name="salePrice" th:value="${product.getSalePrice()}"
-                           class="input input-bordered w-full mt-12"/>
+                           class="input input-bordered w-full mb-12"/>
 
-                    <label>수량</label>
+                    <p class="font-bold mb-2">수량</p>
                     <input type="text" name="count" th:value="${product.getCount()}"
-                           class="input input-bordered w-full mt-12"/>
+                           class="input input-bordered w-full mb-12"/>
 
-                    <label>상품 소개</label>
-                    <input type="text" name="content" class="input input-bordered w-full my-12"
+                    <p class="font-bold mb-2">상품 소개</p>
+                    <input type="text" name="content" class="input input-bordered w-full mb-12"
                            th:attr="placeholder=${product.getContent() == null ? '상품 소개를 입력하세요' : ''},
-                value=${product.getContent() != null ? product.getContent() : ''}"/>
+                    value=${product.getContent() != null ? product.getContent() : ''}"/>
 
-                    <label>이미지 재업로드</label>
+                    <p class="font-bold mb-2">이미지 재업로드</p>
                     <input type="hidden" name="url" th:value="${product.imageUrl}">
                     <input type="file" name="file" class="file-input file-input-bordered file-input-success w-full"/>
                     <button type="submit" id="register_Btn" class="btn btn-success w-full my-12">등록</button>

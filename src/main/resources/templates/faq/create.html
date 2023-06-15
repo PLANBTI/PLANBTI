@@ -43,7 +43,7 @@
     <div class="w-full h-full flex flex-col justify-center items-center">
         <h1 class="text-2xl font-black">FAQ</h1>
         <div class="w-6/12">
-            <form th:action="@{/faq/create}" th:object="${FaqForm}" method="POST"
+            <form th:action="@{/faq/create}" th:object="${FaqDto}" method="POST"
                   onsubmit="Validation__createFaq(this); return false;">
                 <div>
                     <select id="category" name="category" class="select select-bordered w-full mt-12" onchange="changeCategory(this)">
@@ -54,12 +54,12 @@
                         <option value="RETURN">반품 관련 문의</option>
                         <option value="ETC">기타 문의</option>
                     </select>
-                    <input type="text" name="title" placeholder="제목" class="input input-bordered w-full mt-12"/>
+                    <input type="text" name="title" placeholder="제목을 작성해주세요." class="input input-bordered w-full mt-12"/>
                 </div>
                 <div>
                     <textarea name="content" class="textarea textarea-bordered w-full h-96 mt-4"
                               placeholder="내용을 작성해주세요."></textarea>
-                    <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12"/>
+                    <input type="email" name="email" placeholder="이메일 주소를 작성해주세요." class="input input-bordered w-full mt-12"/>
                     <input type="submit" value="저장하기" class="btn btn-outline w-full my-12">
                 </div>
             </form>

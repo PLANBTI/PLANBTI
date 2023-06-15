@@ -27,7 +27,7 @@ public class Faq extends BaseEntity {
     private String content;
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Comment comment;
 
     public String getCategory() {

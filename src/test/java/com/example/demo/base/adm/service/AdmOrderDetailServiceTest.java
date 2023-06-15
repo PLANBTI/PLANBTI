@@ -1,7 +1,6 @@
 package com.example.demo.base.adm.service;
 
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.SHIPPING;
-import static com.example.demo.boundedContext.order.entity.OrderStatus.*;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional

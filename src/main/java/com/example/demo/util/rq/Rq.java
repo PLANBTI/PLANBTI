@@ -64,7 +64,6 @@ public class Rq {
         return member.getUsername();
     }
 
-
     public String historyBack(String msg) {
         String referer = req.getHeader("referer");
         String key = "historyBackErrorMsg___" + referer;
