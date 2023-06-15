@@ -34,14 +34,14 @@
     </script>
 <div class="w-full h-full flex flex-col justify-center items-center">
     <h1 class="text-2xl font-black">FAQ</h1>
-    <form class="w-6/12" th:action="@{/faq/modify/{id}(id=${faq.getId()})}" th:object="${FaqForm}" method="POST"
+    <form class="w-6/12" th:action="@{/faq/modify/{id}(id=${faq.getId()})}" th:object="${FaqModifyDto}" method="POST"
           onsubmit="Validation__modifyFaq(this); return false;">
         <div>
-            <input type="text" name="title" placeholder="제목" th:value="${faq.getTitle()}" class="input input-bordered w-full mt-12" />
+            <input type="text" name="title" placeholder="제목을 작성해주세요." th:value="${faq.getTitle()}" class="input input-bordered w-full mt-12" />
         </div>
         <div>
             <textarea name="content" class="textarea textarea-bordered w-full h-96 mt-4" placeholder="내용을 작성해주세요." th:value="${faq.getContent()}"></textarea>
-            <input type="email" name="email" placeholder="이메일 주소" class="input input-bordered w-full mt-12" th:value="${faq.getEmail()}" />
+            <input type="email" name="email" placeholder="이메일 주소를 작성해주세요." class="input input-bordered w-full mt-12" th:value="${faq.getEmail()}" />
             <input type="submit" value="저장하기" class="btn btn-outline w-full my-12">
         </div>
     </form>
