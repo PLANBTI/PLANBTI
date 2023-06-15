@@ -8,9 +8,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -35,9 +35,8 @@ public class MbtiTestController {
 
     @Operation(summary = "mbti test 결과 chatGpt 요청",hidden = true)
     @Parameter(name = "message",description = "mbti test 결과 메시지입니다.")
-    @Cacheable(value = "mbtiTestCache")
     @PostMapping("/send")
-    public ResponseEntity<String> send(String message, HttpServletResponse response) {
+    public ResponseEntity<String> send(String message, HttpServletResponse response, Model model) {
 
         if (!isValidMBTI(message)) {
             // 요청 값이 유효하지 않을 경우 에러 처리
@@ -54,7 +53,7 @@ public class MbtiTestController {
         // <p> 태그에서 plantDescription 추출 후 쿠키 설정
         extractContentAndSetCookie(responseBody, response, "<p>(.*?)</p>", "plantDescription");
 
-        return null;
+        return ResponseEntity.ok(responseBody);
     }
 
     // MBTI 유형 검증 메소드
