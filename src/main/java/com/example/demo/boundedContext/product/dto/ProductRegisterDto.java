@@ -24,11 +24,11 @@ public class ProductRegisterDto {
 
     private String content;
 
-    private int price;
+    private Integer price;
 
-    private int salePrice;
+    private Integer salePrice;
 
-    private int count;
+    private Integer count;
 
     private MultipartFile file;
 
