@@ -10,15 +10,17 @@
         <div th:if="${#lists.isEmpty(tests)}">
             <p>테스트 결과 내역이 존재하지 않습니다.</p>
         </div>
-        <div th:unless="${#lists.isEmpty(tests)}">
+        <div th:unless="${#lists.isEmpty(tests)}" class="card w-full bg-base-100 shadow-2xl">
             <div th:each="test : ${tests}">
-                <img th:src="@{${test.testImgUrl}}"/>
-                <h2 class="text-2xl text-center py-12" th:text="${test.title}"></h2>
-                <p class="mb-2" th:text="${test.content}"></p>
+            <figure class="px-10 pt-10">
+                <img th:src="@{${test.testImgUrl}}" class="rounded-xl" />
+            </figure>
+            <div class="card-body items-center text-center">
+                <h1 class="card-title" th:text="${test.title}"></h1>
+                <p th:text="${test.content}"></p>
+            </div>
             </div>
         </div>
-
-
     </main>
 
 </body>

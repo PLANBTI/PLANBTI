@@ -9,8 +9,9 @@
 <main layout:fragment="main" class="w-screen h-full">
     <div class="w-full h-full flex flex-col justify-center items-center">
         <article class="start text-center">
-            <h1 class="mt-5 text-center">식물 유형 테스트</h1>
-            <h5 class="mt-2 text-center">어느 날 갑자기 내가 꽃집 사장님 된다면?</h5>
+            <div class="max-w-4xl">
+                <img src="https://planbti.cdn.ntruss.com/테스트시작.jpg"/>
+            </div>
             <button type="button" class=" mt-5 btn btn-outline btn-success" onclick='start();'>테스트 시작하기</button>
         </article>
         <article class="intro hidden text-center">
@@ -29,11 +30,20 @@
         </article>
         <article class="result hidden text-center max-w-2xl">
             <span class="loading loading-spinner text-success"></span>
-            <div id="mbti-img"></div>
-            <br>
-            <div id="chat-container"></div>
-            <button onclick="refreshPage()" type="button" class="mt-5 btn btn-success">닫기</button>
-            <button onclick="redirectToPage()" type="button" class="mt-5 mb-12 btn btn-success">서비스 더 이용하기</button>
+            <div class="card w-full bg-base-100 shadow-2xl">
+                <figure class="px-10 pt-10">
+                    <div id="mbti-img"></div>
+                </figure>
+                <div class="card-body items-center text-center">
+                    <div id="chat-container"></div>
+                    <div class="card-actions">
+                        <button onclick="refreshPage()" type="button" class="mt-5 btn btn-success">닫기</button>
+                        <button onclick="redirectToPage()" type="button" class="mt-5 mb-12 btn btn-success">서비스 더 이용하기</button>
+                    </div>
+                </div>
+            </div>
+
+
         </article>
     </div>
 
