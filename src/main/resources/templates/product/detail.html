@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{common/layout.html}" xmlns="http://www.thymeleaf.org">
+<html layout:decorate="~{common/layout.html}">
 <head>
     <meta charset="UTF-8">
     <title th:text="${product.name}"></title>
@@ -66,13 +66,14 @@
                 </button>
             </div>
         </div>
-        <script th:inline="javascript">
-            let count = 1;
-            const maxCount =/*[[${product.count}]]*/ 10;
-            let offset = /*[[${reviewList.size+1}]]*/ 0;
-            const productId =/*[[${product.id}]]*/ null;
-        </script>
-        <script th:src="@{/js/productDetail.js}"></script>
+    </div>
+    <script th:inline="javascript">
+        let count = 1;
+        const maxCount =/*[[${product.count}]]*/ 10;
+        let offset = /*[[${reviewList.size+1}]]*/ 0;
+        const productId =/*[[${product.id}]]*/ null;
+    </script>
+    <script th:src="@{/js/productDetail.js}"></script>
 </main>
 </body>
 </html>

@@ -67,7 +67,7 @@ class ProductControllerTest {
                         <input name="count" id="countInput"
                         """.stripIndent().trim())))
                 .andExpect(content().string(containsString("""
-                         <button class="btn btn-outline btn-primary mt-4" onclick="requestBasket()"
+                         <button class="btn btn-outline btn-success mt-4" onclick="requestBasket()"
                         """.stripIndent().trim())))
                 .andExpect(content().string(containsString("""
                          <button id="reviewButton" class="btn btn
