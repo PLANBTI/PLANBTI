@@ -35,8 +35,8 @@ public class ShopController {
     }
 
     @GetMapping("/shop")
-    public String shopMain(@PageableDefault(size = 12, page = 0, direction = DESC, sort = "created") Pageable pageable,
-                           Model model) {
+    public  String shopMain(@PageableDefault(size = 12, page = 0, direction = DESC, sort = "created") Pageable pageable,
+                            Model model){
         Page<Product> paging = shopService.findAllForPaging(pageable);
         List<Category> categories = categoryService.findAll();
 

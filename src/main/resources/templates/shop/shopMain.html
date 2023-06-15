@@ -6,40 +6,40 @@
 
 <body>
 
-<main layout:fragment="main" class="w-screen h-full">
-    <div class="flex flex-row m-16 min-w-fit min-h-fit">
-        <ul class="menu bg-base-100 w-40 flex-none mt-20">
+<main layout:fragment="main" className="w-screen h-full">
+    <div className="flex flex-row m-16 min-w-fit min-h-fit">
+        <ul className="menu bg-base-100 w-40 flex-none mt-20">
             <th:block th:each="category : ${categories}">
                 <li><a th:href="@{/shop/{category}(category=${category.name})}" th:text="${category.name}"></a></li>
             </th:block>
         </ul>
-        <div th:if="${!paging.isEmpty()}" class="flex flex-wrap">
-            <a th:href="@{/product/detail/{id}(id=${product.getId()})}" class="m-12 w-60 h-64 bg-base-100"
+        <div th:if="${!paging.isEmpty()}" className="flex flex-wrap">
+            <a th:href="@{/product/detail/{id}(id=${product.getId()})}" className="m-12 w-60 h-64 bg-base-100"
                th:each="product : ${paging}">
-                <img id="imgId" class="w-80 h-60" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
-                <div class="w-60 h-20 p-4">
-                    <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>
-                    <p class="flex justify-end" th:text="|${product.price} 원|"></p>
+                <img id="imgId" className="w-80 h-60" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
+                <div className="w-60 h-20 p-4">
+                    <h2 className="card-title mb-2" th:text="${product.getName()}"></h2>
+                    <p className="flex justify-end" th:text="|${product.price} 원|"></p>
                 </div>
             </a>
         </div>
     </div>
 
     <!-- 페이징처리 시작 -->
-    <div th:if="${!paging.isEmpty()}" class="w-full pt-20">
-        <ul class="pagination flex justify-center">
-            <li class="page-item m-2" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number}|}">
+    <div th:if="${!paging.isEmpty()}" className="w-full pt-20">
+        <ul className="pagination flex justify-center">
+            <li className="page-item m-2" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a className="page-link" th:href="@{|?page=${paging.number}|}">
                     <span>이전</span>
                 </a>
             </li>
             <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
                 th:classappend="${page == paging.number} ? 'active'"
-                class="page-item m-2">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page - 1}|}"></a>
+                className="page-item m-2">
+                <a th:text="${page}" className="page-link" th:href="@{|?page=${page - 1}|}"></a>
             </li>
-            <li class="page-item m-2" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number}|}">
+            <li className="page-item m-2" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a className="page-link" th:href="@{|?page=${paging.number}|}">
                     <span>다음</span>
                 </a>
             </li>
