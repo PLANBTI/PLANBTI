@@ -19,9 +19,9 @@
                 <img id="imgId" class="w-80 h-60" th:src="${product.imageUrl}" th:if="${product.imageUrl != null}"/>
                 <div class="w-60 h-20 p-4">
                     <h2 class="card-title mb-2" th:text="${product.getName()}"></h2>
-                    <p class="flex justify-end" th:text="|${product.price} 원|"></p>
+                    <p class="flex justify-end" th:text="|${product.salePrice} 원|"></p>
                 </div>
-            </a>
+            </a>g
         </div>
     </div>
 
