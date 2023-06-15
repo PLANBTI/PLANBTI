@@ -47,8 +47,6 @@
                         <div class="min-w-0 flex-auto">
                             <div>
                                 <span class="text-xl leading-5 text-gray-500 mr-2" th:text="${review.title}"></span>
-                                <span th:each="num : ${#numbers.sequence(1, review.rate)}"><i
-                                        class="fa-solid fa-star"></i></span>
                             </div>
                             <p class="mt-1  text-xs leading-5 text-gray-500" th:text="${review.content}"></p>
                         </div>
