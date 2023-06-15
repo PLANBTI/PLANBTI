@@ -57,12 +57,6 @@ public class AdmOrderDetailServiceTest {
         orderDetails = orderDetails.stream().filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
 
         assertThat(orderDetails.size()).isEqualTo(5);
-<<<<<<< HEAD
-=======
-
-        assertThat(orderDetails.stream()
-                .filter(od -> od.getProduct().isEqualCategoryTo("infj")).count()).isEqualTo(4);
->>>>>>> e694d30 (feat : About, Main 페이지)
     }
 
 }
