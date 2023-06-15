@@ -20,9 +20,6 @@
             <button type="button" class="mt btn btn-outline btn-success" onclick='intro();'>테스트 시작하기</button>
         </article>
         <article class="question hidden text-center">
-            <div class="progress mt-5">
-                <div class="progress-bar bg-success" role="progressbar" style="width: calc(100/12*1%)"></div>
-            </div>
             <h2 id="questionTitle" class="text-center mt-20">문제</h2>
             <input id="type" type="hidden" value="EI">
             <div class="flex flex-col">
@@ -180,7 +177,6 @@
                     }
                 });
             } else {
-                $(".progress-bar").attr('style', 'width: calc(100/12*' + num + '%)');
                 $("#questionTitle").html(q[num]["questionTitle"]);
 
                 $("#type").val(q[num]["type"]);
