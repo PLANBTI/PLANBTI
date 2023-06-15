@@ -71,7 +71,7 @@
         const $buttons = document.querySelectorAll(".deleteBasket");
         $buttons.forEach($button => {
             $button.addEventListener('click',function () {
-                console.log("clcick");
+
                 const productId = this.getAttribute('data-productId');
                 fetch(`/shopping/delete/${productId}`,{
                     method: "DELETE",
