@@ -9,6 +9,7 @@ import com.example.demo.boundedContext.product.dto.ProductDto;
 import com.example.demo.boundedContext.product.dto.ProductRegisterDto;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.example.demo.boundedContext.product.repository.product.ProductRepository;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +39,11 @@ public class ProductService {
     }
 
     public Page<Product> findAllByCategoryNameAndKeyword(String categoryName, String keyword, Pageable pageable) {
+
         return productRepository.findAllByCategoryNameAndKeyword(categoryName, keyword, pageable);
     }
+
+
 
 
     public List<Product> findAllById(List<Long> selectedProducts) {
