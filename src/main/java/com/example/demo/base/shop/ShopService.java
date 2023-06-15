@@ -20,12 +20,17 @@ public class ShopService {
     private final CategoryRepository categoryRepository;
 
     public Page<Product> getList(String categoryName, Pageable pageable) {
+
         return productService.findAllByCategoryNameAndKeyword(categoryName, null, pageable);
     }
 
     public Page<Product> findAllForPaging(Pageable pageable) {
-        return productRepository.findAllForPaging(pageable);
+
+        //return productRepository.findAllForPaging(pageable);
+        return productRepository.findAllByDeleteDateIsNull(pageable);
     }
+
+
 
     public Optional<Category> categoryView(Long id){
         return categoryRepository.findById(id);
