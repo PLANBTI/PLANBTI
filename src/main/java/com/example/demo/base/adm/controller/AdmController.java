@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,7 @@ import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/adm")
+@Slf4j
 public class AdmController {
 
     private final MemberService memberService;
@@ -48,7 +50,6 @@ public class AdmController {
     private final ProductService productService;
     private final ImageService imageService;
     private final CategoryService categoryService;
-
 
 
     @GetMapping("")
@@ -195,7 +196,7 @@ public class AdmController {
     public String deleteProduct(@PathVariable Long id) {
         Product product = productService.findById(id);
         productService.delete(product);
-        return  rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
+        return rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
     }
 
     @GetMapping("/productRegister")
@@ -205,23 +206,38 @@ public class AdmController {
         return "adm/productRegister";
     }
 
+
+    private boolean isProductRegisterDtoValid(ProductRegisterDto productRegisterDto) {
+        return productRegisterDto != null &&
+                productRegisterDto.getFile() != null &&
+                productRegisterDto.getFile().getSize() > 0 &&
+                productRegisterDto.getContent() != null &&
+                !productRegisterDto.getContent().isBlank() &&
+                productRegisterDto.getName() != null &&
+                !productRegisterDto.getName().isBlank();
+
+    }
+
+
     @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto){
-        if (productRegisterDto == null) {
-            return rq.redirectWithMsg("/adm/productList", "모든 항목을 입력하세요.");
+    public String RegisterProductPro(ProductRegisterDto productRegisterDto) {
+        System.out.println("productRegisterDto : " + productRegisterDto);
+
+        if (!isProductRegisterDtoValid(productRegisterDto)) {
+            return rq.historyBack("모든 항목을 입력하세요.");
         }
+
 
         String url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         productService.register(productRegisterDto, url);
 
-        return  rq.redirectWithMsg("/adm/productList", "상품이 등록되었습니다.");
+        return rq.redirectWithMsg("/adm/productList", "상품이 등록되었습니다.");
     }
 
 
-
     @GetMapping("/modifyProduct/{id}")
-    public String modifyProduct(@PathVariable Long id,Model model){
-        Product product=this.productService.findById(id);
+    public String modifyProduct(@PathVariable Long id, Model model) {
+        Product product = this.productService.findById(id);
         model.addAttribute("product", product);
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
@@ -229,11 +245,11 @@ public class AdmController {
     }
 
     @PostMapping("/modifypro")
-    public String ModifyProductPro(ProductRegisterDto productRegisterDto,String url){
-        if (!productRegisterDto.getFile().isEmpty()){
+    public String ModifyProductPro(ProductRegisterDto productRegisterDto, String url) {
+        if (!productRegisterDto.getFile().isEmpty()) {
             url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         }
-        productService.modify(productRegisterDto,url);
+        productService.modify(productRegisterDto, url);
         return "redirect:/adm/productList";
     }
 
