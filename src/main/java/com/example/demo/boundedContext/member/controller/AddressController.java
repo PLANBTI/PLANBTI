@@ -30,6 +30,7 @@ public class AddressController {
     private final Rq rq;
 
 
+    @Operation(summary = "주소 기본 페이지",description = "회원의 기본 배송지를 생성합니다.")
     @GetMapping("/create")
     public String create() {
         return "address/create";
