@@ -1,7 +1,6 @@
 package com.example.demo.base.adm.service;
 
 import com.example.demo.boundedContext.order.entity.OrderDetail;
-import com.example.demo.boundedContext.order.entity.OrderStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.SHIPPING;
-import static com.example.demo.boundedContext.order.entity.OrderStatus.*;
+import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -57,12 +56,6 @@ public class AdmOrderDetailServiceTest {
         orderDetails = orderDetails.stream().filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
 
         assertThat(orderDetails.size()).isEqualTo(5);
-<<<<<<< HEAD
-=======
-
-        assertThat(orderDetails.stream()
-                .filter(od -> od.getProduct().isEqualCategoryTo("infj")).count()).isEqualTo(4);
->>>>>>> e694d30 (feat : About, Main 페이지)
     }
 
 }

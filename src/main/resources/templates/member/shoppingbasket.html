@@ -71,11 +71,7 @@
         const $buttons = document.querySelectorAll(".deleteBasket");
         $buttons.forEach($button => {
             $button.addEventListener('click',function () {
-<<<<<<< HEAD
 
-=======
-                console.log("clcick");
->>>>>>> e694d30 (feat : About, Main 페이지)
                 const productId = this.getAttribute('data-productId');
                 fetch(`/shopping/delete/${productId}`,{
                     method: "DELETE",

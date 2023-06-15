@@ -49,11 +49,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
             crossorigin="anonymous"></script>
-<<<<<<< HEAD
     <script>
-=======
-    <script th:inline="javascript">
->>>>>>> e694d30 (feat : About, Main 페이지)
         var num = 1;
         var q = {
             1: {
@@ -172,12 +168,8 @@
                     success: function (response) {
                         var mbtiImg = $("#mbti-img");
                         var chatContainer = $("#chat-container");
-<<<<<<< HEAD
                         let parsedJson = JSON.parse(response);
                         var assistantMessage = parsedJson.choices[0].message.content;
-=======
-                        var assistantMessage = response.choices[0].message.content;
->>>>>>> e694d30 (feat : About, Main 페이지)
                         var replacedResponse = assistantMessage.replace(/\n/g, "<br>");
                         mbtiImg.append("<img src=https://planbti.cdn.ntruss.com/" + mbti.toLowerCase() + ".jpg></img>");
                         chatContainer.append("<div>" + replacedResponse + "</div>");
