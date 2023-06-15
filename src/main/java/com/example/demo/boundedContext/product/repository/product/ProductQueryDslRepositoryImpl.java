@@ -1,5 +1,6 @@
 package com.example.demo.boundedContext.product.repository.product;
 
+import com.example.demo.base.entity.QBaseEntity;
 import com.example.demo.boundedContext.product.entity.Product;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
@@ -32,7 +33,7 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
                 .from(product)
                 .where(
                         eqCategoryName(categoryName),
-                        eqName(keyword)
+                        eqName(keyword),product.deleteDate.isNull()
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -100,5 +101,7 @@ public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository 
 
         return product.name.contains(keyword);
     }
+
+
 
 }

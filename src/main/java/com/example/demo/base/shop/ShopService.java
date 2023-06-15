@@ -26,8 +26,8 @@ public class ShopService {
 
     public Page<Product> findAllForPaging(Pageable pageable) {
 
-        //return productRepository.findAllForPaging(pageable);
-        return productRepository.findAllByDeleteDateIsNull(pageable);
+        return productRepository.findAllForPaging(pageable);
+
     }
 
 
