@@ -15,6 +15,8 @@ import com.example.demo.boundedContext.product.entity.Review;
 import com.example.demo.boundedContext.product.service.ProductService;
 import com.example.demo.boundedContext.product.service.ReviewService;
 import com.example.demo.util.rq.Rq;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,6 +35,7 @@ import java.util.UUID;
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
 import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 
+@Tag(name = "관리자")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/adm")
@@ -48,16 +51,19 @@ public class AdmController {
     private final ImageService imageService;
     private final CategoryService categoryService;
 
+    @Operation(summary = "관리자 홈페이지")
     @GetMapping("")
     public String showAdmMain() {
         return "adm/main";
     }
 
+    @Operation(summary = "관리자 홈페이지")
     @GetMapping("/")
     public String showAdmMain2() {
         return "redirect:/adm";
     }
 
+    @Operation(summary = "관리자 회원 홈페이지")
     @GetMapping("/members")
     public String showMembers(Model model) {
         List<Member> members = memberService.findAll();
@@ -65,12 +71,14 @@ public class AdmController {
         return "adm/members";
     }
 
+    @Operation(summary = "회원 삭제",description = "회원을 삭제합니다.")
     @GetMapping("/deleteMember/{id}")
     public String deleteMember(@PathVariable Long id) {
         memberService.deleteHard(id);
         return rq.redirectWithMsg("/adm/members", "%d번 회원을 삭제하였습니다.".formatted(id));
     }
 
+    @Operation(summary = "문의",description = "문의 리스트를 보여줍니다.")
     @GetMapping("/faq")
     public String showFaq(Model model) {
         List<Faq> faqList = faqService.findAll();
@@ -78,6 +86,7 @@ public class AdmController {
         return "adm/faqList";
     }
 
+    @Operation(summary = "리뷰",description = "리뷰를 보여줍니다.")
     @GetMapping("/reviews")
     public String showReviews(Model model) {
         List<Review> reviews = reviewService.findAll();
@@ -85,6 +94,7 @@ public class AdmController {
         return "adm/reviews";
     }
 
+    @Operation(summary = "결제",description = "결제 리스트를 보여줍니다.")
     @GetMapping("/pay")
     public String showPay(Model model) {
         List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsPending();
@@ -92,6 +102,7 @@ public class AdmController {
         return "adm/pay";
     }
 
+    @Operation(summary = "주문 확인",description = "주문을 확인합니다")
     @GetMapping("/placed/{id}")
     public String updateToPlaced(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
@@ -99,6 +110,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/deliveries", "주문을 확인하였습니다.");
     }
 
+    @Operation(summary = "배송 확인",description = "배송 상태를 확인합니다")
     @GetMapping("/deliveries")
     public String showDeliveries(Model model) {
         List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsNotPending();
@@ -115,6 +127,7 @@ public class AdmController {
         private String invoiceNumber;
     }
 
+    @Operation(summary = "배송 시작 확인",description = "배송을 시작합니다.")
     @PostMapping("/startDelivery/{id}")
     public String startDelivery(@PathVariable Long id, @Valid InvoiceForm form) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
@@ -122,6 +135,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/deliveries", "운송장 번호가 저장되었습니다.");
     }
 
+    @Operation(summary = "주문 확인",description = "주문과 관련된 데이터들을 보여줍니다.")
     @GetMapping("/orders")
     public String showOrderList(Model model) {
         List<OrderDetail> inProgressList = admOrderDetailService.getStatusIsInProgress();
@@ -134,6 +148,7 @@ public class AdmController {
         return "adm/orders";
     }
 
+    @Operation(summary = "주문 확인",description = "주문과 관련된 데이터들을 보여줍니다.")
     @GetMapping("/approve/{id}")
     public String approveExchange(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
@@ -146,6 +161,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/orders", "교환 요청이 승인되었습니다.");
     }
 
+    @Operation(summary = "교환(반품)",description = "교환(반품)과 관련된 데이터들을 보여줍니다.")
     @GetMapping("/complete/{id}")
     public String isCompleted(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
@@ -158,6 +174,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/orders", "교환(반품)이 완료되었습니다.");
     }
 
+    @Operation(summary = "매출",description = "매출현황을 보여줍니다.")
     @GetMapping("/sales")
     public String showSales(Model model,
                             @RequestParam(defaultValue = "2023") int year,
@@ -181,6 +198,7 @@ public class AdmController {
         return "adm/sales";
     }
 
+    @Operation(summary = "상품",description = "상품리스트를 보여줍니다.")
     @GetMapping("/productList")
     public String showProduct(Model model) {
         List<Product> products = productService.findAll();
@@ -188,6 +206,7 @@ public class AdmController {
         return "adm/productList";
     }
 
+    @Operation(summary = "상품 삭제",description = "상품을 삭제합니다.")
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable Long id) {
         Product product = productService.findById(id);
@@ -195,6 +214,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/productList", "상품이 목록에서 삭제되었습니다.");
     }
 
+    @Operation(summary = "상품 등록 페이지",description = "상품을 등록 페이지를 보여줍니다.")
     @GetMapping("/productRegister")
     public String RegisterProduct(Model model) {
         List<Category> categories = categoryService.findAll();
@@ -213,6 +233,7 @@ public class AdmController {
 
     }
 
+    @Operation(summary = "상품 등록",description = "상품을 등록합니다.")
     @PostMapping("/registerpro")
     public String RegisterProductPro(ProductRegisterDto productRegisterDto) {
         System.out.println("productRegisterDto : " + productRegisterDto);
@@ -227,6 +248,7 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/productList", "상품이 등록되었습니다.");
     }
 
+    @Operation(summary = "상품 수정 페이지",description = "상품을 수정 페이지를 보여줍니다.")
     @GetMapping("/modifyProduct/{id}")
     public String modifyProduct(@PathVariable Long id, Model model) {
         Product product = this.productService.findById(id);
@@ -236,6 +258,7 @@ public class AdmController {
         return "adm/productModify";
     }
 
+    @Operation(summary = "상품 수정",description = "상품을 수정합니다.")
     @PostMapping("/modifypro")
     public String ModifyProductPro(ProductRegisterDto productRegisterDto, String url) {
         if (!productRegisterDto.getFile().isEmpty()) {
