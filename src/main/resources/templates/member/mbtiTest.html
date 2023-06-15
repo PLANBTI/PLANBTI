@@ -20,8 +20,9 @@
             <br><br>
             <button type="button" class="mt btn btn-outline btn-success" onclick='intro();'>테스트 시작하기</button>
         </article>
+        <progress id="myProgress" class="progress question hidden progress-success max-w-4xl mb-8 w-5/6" value="100" max="100"></progress>
         <article class="question hidden text-center">
-            <h2 id="questionTitle" class="text-center mt-20">문제</h2>
+            <h2 id="questionTitle" class="text-center mt-30 text-lg">문제</h2>
             <input id="type" type="hidden" value="EI">
             <div class="flex flex-col">
                 <button id="A" type="button" class="mt-5 w-full btn btn-outline btn-success">Primary</button>
@@ -30,11 +31,11 @@
         </article>
         <article class="result hidden text-center max-w-2xl">
             <div class="card w-full bg-base-100 shadow-2xl">
-                <span class="loading loading-spinner text-success"></span>
                 <figure class="px-10 pt-10">
                     <div id="mbti-img"></div>
                 </figure>
                 <div class="card-body items-center text-center">
+                    <span class="loading loading-spinner text-success"></span>
                     <div id="chat-container"></div>
                     <div class="card-actions">
                         <button onclick="refreshPage()" type="button" class="mt-5 btn btn-success">닫기</button>
@@ -188,7 +189,9 @@
                 });
             } else {
                 $("#questionTitle").html(q[num]["questionTitle"]);
-
+                var progressElement = document.getElementById('myProgress');
+                var value = 100 / 12 * num;
+                progressElement.value = value;
                 $("#type").val(q[num]["type"]);
                 $("#A").html(q[num]["A"]);
                 $("#B").html(q[num]["B"]);
