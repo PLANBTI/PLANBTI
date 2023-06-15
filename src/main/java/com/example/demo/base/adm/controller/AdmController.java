@@ -148,7 +148,7 @@ public class AdmController {
         return "adm/orders";
     }
 
-    @Operation(summary = "주문 확인",description = "주문과 관련된 데이터들을 보여줍니다.")
+    @Operation(summary = "교환 요청 확인",description = "교환 요청에 대하여 승인 처리합니다.")
     @GetMapping("/approve/{id}")
     public String approveExchange(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
@@ -235,9 +235,7 @@ public class AdmController {
 
     @Operation(summary = "상품 등록",description = "상품을 등록합니다.")
     @PostMapping("/registerpro")
-    public String RegisterProductPro(ProductRegisterDto productRegisterDto) {
-        System.out.println("productRegisterDto : " + productRegisterDto);
-
+    public String registerProductPro(ProductRegisterDto productRegisterDto) {
         if (!isProductRegisterDtoValid(productRegisterDto)) {
             return rq.historyBack("모든 항목을 입력하세요.");
         }
@@ -260,7 +258,7 @@ public class AdmController {
 
     @Operation(summary = "상품 수정",description = "상품을 수정합니다.")
     @PostMapping("/modifypro")
-    public String ModifyProductPro(ProductRegisterDto productRegisterDto, String url) {
+    public String modifyProductPro(ProductRegisterDto productRegisterDto, String url) {
         if (!productRegisterDto.getFile().isEmpty()) {
             url = imageService.upload(productRegisterDto.getFile(), UUID.randomUUID().toString());
         }

@@ -23,8 +23,8 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody th:each="member: ${members}">
-            <tr>
+            <tbody>
+            <tr th:each="member: ${members}">
                 <td th:text="${member.getId()}"></td>
                 <td th:text="${member.getUsername()}" class="w-60"></td>
                 <td th:text="${member.getEmail()}" class="w-60"></td>
@@ -32,7 +32,7 @@
                 <td th:text="${member.getCreateDate()}"></td>
                 <td th:if="${member.getDeleteDate() != null}">탈퇴한 회원</td>
                 <td th:unless="${member.getDeleteDate() != null}"></td>
-                <td><a href="#modal-1" class="btn btn-outline">삭제</a></td>
+                <td><a href="#modal-1" class="btn btn-outline btn-sm">삭제</a></td>
                 <div class="modal" id="modal-1">
                     <div class="modal-box">
                         <h3 class="font-bold text-lg">정말로 삭제하시겠습니까?</h3>

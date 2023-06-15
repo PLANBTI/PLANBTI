@@ -24,8 +24,8 @@
                     <th></th>
                 </tr>
                 </thead>
-                <tbody th:each="orderDetail : ${inProgressList}">
-                <tr>
+                <tbody>
+                <tr th:each="orderDetail : ${inProgressList}">
                     <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
                     <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
                     <td th:text="${orderDetail.getId()}"></td>
@@ -46,15 +46,15 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>회원 ID</th>
-                    <th>주문명</th>
+                    <th class="w-20">회원 ID</th>
+                    <th class="w-96">주문명</th>
                     <th>개별 주문 번호</th>
                     <th>상품명</th>
                     <th>주문 금액</th>
                 </tr>
                 </thead>
-                <tbody th:each="orderDetail : ${completedList}">
-                <tr>
+                <tbody>
+                <tr th:each="orderDetail : ${completedList}">
                     <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
                     <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
                     <td th:text="${orderDetail.getId()}"></td>
@@ -77,8 +77,8 @@
                     <th>주문 상태</th>
                 </tr>
                 </thead>
-                <tbody th:each="orderDetail : ${allList}">
-                <tr>
+                <tbody>
+                <tr th:each="orderDetail : ${allList}">
                     <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
                     <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
                     <td th:text="${orderDetail.getId()}"></td>

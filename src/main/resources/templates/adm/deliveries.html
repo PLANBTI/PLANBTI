@@ -29,7 +29,7 @@
                     <td id="orderDetailId" th:text="${orderDetail.getId()}"></td>
                     <td th:text="${orderDetail.getProduct().getName()}"></td>
                     <td th:if="${(orderDetail.getStatus().getName().equals('배송 준비 중') && orderDetail.getInvoiceNumber() == null)
-                        || orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품')}">
+                        || orderDetail.getStatus().getName().equals('승인 완료') || orderDetail.getStatus().getName().equals('반품')}">
                         <form th:action="@{/adm/startDelivery/{id}(id=${orderDetail.getId()})}" method="POST" onsubmit="Validation__invoiceNumber(this); return false;">
                             <input type="text" name="invoiceNumber" placeholder="운송장 번호" class="input input-bordered w-full max-w-xs" />
                             <input type="submit" class="btn btn-success btn-sm" value="저장" />
@@ -37,9 +37,9 @@
                     </td>
                     <td th:if="${orderDetail.getStatus().getName().equals('배송 중') && orderDetail.getInvoiceNumber() != null}" th:text="${orderDetail.getInvoiceNumber()}"></td>
                     <td>
-                        <span th:if="${orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품')}"
+                        <span th:if="${orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('승인 완료') || orderDetail.getStatus().getName().equals('반품')}"
                               class="flex justify-end badge badge-warning badge-lg ml-12" th:text="${orderDetail.getStatus().getName()}"></span>
-                        <span th:if="${!(orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('반품'))}"
+                        <span th:if="${!(orderDetail.getStatus().getName().equals('교환 요청') || orderDetail.getStatus().getName().equals('승인 완료') || orderDetail.getStatus().getName().equals('반품'))}"
                               class="flex justify-end badge badge-primary badge-lg ml-12" th:text="${orderDetail.getStatus().getName()}"></span>
                     </td>
                 </tr>

@@ -25,8 +25,8 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody th:each="product: ${products}">
-            <tr>
+            <tbody>
+            <tr th:each="product: ${products}">
                 <td th:text="${product.getId()}"></td>
                 <td th:text="${product.getName()}" class="w-60"></td>
                 <td th:text="${product.getCount()}"></td>
@@ -35,10 +35,10 @@
                 <td th:text="${product.getCreateDate()}" class="w-60"></td>
                 <td th:text="${product.getDeleteDate()}" class="w-60"></td>
                 <td th:if="${product.deleteDate == null}">
-                    <a class="btn btn-outline" th:href="@{/adm/modifyProduct/{id}(id=${product.getId()})}">수정</a>
+                    <a class="btn btn-outline btn-sm" th:href="@{/adm/modifyProduct/{id}(id=${product.getId()})}">수정</a>
                 </td>
                 <td>
-                    <a th:if="${product.deleteDate == null}" class="btn btn-outline"
+                    <a th:if="${product.deleteDate == null}" class="btn btn-outline btn-sm"
                        th:href="@{/adm/deleteProduct/{id}(id=${product.getId()})}">삭제</a>
                     <a th:if="${product.deleteDate != null}" class="btn btn-disabled">삭제됨</a>
                 </td>
