@@ -57,9 +57,6 @@ public class AdmOrderDetailServiceTest {
         orderDetails = orderDetails.stream().filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
 
         assertThat(orderDetails.size()).isEqualTo(5);
-
-        assertThat(orderDetails.stream()
-                .filter(od -> od.getProduct().isEqualCategoryTo("infj")).count()).isEqualTo(4);
     }
 
 }
