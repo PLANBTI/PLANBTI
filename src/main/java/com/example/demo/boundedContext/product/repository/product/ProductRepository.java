@@ -1,6 +1,8 @@
 package com.example.demo.boundedContext.product.repository.product;
 
 import com.example.demo.boundedContext.product.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -12,5 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     Optional<Product> findByIdAndDeleteDateIsNull(Long id);
 
     Optional<Product> findById(Long id);
+
+
+    Page<Product> findAllByDeleteDateIsNull(Pageable pageable);
+
 
 }
