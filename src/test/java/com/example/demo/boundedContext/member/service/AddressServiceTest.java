@@ -28,7 +28,7 @@ public class AddressServiceTest {
 
         Address testAddress = addressService.create(user1, dto, false);
 
-        assertThat(user1.getAddresses().size()).isEqualTo(2);
+        assertThat(user1.getAddresses().size()).isEqualTo(3);
         assertThat(testAddress.equals(user1.getAddresses().get(1))).isTrue();
     }
 

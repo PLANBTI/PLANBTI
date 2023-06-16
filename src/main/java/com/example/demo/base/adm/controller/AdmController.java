@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.example.demo.boundedContext.order.entity.OrderItemStatus.*;
-import static com.example.demo.boundedContext.order.entity.OrderStatus.COMPLETE;
 
 @Tag(name = "관리자")
 @RequiredArgsConstructor
@@ -97,7 +96,7 @@ public class AdmController {
     @Operation(summary = "결제",description = "결제 리스트를 보여줍니다.")
     @GetMapping("/pay")
     public String showPay(Model model) {
-        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsPending();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsCompleted();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/pay";
     }
@@ -113,7 +112,7 @@ public class AdmController {
     @Operation(summary = "배송 확인",description = "배송 상태를 확인합니다")
     @GetMapping("/deliveries")
     public String showDeliveries(Model model) {
-        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsNotPending();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusDelivering();
         model.addAttribute("orderDetails", orderDetails);
         return "adm/deliveries";
     }
@@ -139,11 +138,11 @@ public class AdmController {
     @GetMapping("/orders")
     public String showOrderList(Model model) {
         List<OrderDetail> inProgressList = admOrderDetailService.getStatusIsInProgress();
-        List<OrderDetail> completedList = admOrderDetailService.getStatusIsCompleted();
+        List<OrderDetail> doneList = admOrderDetailService.getStatusIsDone();
         List<OrderDetail> allList = admOrderDetailService.findAll();
 
         model.addAttribute("inProgressList", inProgressList);
-        model.addAttribute("completedList", completedList);
+        model.addAttribute("doneList", doneList);
         model.addAttribute("allList", allList);
         return "adm/orders";
     }
@@ -161,16 +160,16 @@ public class AdmController {
         return rq.redirectWithMsg("/adm/orders", "교환 요청이 승인되었습니다.");
     }
 
-    @Operation(summary = "교환(반품)",description = "교환(반품)과 관련된 데이터들을 보여줍니다.")
-    @GetMapping("/complete/{id}")
-    public String isCompleted(@PathVariable Long id) {
+    @Operation(summary = "교환(반품) 완료",description = "교환(반품)을 완료 처리합니다.")
+    @GetMapping("/done/{id}")
+    public String isDone(@PathVariable Long id) {
         OrderDetail orderDetail = admOrderDetailService.findById(id);
 
         if (!(orderDetail.isEqualStatusTo(APPROVED) || orderDetail.isEqualStatusTo(RETURN))) {
             return rq.historyBack("유효하지 않은 데이터입니다.");
         }
 
-        admOrderDetailService.updateStatus(orderDetail, COMPLETED);
+        admOrderDetailService.updateStatus(orderDetail, DONE);
         return rq.redirectWithMsg("/adm/orders", "교환(반품)이 완료되었습니다.");
     }
 
@@ -180,10 +179,10 @@ public class AdmController {
                             @RequestParam(defaultValue = "2023") int year,
                             @RequestParam(defaultValue = "1") int month,
                             @RequestParam(defaultValue = "all") String category) {
-        List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(year, month);
+        List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyDone(year, month);
 
         orderDetails = orderDetails.stream()
-                .filter(od -> od.getOrder().getStatus().equals(COMPLETE)).toList();
+                .filter(od -> od.getOrder().getStatus().equals(DONE)).toList();
 
         if (!category.equals("all")) {
             orderDetails = orderDetails.stream()

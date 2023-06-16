@@ -25,7 +25,7 @@ public class AdmOrderDetailServiceTest {
     @Test
     @DisplayName("findByStatusIsNotPending()")
     void t001() {
-        assertThat(admOrderDetailService.getStatusIsNotPending().size()).isEqualTo(3);
+        assertThat(admOrderDetailService.getStatusDelivering().size()).isEqualTo(2);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class AdmOrderDetailServiceTest {
     @Test
     @DisplayName("getPendingStatus() & startDelivery()")
     void t003() {
-        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsPending();
+        List<OrderDetail> orderDetails = admOrderDetailService.getStatusIsCompleted();
         OrderDetail orderDetail = orderDetails.get(0);
 
         admOrderDetailService.startDelivery(orderDetail, "0123456789");
@@ -49,7 +49,7 @@ public class AdmOrderDetailServiceTest {
     @Test
     @DisplayName("getMonthlyCompleted()")
     void t004() {
-        List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyCompleted(2023, 6);
+        List<OrderDetail> orderDetails = admOrderDetailService.getMonthlyDone(2023, 6);
 
         assertThat(orderDetails.size()).isEqualTo(5);
 

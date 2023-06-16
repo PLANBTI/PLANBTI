@@ -27,18 +27,18 @@ public class AdmOrderDetailService {
         return orderDetailRepository.findAll();
     }
 
-    public List<OrderDetail> getStatusIsNotPending() {
+    public List<OrderDetail> getStatusDelivering() {
         List<OrderDetail> list = orderDetailRepository.findAll();
         isDelivered();
-        isCompleted();
+        isDone();
         return list.stream()
                 .filter(od -> od.getStatus().equals(PLACED) || od.getStatus().equals(SHIPPING)
                     || od.getStatus().equals(APPROVED) || od.getStatus().equals(RETURN))
                 .toList();
     }
 
-    public List<OrderDetail> getStatusIsPending() {
-        return orderDetailRepository.findByStatus(PENDING);
+    public List<OrderDetail> getStatusIsCompleted() {
+        return orderDetailRepository.findByStatus(COMPLETED);
     }
 
     public List<OrderDetail> getStatusIsInProgress() {
@@ -48,9 +48,9 @@ public class AdmOrderDetailService {
                 .toList();
     }
 
-    public List<OrderDetail> getStatusIsCompleted() {
-        isCompleted();
-        return orderDetailRepository.findByStatus(COMPLETED);
+    public List<OrderDetail> getStatusIsDone() {
+        isDone();
+        return orderDetailRepository.findByStatus(DONE);
     }
 
     private void isDelivered() {
@@ -59,10 +59,10 @@ public class AdmOrderDetailService {
         orderDetails.stream().filter(od -> isPassed(od, 7)).forEach(od -> updateStatus(od, DELIVERED));
     }
 
-    private void isCompleted() {
+    private void isDone() {
         // DELIVERED 상태인 동시에 배송 완료된 시점부터 7일이 지났다면 구매 확정 상태로 변경
         List<OrderDetail> orderDetails = orderDetailRepository.findByStatus(DELIVERED);
-        orderDetails.stream().filter(od -> isPassed(od, 7)).forEach(od -> updateStatus(od, COMPLETED));
+        orderDetails.stream().filter(od -> isPassed(od, 7)).forEach(od -> updateStatus(od, DONE));
     }
 
     private boolean isPassed(OrderDetail orderDetail, int day) {
@@ -79,7 +79,7 @@ public class AdmOrderDetailService {
                 .status(SHIPPING).invoiceNumber(invoiceNumber).build());
     }
 
-    public List<OrderDetail> getMonthlyCompleted(int year, int month) {
+    public List<OrderDetail> getMonthlyDone(int year, int month) {
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1);
 

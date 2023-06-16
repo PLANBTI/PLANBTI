@@ -1,6 +1,8 @@
 package com.example.demo.boundedContext.member.repository;
 
 import com.example.demo.boundedContext.member.entity.Member;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +18,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, CustomMem
     Optional<Member> findByIdAndDeleteDateIsNull(Long id);
 
     @Modifying(flushAutomatically = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Query(value = "DELETE FROM member WHERE id = ?1", nativeQuery = true)
     void deleteHardById(Long id);
 }
