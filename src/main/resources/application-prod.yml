@@ -15,7 +15,7 @@ spring:
 decorator:
   datasource:
     p6spy:
-      enable-logging: off
+      enable-logging: on
 
 custom:
   site:
