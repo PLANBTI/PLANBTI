@@ -2,7 +2,7 @@ package com.example.demo.boundedContext.order.entity;
 
 public enum OrderItemStatus {
     PENDING("결제 진행 중"),
-    COMPLETED("구매 확정"),
+    COMPLETED("결제 완료"),
     PLACED("배송 준비 중"),
     SHIPPING("배송 중"),
     DELIVERED("배송 완료"),
