@@ -41,7 +41,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="w-full my-12" th:if="${!#lists.isEmpty(completedList)}">
+        <div class="w-full my-12" th:if="${!#lists.isEmpty(doneList)}">
             <h1 class="font-black text-2xl mb-12">구매 확정</h1>
             <table class="table">
                 <thead>
@@ -54,7 +54,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="orderDetail : ${completedList}">
+                <tr th:each="orderDetail : ${doneList}">
                     <td th:text="${orderDetail.getOrder().getMember().getUsername()}"></td>
                     <td th:text="${orderDetail.getOrder().getOrderName()}"></td>
                     <td th:text="${orderDetail.getId()}"></td>

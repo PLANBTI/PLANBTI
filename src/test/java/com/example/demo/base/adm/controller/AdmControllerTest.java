@@ -81,18 +81,18 @@ public class AdmControllerTest {
     }
 
     @Test
-    @DisplayName("isCompleted()")
+    @DisplayName("isDone()")
     void t004() throws Exception {
         ResultActions resultActions = mvc
-                .perform(get("/adm/complete/4"))
+                .perform(get("/adm/done/4"))
                 .andDo(print());
 
         resultActions
                 .andExpect(handler().handlerType(AdmController.class))
-                .andExpect(handler().methodName("isCompleted"))
+                .andExpect(handler().methodName("isDone"))
                 .andExpect(status().is3xxRedirection());
 
-        assertThat(admOrderDetailService.findById(4L).getStatus()).isEqualTo(COMPLETED);
+        assertThat(admOrderDetailService.findById(4L).getStatus()).isEqualTo(DONE);
     }
 
 }

@@ -270,7 +270,7 @@ public class CustomInitData {
                 orderRepository.save(order2);
 
                 OrderDetail orderDetail1 = OrderDetail.builder()
-                        .status(PENDING)
+                        .status(COMPLETED)
                         .product(product1)
                         .order(order2)
                         .count(2)
@@ -278,7 +278,7 @@ public class CustomInitData {
                 orderDetailRepository.save(orderDetail1);
 
                 OrderDetail orderDetail2 = OrderDetail.builder()
-                        .status(PENDING)
+                        .status(COMPLETED)
                         .product(product1)
                         .order(order2)
                         .count(2)
