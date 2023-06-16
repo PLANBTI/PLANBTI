@@ -53,7 +53,7 @@ public class OrderDetail extends BaseEntity {
     }
 
     public void orderComplete() {
-        updateStatus(PLACED);
+        updateStatus(COMPLETED);
     }
 
     public boolean isBeforePaying() {
